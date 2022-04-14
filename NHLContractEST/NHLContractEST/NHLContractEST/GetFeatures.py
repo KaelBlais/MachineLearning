@@ -9,10 +9,10 @@ def GetFeatures():
 
     print("Getting inputs...")
 
-
+    PlayerNames = list()
     
     # Import player data. There are 32 pages of active players in Capfriendly
-    for i in range (0, 1):
+    for i in range (0, 2):
         url = "https://www.capfriendly.com/browse/active?pg=" + str(i+1)
         L = pd.read_html(url)
 
@@ -23,18 +23,18 @@ def GetFeatures():
         # Find number of players in list
         n = DF["PLAYER"].size
 
-        print("Length of Data: " + str(n))
+        # print("Length of Data: " + str(n))
 
-
-        # ActivePlayerList(1)
-
-        # XTrain()
+        for k in range (0, n):
+            PlayerNames.append(DF["PLAYER"].iloc[k])
 
 
     
     print("done.")
+
+    ActivePlayerList = {"Names": PlayerNames}
     
     XTrain = 0.0
     YTrain = 0.0
 
-    return XTrain, YTrain
+    return XTrain, YTrain, ActivePlayerList

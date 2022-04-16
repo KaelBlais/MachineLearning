@@ -4,8 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from GetFeatures import *
 
-
-XTrain, YTrain, ActivePlayerList = GetFeatures()
+XTrain, YTrain, ActivePlayerList = GetFeaturesFromCapFriendly()
 
 Names = ActivePlayerList["Names"]
 

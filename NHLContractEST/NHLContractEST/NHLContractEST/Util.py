@@ -104,5 +104,8 @@ def PrintPlayerList(list):
         print("Player " + str(i) + ": " + list[i].Name)
         print("    Age: " + str(list[i].Age) + "   Position: " + list[i].Position)
 
+        for j in range(0, list[i].NumContracts):
+            print("        Contract Start: " + str(list[i].ContractDates[j]) + "   Length: " + str(list[i].ContractLength[j]) + " AAV:" + str(list[i].ContractAAV[j]))
+
 
     return 

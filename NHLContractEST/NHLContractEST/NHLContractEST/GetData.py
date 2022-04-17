@@ -9,6 +9,12 @@ class Player:
         self.Name = Name
     Age = 0
     Position  = ""
+    NumContracts = 0
+    ContractDates = []
+    ContractAAV = []
+    ContractLength = []
+    TeamHistory = []
+
 
 # This function will load all of the required input features from Capfriendly
 def GetStatsFromCapFriendly():
@@ -19,9 +25,9 @@ def GetStatsFromCapFriendly():
     ActivePlayerList = []
     
     # Import player data. There are 32 pages of active players in Capfriendly
-    numPages = 32;
+    numPages = 1;
     print("     Getting active player names...")
-    for i in range (12, numPages):
+    for i in range (0, numPages):
         print("     " + str(int((i+1)*100/numPages)) + "% complete", end = '\r')
         url = "https://www.capfriendly.com/browse/active?pg=" + str(i+1)
         L = pd.read_html(url)
@@ -59,10 +65,74 @@ def GetStatsFromCapFriendly():
         url = "https://www.capfriendly.com/players/" + FormatURL(name)
         L = pd.read_html(url)
 
-        # Contract info can be found from tables using the read_html pandas command
-        for j in L:
-            DF = j
-            # print(DF)
+        # Set up temporary lists. Appending straight to the player list causes the same element for all players to be appended.
+        # Instead, these temporary lists are cleared and re-used every time to give each player his own independent list. 
+        yearList = []
+        aavList = []
+        lengthList = []
+        numContracts = 0;
+
+        # Get contract info. First will be current contract. Last will be stats. Go from 1 to last - 1.
+        for j in range(1, len(L) - 1):
+            DF = L[j]
+
+            # Check size to make sure this matches. Some old entries have an invalid format. 
+            if(DF.shape[1] == 9):
+                n = DF[0].size
+
+                # Contract length is number of rows - 2 
+                length = n-2
+
+                # AAV is total amount (last row) divided by contract length
+                s = DF[7].iloc[n-1] # total salary amount
+
+                # strip $ and , from salary
+                s = s.replace("$", "")
+                s = s.replace(",", "")
+                AAV = int(s) / (length)
+
+                # Find contract start date from second row
+                s = DF[0].iloc[1]
+                s = s[0:4] # First year is first 4 digits
+                startYear = int(s)
+            
+                # Append to temporary list
+                yearList.append(startYear)
+                aavList.append(AAV)
+                lengthList.append(length)
+                numContracts = numContracts + 1;
+
+        # Now add current contract after (index 0)
+        DF = L[0]
+        n = DF[0].size
+
+        # Contract length is number of rows - 2 
+        length = n-2
+
+        # AAV is total amount (last row) divided by contract length
+        s = DF[7].iloc[n-1] # total salary amount
+
+        # strip $ and , from salary
+        s = s.replace("$", "")
+        s = s.replace(",", "")
+        AAV = int(s) / (length)
+
+        # Find contract start date from second row
+        s = DF[0].iloc[1]
+        s = s[0:4] # First year is first 4 digits
+        startYear = int(s)
+            
+        # Append current contract to end of list
+        yearList.append(startYear)
+        aavList.append(AAV)
+        lengthList.append(length)
+        numContracts = numContracts + 1;
+
+        # Store back in player list
+        ActivePlayerList[i].ContractDates = yearList
+        ActivePlayerList[i].ContractAAV = aavList
+        ActivePlayerList[i].ContractLength = lengthList
+        ActivePlayerList[i].NumContracts = numContracts
 
 
         # Basic info can be found from the player description using the raw html code
@@ -87,10 +157,11 @@ def GetStatsFromCapFriendly():
             ActivePlayerList[i].Position = "RD"
         if(s[idx:idx+11] == "left winger"):
             ActivePlayerList[i].Position = "LW"
-        if(s[idx:idx+11] == "right winger"):
+        if(s[idx:idx+12] == "right winger"):
             ActivePlayerList[i].Position = "RW"
-        if(s[idx:idx+11] == "goaltender"):
+        if(s[idx:idx+10] == "goaltender"):
             ActivePlayerList[i].Position = "G"
+
 
     print("     " + str(int((i+1)*100/len(ActivePlayerList))) + "% complete")
 

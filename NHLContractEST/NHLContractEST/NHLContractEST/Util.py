@@ -41,6 +41,7 @@ def FormatURL(name):
     name = name.replace(chr(218), "U")
     name = name.replace(chr(219), "U")
     name = name.replace(chr(220), "U")
+    name = name.replace(chr(362), "U")
 
     name = name.replace(chr(221), "Y")
 
@@ -71,10 +72,11 @@ def FormatURL(name):
     name = name.replace(chr(246), "o")
     name = name.replace(chr(248), "o")
 
-    name = name.replace(chr(249), "U")
-    name = name.replace(chr(250), "U")
-    name = name.replace(chr(251), "U")
-    name = name.replace(chr(252), "U")
+    name = name.replace(chr(249), "u")
+    name = name.replace(chr(250), "u")
+    name = name.replace(chr(251), "u")
+    name = name.replace(chr(252), "u")
+    name = name.replace(chr(363), "u")
 
     name = name.replace(chr(253), "y")
     name = name.replace(chr(255), "y")
@@ -82,6 +84,15 @@ def FormatURL(name):
     # Magic special case - These players have different URLs for some reason
     if(name == "Marc-Andre-Fleury"):
         name = "marc-andre-fleury1"
+
+    if(name == "Danny-DeKeyser"):
+        name = "danny-dekeyser1"
+
+    if(name == "Olli-Maatta"):
+        name = "olli-maatta1"
+
+    if(name == "Trevor-van-Riemsdyk"):
+        name = "trevor-van-riemsdyk1"
 
     return name
 

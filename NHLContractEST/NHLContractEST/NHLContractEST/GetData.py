@@ -19,9 +19,9 @@ def GetStatsFromCapFriendly():
     ActivePlayerList = []
     
     # Import player data. There are 32 pages of active players in Capfriendly
-    numPages = 2;
+    numPages = 32;
     print("     Getting active player names...")
-    for i in range (0, numPages):
+    for i in range (12, numPages):
         print("     " + str(int((i+1)*100/numPages)) + "% complete", end = '\r')
         url = "https://www.capfriendly.com/browse/active?pg=" + str(i+1)
         L = pd.read_html(url)
@@ -76,6 +76,21 @@ def GetStatsFromCapFriendly():
         # Age comes right before this. This is always 2 digits. 
         sAge = s[idx-2:idx]
         ActivePlayerList[i].Age = int(sAge)
+
+        # Position comes right after age
+        idx = idx + 10
+        if(s[idx:idx+6] == "centre"):
+            ActivePlayerList[i].Position = "C"
+        if(s[idx:idx+12] == "left defense"):
+            ActivePlayerList[i].Position = "LD"
+        if(s[idx:idx+13] == "right defense"):
+            ActivePlayerList[i].Position = "RD"
+        if(s[idx:idx+11] == "left winger"):
+            ActivePlayerList[i].Position = "LW"
+        if(s[idx:idx+11] == "right winger"):
+            ActivePlayerList[i].Position = "RW"
+        if(s[idx:idx+11] == "goaltender"):
+            ActivePlayerList[i].Position = "G"
 
     print("     " + str(int((i+1)*100/len(ActivePlayerList))) + "% complete")
 

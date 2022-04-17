@@ -1,13 +1,22 @@
 # This file will load all necessary input and output variables
 
 import pandas as pd
+import urllib
+
+class Player:
+    Name = ""
+    Age = 0
+    Position  = ""
 
 # This function will load all of the required input features from Capfriendly
-def GetFeaturesFromCapFriendly():
+def GetStatsFromCapFriendly():
 
     # import pandas as np
+    P = Player()
 
-    print("Getting inputs...")
+    print(P.Age)
+
+    print("Getting stats from CapFriendly...")
 
     PlayerNames = list()
     
@@ -48,26 +57,15 @@ def GetFeaturesFromCapFriendly():
             DF = j
             print(DF)
 
-        url = "https://www.nhl.com/player/connor-mcdavid-8478402"
-        L = pd.read_html(url)
+        data = urllib.request.urlopen(url).read(10000000)
+        s = str(data)
 
+        # print(data)
+        idx = s.find(" year old ");
 
-        for j in L:
-            DF = j
-            print(DF)
-        '''
-        # Convert to data frame
-        DF0 = L[0]
-      #   age = DF0["Age"]
-        DF1 = L[1]
-        # age = DF1["Age"]
-        DF2 = L[2]
-       #  age = DF2["Age"]
-       '''
-
-
-
-        print(L)
+        # Age comes right before this
+        sAge = s[idx-2:idx]
+        P.Age = int(sAge)
 
     print("done.")
 

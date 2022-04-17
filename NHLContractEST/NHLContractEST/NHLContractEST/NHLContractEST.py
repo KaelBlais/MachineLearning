@@ -6,15 +6,7 @@ from GetFeatures import *
 import urllib
 
 
-# data = urllib.request.urlopen("https://www.capfriendly.com/players/connor-mcdavid").read(10000000)
-# print(data)
+ActivePlayerList = GetStatsFromCapFriendly()
 
-# test = "Age" in data
-
-
-XTrain, YTrain, ActivePlayerList = GetStatsFromCapFriendly()
-
-Names = ActivePlayerList["Names"]
-
-print(Names)
+print(ActivePlayerList)
 

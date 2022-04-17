@@ -1,5 +1,8 @@
 # This file will contain minor utility function to clean up rest of code
 
+import pickle
+
+
 # This function will take in a player name and create the proper URL for it
 def FormatURL(name):
 
@@ -109,3 +112,16 @@ def PrintPlayerList(list):
 
 
     return 
+
+
+def DumpToFile(data, fileName):
+    with open(fileName, 'wb') as handle:
+        pickle.dump(data, handle)
+
+
+def ReadFromFile(fileName):
+    with open(fileName, 'rb') as handle:
+        data = pickle.loads(handle.read())
+
+    return data
+     

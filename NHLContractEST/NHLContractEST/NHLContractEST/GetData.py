@@ -89,7 +89,7 @@ def GetStatsFromCapFriendly():
                 # strip $ and , from salary
                 s = s.replace("$", "")
                 s = s.replace(",", "")
-                AAV = int(s) / (length)
+                AAV = int(int(s) / (length))
 
                 # Find contract start date from second row
                 s = DF[0].iloc[1]

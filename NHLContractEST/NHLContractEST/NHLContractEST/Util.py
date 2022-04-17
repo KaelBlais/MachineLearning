@@ -84,3 +84,14 @@ def FormatURL(name):
         name = "marc-andre-fleury1"
 
     return name
+
+# This function will print all player list info to the console
+def PrintPlayerList(list):
+    print("Player List: \n")
+
+    for i in range(0, len(list)):
+        print("Player " + str(i) + ": " + list[i].Name)
+        print("    Age: " + str(list[i].Age) + "   Position: " + list[i].Position)
+
+
+    return 

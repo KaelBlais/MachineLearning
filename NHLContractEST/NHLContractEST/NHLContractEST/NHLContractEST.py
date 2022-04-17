@@ -8,5 +8,5 @@ from Util import *
 
 ActivePlayerList = GetStatsFromCapFriendly()
 
-print(ActivePlayerList)
+PrintPlayerList(ActivePlayerList)
 

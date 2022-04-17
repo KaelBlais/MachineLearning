@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/NHLContractEST/NHLContractEST/.vs/NHLContractEST/v17
+/NHLContractEST/NHLContractEST/NHLContractEST/__pycache__/GetFeatures.cpython-36.pyc
+/NHLContractEST/NHLContractEST/NHLContractEST/__pycache__

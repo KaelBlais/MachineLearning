@@ -19,7 +19,10 @@ def GetStatsFromCapFriendly():
     ActivePlayerList = []
     
     # Import player data. There are 32 pages of active players in Capfriendly
-    for i in range (0, 1):
+    numPages = 2;
+    print("     Getting active player names...")
+    for i in range (0, numPages):
+        print("     " + str(int((i+1)*100/numPages)) + "% complete", end = '\r')
         url = "https://www.capfriendly.com/browse/active?pg=" + str(i+1)
         L = pd.read_html(url)
 
@@ -42,11 +45,15 @@ def GetStatsFromCapFriendly():
             # Append this player to the list
             ActivePlayerList.append(Player(name))
 
+    print("     " + str(int((i+1)*100/numPages)) + "% complete")
+
 
     
     # Now go through data list and fill out info for each player.
     # This will contain basic info (age, position, etc.) and contract info
+    print("     Getting Player Information...")
     for i in range(0, len(ActivePlayerList)):
+        print("     " + str(int((i+1)*100/len(ActivePlayerList))) + "% complete", end = '\r')
         name = str(ActivePlayerList[i].Name)
 
         url = "https://www.capfriendly.com/players/" + FormatURL(name)
@@ -70,7 +77,9 @@ def GetStatsFromCapFriendly():
         sAge = s[idx-2:idx]
         ActivePlayerList[i].Age = int(sAge)
 
-    print("done.")
+    print("     " + str(int((i+1)*100/len(ActivePlayerList))) + "% complete")
+
+    print("Done retrieving stats from capfriendly.")
 
     
 

@@ -5,6 +5,9 @@ def FormatURL(name):
 
     # Replace spaces with - for urls for all players
     name = name.replace(" ", "-")
+
+    # Remove certain characters
+    name = name.replace("'", "")
     name = name.replace(".", "")
 
     # Replace other foreign characters with their corresponding equivalent
@@ -75,5 +78,9 @@ def FormatURL(name):
 
     name = name.replace(chr(253), "y")
     name = name.replace(chr(255), "y")
+
+    # Magic special case - These players have different URLs for some reason
+    if(name == "Marc-Andre-Fleury"):
+        name = "marc-andre-fleury1"
 
     return name

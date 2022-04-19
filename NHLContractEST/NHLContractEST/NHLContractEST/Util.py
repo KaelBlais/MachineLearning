@@ -110,6 +110,21 @@ def PrintPlayerList(list):
         for j in range(0, list[i].NumContracts):
             print("        Contract Start: " + str(list[i].ContractDates[j]) + "   Length: " + str(list[i].ContractLength[j]) + " AAV:" + str(list[i].ContractAAV[j]))
 
+        for j in range (0, len(list[i].StatHistory)):
+            print("    " + str(list[i].StatHistory[j].Year) + " Regular Season: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
+                  str(list[i].StatHistory[j].RegularGP) + ", G = " + str(list[i].StatHistory[j].RegularGoals) \
+                  + ", A = " + str(list[i].StatHistory[j].RegularAssists) + ", +/- = " + str(list[i].StatHistory[j].RegularPlusMinus) \
+                  + ", PIM = " + str(list[i].StatHistory[j].RegularPIM) + ", TOI = " + str(list[i].StatHistory[j].RegularEVTOI) \
+                  + ", EVG = " + str(list[i].StatHistory[j].RegularEVG) + ", ixG = " + str(list[i].StatHistory[j].RegularixG) \
+                  + ", xG+/60 = " + str(list[i].StatHistory[j].RegularxG60) + ", RelxG+/60 = " + str(list[i].StatHistory[j].RegularRelxG60) \
+                  + ", C+60 = " + str(list[i].StatHistory[j].RegularC60) + ", RelC+60 = " + str(list[i].StatHistory[j].RegularRelC60))
+            print("    " + str(list[i].StatHistory[j].Year) + " Playoffs: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
+                  str(list[i].StatHistory[j].PlayoffGP) + ", G = " + str(list[i].StatHistory[j].PlayoffGoals) \
+                  + ", A = " + str(list[i].StatHistory[j].PlayoffAssists) + ", +/- = " + str(list[i].StatHistory[j].PlayoffPlusMinus) \
+                  + ", PIM = " + str(list[i].StatHistory[j].PlayoffPIM) + ", TOI = " + str(list[i].StatHistory[j].PlayoffEVTOI) \
+                  + ", EVG = " + str(list[i].StatHistory[j].PlayoffEVG) + ", ixG = " + str(list[i].StatHistory[j].PlayoffixG) \
+                  + ", xG+/60 = " + str(list[i].StatHistory[j].PlayoffxG60) + ", RelxG+/60 = " + str(list[i].StatHistory[j].PlayoffRelxG60) \
+                  + ", C+60 = " + str(list[i].StatHistory[j].PlayoffC60) + ", RelC+60 = " + str(list[i].StatHistory[j].PlayoffRelC60))
 
     return 
 

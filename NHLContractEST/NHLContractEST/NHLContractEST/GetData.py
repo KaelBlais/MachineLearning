@@ -106,6 +106,39 @@ def GetStatsFromCapFriendly():
         name = str(ActivePlayerList[i].Name)
 
         url = "https://www.capfriendly.com/players/" + FormatURL(name)
+
+
+
+        # Basic info can be found from the player description using the raw html code
+        # Each player description contains a blob of text in the same format. 
+        # This blob will contain information
+        data = urllib.request.urlopen(url).read(10000000)
+        s = str(data)
+
+        # Firt spot is the age of the player. 
+        idx = s.find(" year old ");
+        # Age comes right before this. This is always 2 digits. 
+        sAge = s[idx-2:idx]
+        ActivePlayerList[i].Age = int(sAge)
+
+        # Position comes right after age
+        idx = idx + 10
+        if(s[idx:idx+6] == "centre"):
+            ActivePlayerList[i].Position = "C"
+        if(s[idx:idx+12] == "left defense"):
+            ActivePlayerList[i].Position = "LD"
+        if(s[idx:idx+13] == "right defense"):
+            ActivePlayerList[i].Position = "RD"
+        if(s[idx:idx+11] == "left winger"):
+            ActivePlayerList[i].Position = "LW"
+        if(s[idx:idx+12] == "right winger"):
+            ActivePlayerList[i].Position = "RW"
+        if(s[idx:idx+10] == "goaltender"):
+            ActivePlayerList[i].Position = "G"
+
+
+
+
         L = pd.read_html(url)
 
         # Set up temporary lists. Appending straight to the player list causes the same element for all players to be appended.
@@ -181,40 +214,43 @@ def GetStatsFromCapFriendly():
         # The last DF contains all of the individual player stats
         DF = L[len(L)-1]
         n = 0
-        for j in range(0, DF["SEASON"].size):
+        for j in range(0, DF["SEASON"].size - 1):
 
-            # Only NHL stats will be stored
+            # Only NHL stats will be stored.
             if(DF["LEAGUE"].iloc[j] == "NHL"):
                season = DF["SEASON"].iloc[j]
                statsList.append(IndividualSeasonStats(season))
                statsList[n].Team = DF["TEAM"].iloc[j]
 
-               # For normal stats, some of these column names will repeat.
-               # Therefore, the column index must be specified instead
-               statsList[n].RegularGP = DF[DF.columns[4]].iloc[j]
-               statsList[n].RegularGoals = DF[DF.columns[5]].iloc[j]
-               statsList[n].RegularAssists = DF[DF.columns[6]].iloc[j]
-               statsList[n].RegularPlusMinus = DF[DF.columns[8]].iloc[j]
-               statsList[n].RegularPIM = DF[DF.columns[9]].iloc[j]
-               statsList[n].PlayoffGP = DF[DF.columns[12]].iloc[j]
-               statsList[n].PlayoffGoals = DF[DF.columns[13]].iloc[j]
-               statsList[n].PlayoffAssists = DF[DF.columns[14]].iloc[j]
-               statsList[n].PlayoffPlusMinus = DF[DF.columns[16]].iloc[j]
-               statsList[n].PlayoffPIM = DF[DF.columns[17]].iloc[j]
-               statsList[n].RegularEVTOI = DF[DF.columns[18]].iloc[j]
-               statsList[n].RegularEVG = DF[DF.columns[19]].iloc[j]
-               statsList[n].RegularixG = DF[DF.columns[20]].iloc[j]
-               statsList[n].RegularxG60 = DF[DF.columns[21]].iloc[j]
-               statsList[n].RegularRelxG60 = DF[DF.columns[22]].iloc[j]
-               statsList[n].RegularC60 = DF[DF.columns[23]].iloc[j]
-               statsList[n].RegularRelC60 = DF[DF.columns[24]].iloc[j]
-               statsList[n].PlayoffEVTOI = DF[DF.columns[26]].iloc[j]
-               statsList[n].PlayoffEVG = DF[DF.columns[27]].iloc[j]
-               statsList[n].PlayoffixG = DF[DF.columns[28]].iloc[j]
-               statsList[n].PlayoffxG60 = DF[DF.columns[29]].iloc[j]
-               statsList[n].PlayoffRelxG60 = DF[DF.columns[30]].iloc[j]
-               statsList[n].PlayoffC60 = DF[DF.columns[31]].iloc[j]
-               statsList[n].PlayoffRelC60 = DF[DF.columns[32]].iloc[j]
+               # For now, ignore goalies.
+               if(ActivePlayerList[i].Position != "G"):
+
+                   # For normal stats, some of these column names will repeat.
+                   # Therefore, the column index must be specified instead
+                   statsList[n].RegularGP = DF[DF.columns[4]].iloc[j]
+                   statsList[n].RegularGoals = DF[DF.columns[5]].iloc[j]
+                   statsList[n].RegularAssists = DF[DF.columns[6]].iloc[j]
+                   statsList[n].RegularPlusMinus = DF[DF.columns[8]].iloc[j]
+                   statsList[n].RegularPIM = DF[DF.columns[9]].iloc[j]
+                   statsList[n].PlayoffGP = DF[DF.columns[12]].iloc[j]
+                   statsList[n].PlayoffGoals = DF[DF.columns[13]].iloc[j]
+                   statsList[n].PlayoffAssists = DF[DF.columns[14]].iloc[j]
+                   statsList[n].PlayoffPlusMinus = DF[DF.columns[16]].iloc[j]
+                   statsList[n].PlayoffPIM = DF[DF.columns[17]].iloc[j]
+                   statsList[n].RegularEVTOI = DF[DF.columns[18]].iloc[j]
+                   statsList[n].RegularEVG = DF[DF.columns[19]].iloc[j]
+                   statsList[n].RegularixG = DF[DF.columns[20]].iloc[j]
+                   statsList[n].RegularxG60 = DF[DF.columns[21]].iloc[j]
+                   statsList[n].RegularRelxG60 = DF[DF.columns[22]].iloc[j]
+                   statsList[n].RegularC60 = DF[DF.columns[23]].iloc[j]
+                   statsList[n].RegularRelC60 = DF[DF.columns[24]].iloc[j]
+                   statsList[n].PlayoffEVTOI = DF[DF.columns[26]].iloc[j]
+                   statsList[n].PlayoffEVG = DF[DF.columns[27]].iloc[j]
+                   statsList[n].PlayoffixG = DF[DF.columns[28]].iloc[j]
+                   statsList[n].PlayoffxG60 = DF[DF.columns[29]].iloc[j]
+                   statsList[n].PlayoffRelxG60 = DF[DF.columns[30]].iloc[j]
+                   statsList[n].PlayoffC60 = DF[DF.columns[31]].iloc[j]
+                   statsList[n].PlayoffRelC60 = DF[DF.columns[32]].iloc[j]
 
 
                n = n+1
@@ -224,33 +260,6 @@ def GetStatsFromCapFriendly():
 
 
 
-
-        # Basic info can be found from the player description using the raw html code
-        # Each player description contains a blob of text in the same format. 
-        # This blob will contain information
-        data = urllib.request.urlopen(url).read(10000000)
-        s = str(data)
-
-        # Firt spot is the age of the player. 
-        idx = s.find(" year old ");
-        # Age comes right before this. This is always 2 digits. 
-        sAge = s[idx-2:idx]
-        ActivePlayerList[i].Age = int(sAge)
-
-        # Position comes right after age
-        idx = idx + 10
-        if(s[idx:idx+6] == "centre"):
-            ActivePlayerList[i].Position = "C"
-        if(s[idx:idx+12] == "left defense"):
-            ActivePlayerList[i].Position = "LD"
-        if(s[idx:idx+13] == "right defense"):
-            ActivePlayerList[i].Position = "RD"
-        if(s[idx:idx+11] == "left winger"):
-            ActivePlayerList[i].Position = "LW"
-        if(s[idx:idx+12] == "right winger"):
-            ActivePlayerList[i].Position = "RW"
-        if(s[idx:idx+10] == "goaltender"):
-            ActivePlayerList[i].Position = "G"
 
 
     print("     " + str(int((i+1)*100/len(ActivePlayerList))) + "% complete")

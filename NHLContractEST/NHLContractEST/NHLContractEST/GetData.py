@@ -4,6 +4,36 @@ import pandas as pd
 import urllib
 from Util import *
 
+class IndividualSeasonStats:
+    def __init__(self, Year):
+        self.Year = Year
+    Team = ""
+    RegularGP = 0
+    RegularGoals = 0
+    RegularAssists = 0
+    RegularPlusMinus = 0
+    RegularPIM = 0
+    RegularEVTOI = 0
+    RegularEVG = 0
+    RegularixG = 0.0
+    RegularxG60 = 0.0
+    RegularRelxG60 = 0.0
+    RegularC60 = 0.0
+    RegularRelC60 = 0.0
+    PlayoffGP = 0
+    PlayoffGoals = 0
+    PlayoffAssists = 0
+    PlayoffPlusMinus = 0
+    PlayoffPIM = 0
+    PlayoffEVTOI = 0
+    PlayoffEVG = 0
+    PlayoffixG = 0.0
+    PlayoffxG60 = 0.0
+    PlayoffRelxG60 = 0.0
+    PlayoffC60 = 0.0
+    PlayoffRelC60 = 0.0
+
+
 class Player:
     def __init__(self, Name):
         self.Name = Name
@@ -13,7 +43,20 @@ class Player:
     ContractDates = []
     ContractAAV = []
     ContractLength = []
-    TeamHistory = []
+    StatHistory = []
+
+# Note: Might need to add old team e.g. Atlanta Trashers to this list
+TeamList = ["Anaheim Duck", "Arizona Coyotes", "Boston Bruins",
+            "Buffalo Sabres", "Calgary Flame", "Carolina Hurricanes",
+            "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets",
+            "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers",
+            "Florida Panthers", "Los Angeles Kings", "Minnesota Wild",
+            "Montreal Canadiens", "Nashville Predators", "New Jersey Devils",
+            "New York Islanders", "New York Rangers", "Ottawa Senators", 
+            "Philadelphia Flyers", "Phoenix Coyotes", "Pittsburgh Penguins",
+            "St. Louis Blues", "San Jose Sharks", "Tampa Bay Lighting",
+            "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights",
+            "Washington Capitals", "Winnipeg Jets"]
 
 
 # This function will load all of the required input features from Capfriendly
@@ -70,6 +113,7 @@ def GetStatsFromCapFriendly():
         yearList = []
         aavList = []
         lengthList = []
+        statsList = []
         numContracts = 0;
 
         # Get contract info. First will be current contract. Last will be stats. Go from 1 to last - 1.
@@ -133,6 +177,52 @@ def GetStatsFromCapFriendly():
         ActivePlayerList[i].ContractAAV = aavList
         ActivePlayerList[i].ContractLength = lengthList
         ActivePlayerList[i].NumContracts = numContracts
+
+        # The last DF contains all of the individual player stats
+        DF = L[len(L)-1]
+        n = 0
+        for j in range(0, DF["SEASON"].size):
+
+            # Only NHL stats will be stored
+            if(DF["LEAGUE"].iloc[j] == "NHL"):
+               season = DF["SEASON"].iloc[j]
+               statsList.append(IndividualSeasonStats(season))
+               statsList[n].Team = DF["TEAM"].iloc[j]
+
+               # For normal stats, some of these column names will repeat.
+               # Therefore, the column index must be specified instead
+               statsList[n].RegularGP = DF[DF.columns[4]].iloc[j]
+               statsList[n].RegularGoals = DF[DF.columns[5]].iloc[j]
+               statsList[n].RegularAssists = DF[DF.columns[6]].iloc[j]
+               statsList[n].RegularPlusMinus = DF[DF.columns[8]].iloc[j]
+               statsList[n].RegularPIM = DF[DF.columns[9]].iloc[j]
+               statsList[n].PlayoffGP = DF[DF.columns[12]].iloc[j]
+               statsList[n].PlayoffGoals = DF[DF.columns[13]].iloc[j]
+               statsList[n].PlayoffAssists = DF[DF.columns[14]].iloc[j]
+               statsList[n].PlayoffPlusMinus = DF[DF.columns[16]].iloc[j]
+               statsList[n].PlayoffPIM = DF[DF.columns[17]].iloc[j]
+               statsList[n].RegularEVTOI = DF[DF.columns[18]].iloc[j]
+               statsList[n].RegularEVG = DF[DF.columns[19]].iloc[j]
+               statsList[n].RegularixG = DF[DF.columns[20]].iloc[j]
+               statsList[n].RegularxG60 = DF[DF.columns[21]].iloc[j]
+               statsList[n].RegularRelxG60 = DF[DF.columns[22]].iloc[j]
+               statsList[n].RegularC60 = DF[DF.columns[23]].iloc[j]
+               statsList[n].RegularRelC60 = DF[DF.columns[24]].iloc[j]
+               statsList[n].PlayoffEVTOI = DF[DF.columns[26]].iloc[j]
+               statsList[n].PlayoffEVG = DF[DF.columns[27]].iloc[j]
+               statsList[n].PlayoffixG = DF[DF.columns[28]].iloc[j]
+               statsList[n].PlayoffxG60 = DF[DF.columns[29]].iloc[j]
+               statsList[n].PlayoffRelxG60 = DF[DF.columns[30]].iloc[j]
+               statsList[n].PlayoffC60 = DF[DF.columns[31]].iloc[j]
+               statsList[n].PlayoffRelC60 = DF[DF.columns[32]].iloc[j]
+
+
+               n = n+1
+
+        # Append this to player
+        ActivePlayerList[i].StatHistory = statsList
+
+
 
 
         # Basic info can be found from the player description using the raw html code

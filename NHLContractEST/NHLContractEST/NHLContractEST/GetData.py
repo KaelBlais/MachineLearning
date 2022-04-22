@@ -4,7 +4,7 @@ import pandas as pd
 import urllib
 from Util import *
 
-class IndividualSeasonStats:
+class SkaterSeasonStats:
     def __init__(self, Year):
         self.Year = Year
     Team = ""
@@ -32,6 +32,24 @@ class IndividualSeasonStats:
     PlayoffRelxG60 = 0.0
     PlayoffC60 = 0.0
     PlayoffRelC60 = 0.0
+
+class GoalieSeasonStats:
+    def __init__(self, Year):
+        self.Year = Year
+    Team = ""
+    RegularGP = 0
+    RegularGAA = 0
+    RegularSavePercent = 0
+    RegularGA60 = 0
+    RegularxGA60 = 0
+    RegularGSAx60 = 0
+    PlayoffGP = 0
+    PlayoffGAA = 0
+    PlayoffSavePercent = 0
+    PlayoffGA60 = 0
+    PlayoffxGA60 = 0
+    PlayoffGSAx60 = 0
+
 
 
 class Player:
@@ -101,7 +119,8 @@ def GetStatsFromCapFriendly():
     # Now go through data list and fill out info for each player.
     # This will contain basic info (age, position, etc.) and contract info
     print("     Getting Player Information...")
-    for i in range(0, len(ActivePlayerList)):
+    # for i in range(0, len(ActivePlayerList)):
+    for i in range(0, 1): # Shorten list for now
         print("     " + str(int((i+1)*100/len(ActivePlayerList))) + "% complete", end = '\r')
         name = str(ActivePlayerList[i].Name)
 
@@ -219,14 +238,14 @@ def GetStatsFromCapFriendly():
             # Only NHL stats will be stored.
             if(DF["LEAGUE"].iloc[j] == "NHL"):
                season = DF["SEASON"].iloc[j]
-               statsList.append(IndividualSeasonStats(season))
-               statsList[n].Team = DF["TEAM"].iloc[j]
 
-               # For now, ignore goalies.
                if(ActivePlayerList[i].Position != "G"):
 
                    # For normal stats, some of these column names will repeat.
                    # Therefore, the column index must be specified instead
+                   statsList.append(SkaterSeasonStats(season))
+                   statsList[n].Team = DF["TEAM"].iloc[j]
+
                    statsList[n].RegularGP = DF[DF.columns[4]].iloc[j]
                    statsList[n].RegularGoals = DF[DF.columns[5]].iloc[j]
                    statsList[n].RegularAssists = DF[DF.columns[6]].iloc[j]
@@ -251,6 +270,23 @@ def GetStatsFromCapFriendly():
                    statsList[n].PlayoffRelxG60 = DF[DF.columns[30]].iloc[j]
                    statsList[n].PlayoffC60 = DF[DF.columns[31]].iloc[j]
                    statsList[n].PlayoffRelC60 = DF[DF.columns[32]].iloc[j]
+               else:
+                    # Goalies have seperate stats
+                   statsList.append(GoalieSeasonStats(season))
+                   statsList[n].Team = DF["TEAM"].iloc[j]
+
+                   statsList[n].RegularGP = DF[DF.columns[4]].iloc[j]
+                   statsList[n].RegularGAA = DF[DF.columns[5]].iloc[j]
+                   statsList[n].RegularSavePercent = DF[DF.columns[6]].iloc[j]
+                   statsList[n].PlayoffGP = DF[DF.columns[9]].iloc[j]
+                   statsList[n].PlayoffGAA = DF[DF.columns[10]].iloc[j]
+                   statsList[n].PlayoffSavePercent = DF[DF.columns[11]].iloc[j]
+                   statsList[n].RegularGA60 = DF[DF.columns[12]].iloc[j]
+                   statsList[n].RegularxGA60 = DF[DF.columns[13]].iloc[j]
+                   statsList[n].RegularGSAx60 = DF[DF.columns[14]].iloc[j]
+                   statsList[n].PlayoffGA60 = DF[DF.columns[17]].iloc[j]
+                   statsList[n].PlayoffxGA60 = DF[DF.columns[18]].iloc[j]
+                   statsList[n].PlayoffGSAx60 = DF[DF.columns[19]].iloc[j]
 
 
                n = n+1

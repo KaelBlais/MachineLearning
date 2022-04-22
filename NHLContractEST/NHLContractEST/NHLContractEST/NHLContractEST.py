@@ -7,16 +7,17 @@ from GetData import *
 from Util import *
 
 
-capfriendlyFilename = 'CapfriendlyData.txt'
+capfriendlyFilename = 'CapfriendlyData.json'
 
 ActivePlayerList = GetStatsFromCapFriendly()
 
 # json.dump(ActivePlayerList, open("CapfriendlyData.txt", 'w'))
 
-PrintPlayerList(ActivePlayerList)
+PrintPlayerList(ActivePlayerList[0:10])
 
 
 print("Saving outputs to " + capfriendlyFilename)
+'''
 DumpToFile(ActivePlayerList, capfriendlyFilename)
 
 print("Reading back data from " + capfriendlyFilename)
@@ -25,3 +26,8 @@ if(ActivePlayerList[0:len(ActivePlayerList)] == data[0:len(data)]):
     print("File Data Matches")
 else:
      print("File Data Doesn't Match")
+     '''
+
+WritePlayerListToFile(ActivePlayerList[0:1], capfriendlyFilename)
+
+magic = ReadPlayerListFromFile(capfriendlyFilename)

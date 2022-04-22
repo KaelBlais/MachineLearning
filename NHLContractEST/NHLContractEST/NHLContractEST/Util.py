@@ -1,7 +1,10 @@
 # This file will contain minor utility function to clean up rest of code
 
+from os import waitpid
 import pickle
-
+import json
+from GetData import *
+PlayerListFileMagic = 238476283
 
 # This function will take in a player name and create the proper URL for it
 def FormatURL(name):
@@ -111,20 +114,33 @@ def PrintPlayerList(list):
             print("        Contract Start: " + str(list[i].ContractDates[j]) + "   Length: " + str(list[i].ContractLength[j]) + " AAV:" + str(list[i].ContractAAV[j]))
 
         for j in range (0, len(list[i].StatHistory)):
-            print("    " + str(list[i].StatHistory[j].Year) + " Regular Season: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
-                  str(list[i].StatHistory[j].RegularGP) + ", G = " + str(list[i].StatHistory[j].RegularGoals) \
-                  + ", A = " + str(list[i].StatHistory[j].RegularAssists) + ", +/- = " + str(list[i].StatHistory[j].RegularPlusMinus) \
-                  + ", PIM = " + str(list[i].StatHistory[j].RegularPIM) + ", TOI = " + str(list[i].StatHistory[j].RegularEVTOI) \
-                  + ", EVG = " + str(list[i].StatHistory[j].RegularEVG) + ", ixG = " + str(list[i].StatHistory[j].RegularixG) \
-                  + ", xG+/60 = " + str(list[i].StatHistory[j].RegularxG60) + ", RelxG+/60 = " + str(list[i].StatHistory[j].RegularRelxG60) \
-                  + ", C+60 = " + str(list[i].StatHistory[j].RegularC60) + ", RelC+60 = " + str(list[i].StatHistory[j].RegularRelC60))
-            print("    " + str(list[i].StatHistory[j].Year) + " Playoffs: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
-                  str(list[i].StatHistory[j].PlayoffGP) + ", G = " + str(list[i].StatHistory[j].PlayoffGoals) \
-                  + ", A = " + str(list[i].StatHistory[j].PlayoffAssists) + ", +/- = " + str(list[i].StatHistory[j].PlayoffPlusMinus) \
-                  + ", PIM = " + str(list[i].StatHistory[j].PlayoffPIM) + ", TOI = " + str(list[i].StatHistory[j].PlayoffEVTOI) \
-                  + ", EVG = " + str(list[i].StatHistory[j].PlayoffEVG) + ", ixG = " + str(list[i].StatHistory[j].PlayoffixG) \
-                  + ", xG+/60 = " + str(list[i].StatHistory[j].PlayoffxG60) + ", RelxG+/60 = " + str(list[i].StatHistory[j].PlayoffRelxG60) \
-                  + ", C+60 = " + str(list[i].StatHistory[j].PlayoffC60) + ", RelC+60 = " + str(list[i].StatHistory[j].PlayoffRelC60))
+            if(list[i].Position == 'G'):
+                print("    " + str(list[i].StatHistory[j].Year) + " Regular Season: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
+                      str(list[i].StatHistory[j].RegularGP) + ", GAA = " + str(list[i].StatHistory[j].RegularGAA) \
+                      + ", Sv% = " + str(list[i].StatHistory[j].RegularSavePercent) + ", GA60 = " + str(list[i].StatHistory[j].RegularGA60) \
+                      + ", xGA60 = " + str(list[i].StatHistory[j].RegularxGA60) + ", GSAx60 " + str(list[i].StatHistory[j].RegularGSAx60))
+                print("    " + str(list[i].StatHistory[j].Year) + " Playoffs: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
+                      str(list[i].StatHistory[j].PlayoffGP) + ", GAA = " + str(list[i].StatHistory[j].PlayoffGAA) \
+                      + ", Sv% = " + str(list[i].StatHistory[j].PlayoffSavePercent) + ", GA60 = " + str(list[i].StatHistory[j].PlayoffGA60) \
+                      + ", xGA60 = " + str(list[i].StatHistory[j].PlayoffxGA60) + ", GSAx60 " + str(list[i].StatHistory[j].PlayoffGSAx60))
+            else:
+                print("    " + str(list[i].StatHistory[j].Year) + " Regular Season: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
+                      str(list[i].StatHistory[j].RegularGP) + ", G = " + str(list[i].StatHistory[j].RegularGoals) \
+                      + ", A = " + str(list[i].StatHistory[j].RegularAssists) + ", +/- = " + str(list[i].StatHistory[j].RegularPlusMinus) \
+                      + ", PIM = " + str(list[i].StatHistory[j].RegularPIM) + "\n             TOI = " + str(list[i].StatHistory[j].RegularEVTOI) \
+                      + ", EVG = " + str(list[i].StatHistory[j].RegularEVG) + ", ixG = " + str(list[i].StatHistory[j].RegularixG) \
+                      + ", xG+/60 = " + str(list[i].StatHistory[j].RegularxG60) + ", RelxG+/60 = " + str(list[i].StatHistory[j].RegularRelxG60) \
+                      + ", C+60 = " + str(list[i].StatHistory[j].RegularC60) + ", RelC+60 = " + str(list[i].StatHistory[j].RegularRelC60))
+                print("    " + str(list[i].StatHistory[j].Year) + " Playoffs: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
+                      str(list[i].StatHistory[j].PlayoffGP) + ", G = " + str(list[i].StatHistory[j].PlayoffGoals) \
+                      + ", A = " + str(list[i].StatHistory[j].PlayoffAssists) + ", +/- = " + str(list[i].StatHistory[j].PlayoffPlusMinus) \
+                      + ", PIM = " + str(list[i].StatHistory[j].PlayoffPIM) + "\n             TOI = " + str(list[i].StatHistory[j].PlayoffEVTOI) \
+                      + ", EVG = " + str(list[i].StatHistory[j].PlayoffEVG) + ", ixG = " + str(list[i].StatHistory[j].PlayoffixG) \
+                      + ", xG+/60 = " + str(list[i].StatHistory[j].PlayoffxG60) + ", RelxG+/60 = " + str(list[i].StatHistory[j].PlayoffRelxG60) \
+                      + ", C+60 = " + str(list[i].StatHistory[j].PlayoffC60) + ", RelC+60 = " + str(list[i].StatHistory[j].PlayoffRelC60))
+           
+
+
 
     return 
 
@@ -139,4 +155,39 @@ def ReadFromFile(fileName):
         data = pickle.loads(handle.read())
 
     return data
-     
+
+
+
+
+def WritePlayerListToFile(PlayerList, fileName):
+    with open(fileName, 'w') as f:
+        json_data = {
+            'MagicNum': PlayerListFileMagic,
+            'NumPlayers': len(PlayerList),
+            'PlayerList': PlayerList
+            }
+        json.dump(json_data, f)
+
+def ReadPlayerListFromFile(fileName):
+    with open(fileName, 'r') as f:
+        data = json.load(f)
+        magic = data['MagicNum']
+        listLen = data['NumPlayers']
+        if(magic != PlayerListFileMagic):
+            print("Error: Invalid Player list file specified (magic: " + str(magic) + ")")
+            return -1
+        else:
+            # Read the rest of the file
+
+            print("listLen: " + str(listLen))
+        '''
+        magic = json.loads(f)
+        if(magic != PlayerListFileMagic):
+            print("Error: Invalid Player list file specified (magic: " + str(magic) + ")")
+            return -1
+        else:
+            # Read the rest of the file
+            listLen = json.loads(f)
+
+            print("listLen: " + str(listLen))
+            '''

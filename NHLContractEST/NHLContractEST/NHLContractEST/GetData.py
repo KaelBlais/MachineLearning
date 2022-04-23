@@ -119,8 +119,7 @@ def GetStatsFromCapFriendly():
     # Now go through data list and fill out info for each player.
     # This will contain basic info (age, position, etc.) and contract info
     print("     Getting Player Information...")
-    # for i in range(0, len(ActivePlayerList)):
-    for i in range(0, 1): # Shorten list for now
+    for i in range(0, len(ActivePlayerList)):
         print("     " + str(int((i+1)*100/len(ActivePlayerList))) + "% complete", end = '\r')
         name = str(ActivePlayerList[i].Name)
 

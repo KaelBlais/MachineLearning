@@ -2,32 +2,61 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import sys
 # import json
 from GetData import *
 from Util import *
 
 
-capfriendlyFilename = 'CapfriendlyData.json'
+capfriendlyDefaultFilename = 'CapFriendlyData.txt'
 
-ActivePlayerList = GetStatsFromCapFriendly()
-
-# json.dump(ActivePlayerList, open("CapfriendlyData.txt", 'w'))
-
-PrintPlayerList(ActivePlayerList[0:10])
+c = input('Load player stats from file? (y/n)')
 
 
-print("Saving outputs to " + capfriendlyFilename)
-'''
-DumpToFile(ActivePlayerList, capfriendlyFilename)
+while(c != 'y' and c != 'Y' and c != 'n' and c != 'N'):
+    c = input('Invalid input. Load player stats from file? (y/n)')
 
-print("Reading back data from " + capfriendlyFilename)
-data = ReadFromFile(capfriendlyFilename)
-if(ActivePlayerList[0:len(ActivePlayerList)] == data[0:len(data)]):
-    print("File Data Matches")
-else:
-     print("File Data Doesn't Match")
-     '''
 
-WritePlayerListToFile(ActivePlayerList[0:1], capfriendlyFilename)
+if(c == 'y' or c == 'Y'):
+    fileName = input('WARNING: This will read using pickle I/O, only use files you trust. Enter q to abort. Please enter name of file to read from: ')
+    if(fileName == 'q' or fileName == 'Q'):
+        c = input('Read Aborted. Fetch new data from CapFriendly? (y/n)')
+        while(c != 'y' and c != 'Y' and c != 'n' and c != 'N'):
+            c = input('Invalid Input. Fetch new data from CapFriendly? (y/n)')
+        if(c == 'y' or c == 'Y'):
+            ActivePlayerList = GetStatsFromCapFriendly()
+            c = input('Save results to "CapFriendlyData.txt"? (y/n)')
+            while(c != 'y' and c != 'Y' and c != 'n' and c != 'N'):
+                c = input('Invalid Input. Save results to "CapFriendlyData.txt"? (y/n)')
+            if(c == 'y' or c == 'Y'):
+                print('Saving output to ' + str(capfriendlyDefaultFilename) + '...')
+                DumpToFile(ActivePlayerList, capfriendlyDefaultFilename)
 
-magic = ReadPlayerListFromFile(capfriendlyFilename)
+        elif(c == 'n' or c == 'N'):
+            print('No data available. Aborting...')
+            sys.exit()
+    else:
+        # Filename available
+        ActivePlayerList = ReadFromFile(fileName)
+
+elif(c == 'n' or c == 'N'):
+    c = input('Fetch new data from CapFriendly? (y/n)')
+    while(c != 'y' and c != 'Y' and c != 'n' and c != 'N'):
+        c = input('Invalid Input. Fetch new data from CapFriendly? (y/n)')
+    if(c == 'y' or c == 'Y'):
+        ActivePlayerList = GetStatsFromCapFriendly()
+        c = input('Save results to "CapFriendlyData.txt"? (y/n)')
+        while(c != 'y' and c != 'Y' and c != 'n' and c != 'N'):
+            c = input('Invalid Input. Save results to "CapFriendlyData.txt"? (y/n)')
+        if(c == 'y' or c == 'Y'):
+            print('Saving output to ' + str(capfriendlyDefaultFilename) + '...')
+            DumpToFile(ActivePlayerList, capfriendlyDefaultFilename)
+    elif(c == 'n' or c == 'N'):
+        print('No data available. Aborting...')
+        sys.exit()
+
+
+
+
+# Print first 10 players for debug
+PrintPlayerList(ActivePlayerList[0:5])

@@ -2,9 +2,6 @@
 
 from os import waitpid
 import pickle
-import json
-from GetData import *
-PlayerListFileMagic = 238476283
 
 # This function will take in a player name and create the proper URL for it
 def FormatURL(name):
@@ -145,6 +142,9 @@ def PrintPlayerList(list):
     return 
 
 
+
+# NOTE: Pickle IO is not ideal for safety reasons but since I am just creating my own data file
+# and re-using it, this should be ok. 
 def DumpToFile(data, fileName):
     with open(fileName, 'wb') as handle:
         pickle.dump(data, handle)
@@ -155,39 +155,3 @@ def ReadFromFile(fileName):
         data = pickle.loads(handle.read())
 
     return data
-
-
-
-
-def WritePlayerListToFile(PlayerList, fileName):
-    with open(fileName, 'w') as f:
-        json_data = {
-            'MagicNum': PlayerListFileMagic,
-            'NumPlayers': len(PlayerList),
-            'PlayerList': PlayerList
-            }
-        json.dump(json_data, f)
-
-def ReadPlayerListFromFile(fileName):
-    with open(fileName, 'r') as f:
-        data = json.load(f)
-        magic = data['MagicNum']
-        listLen = data['NumPlayers']
-        if(magic != PlayerListFileMagic):
-            print("Error: Invalid Player list file specified (magic: " + str(magic) + ")")
-            return -1
-        else:
-            # Read the rest of the file
-
-            print("listLen: " + str(listLen))
-        '''
-        magic = json.loads(f)
-        if(magic != PlayerListFileMagic):
-            print("Error: Invalid Player list file specified (magic: " + str(magic) + ")")
-            return -1
-        else:
-            # Read the rest of the file
-            listLen = json.loads(f)
-
-            print("listLen: " + str(listLen))
-            '''

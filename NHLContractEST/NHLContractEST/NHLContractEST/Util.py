@@ -1,6 +1,5 @@
 # This file will contain minor utility function to clean up rest of code
 
-from os import waitpid
 import pickle
 
 # This function will take in a player name and create the proper URL for it
@@ -48,6 +47,8 @@ def FormatURL(name):
 
     name = name.replace(chr(221), "Y")
 
+    name = name.replace(chr(199), "C")
+
 
     name = name.replace(chr(224), "a")
     name = name.replace(chr(225), "a")
@@ -84,18 +85,25 @@ def FormatURL(name):
     name = name.replace(chr(253), "y")
     name = name.replace(chr(255), "y")
 
-    # Magic special case - These players have different URLs for some reason
-    if(name == "Marc-Andre-Fleury"):
-        name = "marc-andre-fleury1"
+    name = name.replace(chr(231), "c")
 
-    if(name == "Danny-DeKeyser"):
-        name = "danny-dekeyser1"
+    # Special case: Multiple players with the same name
+    # These players have both a normal page and a "1" page
+    # However, the normal page doesn't have the right info
+    # Therefore, force these cases to the "1" or "2" page
+    if(name == "Matt-Murray"):
+        name = "matt-murray1"
 
-    if(name == "Olli-Maatta"):
-        name = "olli-maatta1"
+    if(name == "Eric-Robinson"):
+        name = "eric-robinson1"
 
-    if(name == "Trevor-van-Riemsdyk"):
-        name = "trevor-van-riemsdyk1"
+    if(name == "Mikko-Lehtonen"):
+        name = "mikko-lehtonen2"
+
+    # This one is just a special case where the url is different 
+    if(name == "Jean-Sebastien-Dea"):
+        name = "jeansebastien-dea"
+
 
     return name
 

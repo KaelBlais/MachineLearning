@@ -78,7 +78,7 @@ TeamList = ["Anaheim Duck", "Arizona Coyotes", "Boston Bruins",
 
 
 # This function will load all of the required input features from Capfriendly
-def GetStatsFromCapFriendly():
+def GetPlayerStatsFromCapFriendly():
 
 
     print("Getting stats from CapFriendly...")
@@ -86,7 +86,7 @@ def GetStatsFromCapFriendly():
     ActivePlayerList = []
     
     # Import player data. There are 32 pages of active players in Capfriendly
-    numPages = 1;
+    numPages = 32;
     print("     Getting active player names...")
     for i in range (0, numPages):
         print("     " + str(int((i+1)*100/numPages)) + "% complete", end = '\r')
@@ -119,22 +119,41 @@ def GetStatsFromCapFriendly():
     # Now go through data list and fill out info for each player.
     # This will contain basic info (age, position, etc.) and contract info
     print("     Getting Player Information...")
-    for i in range(0, len(ActivePlayerList)):
+    numPlayers = len(ActivePlayerList) - 1 # 1 Player is invalid (deceased) and will be removed
+    for i in range(0, numPlayers):
         print("     " + str(int((i+1)*100/len(ActivePlayerList))) + "% complete", end = '\r')
         name = str(ActivePlayerList[i].Name)
 
         url = "https://www.capfriendly.com/players/" + FormatURL(name)
 
 
+        # Try the link. If it doesn't work, try appending "1" to name.
+        # Some player pages have this for some reason.
+        try:
+            L = pd.read_html(url)
+        except: 
+            # print("Invalid url: " + url)
+            url = url + "1"
+            L = pd.read_html(url)
+
 
         # Basic info can be found from the player description using the raw html code
         # Each player description contains a blob of text in the same format. 
         # This blob will contain information
         data = urllib.request.urlopen(url).read(10000000)
+
+
         s = str(data)
 
-        # Firt spot is the age of the player. 
+        # First spot is the age of the player. 
         idx = s.find(" year old ");
+        if(idx == -1):
+            # Couldn't find the string. This player has a different format (e.g. players who passed away)
+            # This is extremely rare. This player will simply be removed from the list.
+            del(ActivePlayerList[i])
+            i = i - 1;
+            continue
+
         # Age comes right before this. This is always 2 digits. 
         sAge = s[idx-2:idx]
         ActivePlayerList[i].Age = int(sAge)

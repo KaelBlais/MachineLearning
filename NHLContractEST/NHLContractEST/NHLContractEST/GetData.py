@@ -77,7 +77,7 @@ TeamList = ["Anaheim Duck", "Arizona Coyotes", "Boston Bruins",
             "Washington Capitals", "Winnipeg Jets"]
 
 
-# This function will load all of the required input features from Capfriendly
+# This function will load all of the required player stats from CapFriendly
 def GetPlayerStatsFromCapFriendly():
 
 
@@ -99,8 +99,6 @@ def GetPlayerStatsFromCapFriendly():
         # Find number of players in list
         n = DF["PLAYER"].size
 
-        # print("Length of Data: " + str(n))
-
         for j in range (0, n):
             s = (DF["PLAYER"].iloc[j])
             # First trim everything before name
@@ -117,10 +115,11 @@ def GetPlayerStatsFromCapFriendly():
 
     
     # Now go through data list and fill out info for each player.
-    # This will contain basic info (age, position, etc.) and contract info
+    # This will contain basic info (age, position, etc.), season stats and contract info
     print("     Getting Player Information...")
-    numPlayers = len(ActivePlayerList) - 1 # 1 Player is invalid (deceased) and will be removed
-    for i in range(0, numPlayers):
+    numPlayers = len(ActivePlayerList)
+    i = 0
+    while(i < numPlayers):
         print("     " + str(int((i+1)*100/len(ActivePlayerList))) + "% complete", end = '\r')
         name = str(ActivePlayerList[i].Name)
 
@@ -151,7 +150,8 @@ def GetPlayerStatsFromCapFriendly():
             # Couldn't find the string. This player has a different format (e.g. players who passed away)
             # This is extremely rare. This player will simply be removed from the list.
             del(ActivePlayerList[i])
-            i = i - 1;
+            i = i - 1
+            numPlayers = numPlayers - 1
             continue
 
         # Age comes right before this. This is always 2 digits. 
@@ -264,53 +264,192 @@ def GetPlayerStatsFromCapFriendly():
                    statsList.append(SkaterSeasonStats(season))
                    statsList[n].Team = DF["TEAM"].iloc[j]
 
-                   statsList[n].RegularGP = DF[DF.columns[4]].iloc[j]
-                   statsList[n].RegularGoals = DF[DF.columns[5]].iloc[j]
-                   statsList[n].RegularAssists = DF[DF.columns[6]].iloc[j]
-                   statsList[n].RegularPlusMinus = DF[DF.columns[8]].iloc[j]
-                   statsList[n].RegularPIM = DF[DF.columns[9]].iloc[j]
-                   statsList[n].PlayoffGP = DF[DF.columns[12]].iloc[j]
-                   statsList[n].PlayoffGoals = DF[DF.columns[13]].iloc[j]
-                   statsList[n].PlayoffAssists = DF[DF.columns[14]].iloc[j]
-                   statsList[n].PlayoffPlusMinus = DF[DF.columns[16]].iloc[j]
-                   statsList[n].PlayoffPIM = DF[DF.columns[17]].iloc[j]
+                   # Some stats will have a '-' to represent missing data. This will be treated as NaN.
+                   if(DF[DF.columns[4]].iloc[j] == '-'):
+                       statsList[n].RegularGP = float("NaN")
+                   else:
+                       statsList[n].RegularGP = float(DF[DF.columns[4]].iloc[j])
+
+                   if(DF[DF.columns[5]].iloc[j] == '-'):
+                       statsList[n].RegularGoals = float("NaN")
+                   else:
+                       statsList[n].RegularGoals = float(DF[DF.columns[5]].iloc[j])
+
+                   if(DF[DF.columns[6]].iloc[j] == '-'):
+                       statsList[n].RegularAssists = float("NaN")
+                   else:
+                       statsList[n].RegularAssists = float(DF[DF.columns[6]].iloc[j])
+
+                   if(DF[DF.columns[8]].iloc[j] == '-'):
+                       statsList[n].RegularPlusMinus = float("NaN")
+                   else:
+                       statsList[n].RegularPlusMinus = float(DF[DF.columns[8]].iloc[j])
+
+                   if(DF[DF.columns[9]].iloc[j] == '-'):
+                       statsList[n].RegularPIM = float("NaN")
+                   else:
+                       statsList[n].RegularPIM = float(DF[DF.columns[9]].iloc[j])
+
+                   if(DF[DF.columns[12]].iloc[j] == '-'):
+                       statsList[n].PlayoffGP = float("NaN")
+                   else:
+                       statsList[n].PlayoffGP = float(DF[DF.columns[12]].iloc[j])
+
+                   if(DF[DF.columns[13]].iloc[j] == '-'):
+                       statsList[n].PlayoffGoals = float("NaN")
+                   else:
+                       statsList[n].PlayoffGoals = float(DF[DF.columns[13]].iloc[j])
+
+                   if(DF[DF.columns[14]].iloc[j] == '-'):
+                       statsList[n].PlayoffAssists = float("NaN")
+                   else:
+                       statsList[n].PlayoffAssists = float(DF[DF.columns[14]].iloc[j])
+
+                   if(DF[DF.columns[16]].iloc[j] == '-'):
+                       statsList[n].PlayoffPlusMinus = float("NaN")
+                   else:
+                       statsList[n].PlayoffPlusMinus = float(DF[DF.columns[16]].iloc[j])
+
+                   if(DF[DF.columns[17]].iloc[j] == '-'):
+                       statsList[n].PlayoffPIM = float("NaN")
+                   else:
+                       statsList[n].PlayoffPIM = float(DF[DF.columns[17]].iloc[j])
+
+                
                    statsList[n].RegularEVTOI = DF[DF.columns[18]].iloc[j]
-                   statsList[n].RegularEVG = DF[DF.columns[19]].iloc[j]
-                   statsList[n].RegularixG = DF[DF.columns[20]].iloc[j]
-                   statsList[n].RegularxG60 = DF[DF.columns[21]].iloc[j]
-                   statsList[n].RegularRelxG60 = DF[DF.columns[22]].iloc[j]
-                   statsList[n].RegularC60 = DF[DF.columns[23]].iloc[j]
-                   statsList[n].RegularRelC60 = DF[DF.columns[24]].iloc[j]
+
+                   if(DF[DF.columns[19]].iloc[j] == '-'):
+                       statsList[n].RegularEVG = float("NaN")
+                   else:
+                       statsList[n].RegularEVG = float(DF[DF.columns[19]].iloc[j])
+
+                   if(DF[DF.columns[20]].iloc[j] == '-'):
+                       statsList[n].RegularixG = float("NaN")
+                   else:
+                       statsList[n].RegularixG = float(DF[DF.columns[20]].iloc[j])
+
+                   if(DF[DF.columns[21]].iloc[j] == '-'):
+                       statsList[n].RegularxG60 = float("NaN")
+                   else:
+                       statsList[n].RegularxG60 = float(DF[DF.columns[21]].iloc[j])
+
+                   if(DF[DF.columns[22]].iloc[j] == '-'):
+                       statsList[n].RegularRelxG60 = float("NaN")
+                   else:
+                       statsList[n].RegularRelxG60 = float(DF[DF.columns[22]].iloc[j])
+
+                   if(DF[DF.columns[23]].iloc[j] == '-'):
+                       statsList[n].RegularC60 = float("NaN")
+                   else:
+                       statsList[n].RegularC60 = float(DF[DF.columns[23]].iloc[j])
+
+                   if(DF[DF.columns[24]].iloc[j] == '-'):
+                       statsList[n].RegularRelC60 = float("NaN")
+                   else:
+                       statsList[n].RegularRelC60 = float(DF[DF.columns[24]].iloc[j])
+
                    statsList[n].PlayoffEVTOI = DF[DF.columns[26]].iloc[j]
-                   statsList[n].PlayoffEVG = DF[DF.columns[27]].iloc[j]
-                   statsList[n].PlayoffixG = DF[DF.columns[28]].iloc[j]
-                   statsList[n].PlayoffxG60 = DF[DF.columns[29]].iloc[j]
-                   statsList[n].PlayoffRelxG60 = DF[DF.columns[30]].iloc[j]
-                   statsList[n].PlayoffC60 = DF[DF.columns[31]].iloc[j]
-                   statsList[n].PlayoffRelC60 = DF[DF.columns[32]].iloc[j]
+
+                   if(DF[DF.columns[27]].iloc[j] == '-'):
+                       statsList[n].PlayoffEVG = float("NaN")
+                   else:
+                       statsList[n].PlayoffEVG = float(DF[DF.columns[27]].iloc[j])
+
+                   if(DF[DF.columns[28]].iloc[j] == '-'):
+                       statsList[n].PlayoffixG = float("NaN")
+                   else:
+                       statsList[n].PlayoffixG = float(DF[DF.columns[28]].iloc[j])
+
+                   if(DF[DF.columns[29]].iloc[j] == '-'):
+                       statsList[n].PlayoffxG60 = float("NaN")
+                   else:
+                       statsList[n].PlayoffxG60 = float(DF[DF.columns[29]].iloc[j])
+
+                   if(DF[DF.columns[30]].iloc[j] == '-'):
+                       statsList[n].PlayoffRelxG60 = float("NaN")
+                   else:
+                       statsList[n].PlayoffRelxG60 = float(DF[DF.columns[30]].iloc[j])
+
+                   if(DF[DF.columns[31]].iloc[j] == '-'):
+                       statsList[n].PlayoffC60 = float("NaN")
+                   else:
+                       statsList[n].PlayoffC60 = float(DF[DF.columns[31]].iloc[j])
+
+                   if(DF[DF.columns[32]].iloc[j] == '-'):
+                       statsList[n].PlayoffRelC60 = float("NaN")
+                   else:
+                       statsList[n].PlayoffRelC60 = float(DF[DF.columns[32]].iloc[j])
                else:
                     # Goalies have seperate stats
                    statsList.append(GoalieSeasonStats(season))
                    statsList[n].Team = DF["TEAM"].iloc[j]
 
-                   statsList[n].RegularGP = DF[DF.columns[4]].iloc[j]
-                   statsList[n].RegularGAA = DF[DF.columns[5]].iloc[j]
-                   statsList[n].RegularSavePercent = DF[DF.columns[6]].iloc[j]
-                   statsList[n].PlayoffGP = DF[DF.columns[9]].iloc[j]
-                   statsList[n].PlayoffGAA = DF[DF.columns[10]].iloc[j]
-                   statsList[n].PlayoffSavePercent = DF[DF.columns[11]].iloc[j]
-                   statsList[n].RegularGA60 = DF[DF.columns[12]].iloc[j]
-                   statsList[n].RegularxGA60 = DF[DF.columns[13]].iloc[j]
-                   statsList[n].RegularGSAx60 = DF[DF.columns[14]].iloc[j]
-                   statsList[n].PlayoffGA60 = DF[DF.columns[17]].iloc[j]
-                   statsList[n].PlayoffxGA60 = DF[DF.columns[18]].iloc[j]
-                   statsList[n].PlayoffGSAx60 = DF[DF.columns[19]].iloc[j]
+                   if(DF[DF.columns[4]].iloc[j] == '-'):
+                       statsList[n].RegularGP = float("NaN")
+                   else:
+                       statsList[n].RegularGP = float(DF[DF.columns[4]].iloc[j])
+
+                   if(DF[DF.columns[5]].iloc[j] == '-'):
+                       statsList[n].RegularGAA = float("NaN")
+                   else:
+                       statsList[n].RegularGAA = float(DF[DF.columns[5]].iloc[j])
+
+                   if(DF[DF.columns[6]].iloc[j] == '-'):
+                       statsList[n].RegularSavePercent = float("NaN")
+                   else:
+                       statsList[n].RegularSavePercent = float(DF[DF.columns[6]].iloc[j])
+
+                   if(DF[DF.columns[9]].iloc[j] == '-'):
+                       statsList[n].PlayoffGP = float("NaN")
+                   else:
+                       statsList[n].PlayoffGP = float(DF[DF.columns[9]].iloc[j])
+
+                   if(DF[DF.columns[10]].iloc[j] == '-'):
+                       statsList[n].PlayoffGAA = float("NaN")
+                   else:
+                       statsList[n].PlayoffGAA = float(DF[DF.columns[10]].iloc[j])
+
+                   if(DF[DF.columns[11]].iloc[j] == '-'):
+                       statsList[n].PlayoffSavePercent = float("NaN")
+                   else:
+                       statsList[n].PlayoffSavePercent = float(DF[DF.columns[11]].iloc[j])
+
+                   if(DF[DF.columns[12]].iloc[j] == '-'):
+                       statsList[n].RegularGA60 = float("NaN")
+                   else:
+                       statsList[n].RegularGA60 = float(DF[DF.columns[12]].iloc[j])
+
+                   if(DF[DF.columns[13]].iloc[j] == '-'):
+                       statsList[n].RegularxGA60 = float("NaN")
+                   else:
+                       statsList[n].RegularxGA60 = float(DF[DF.columns[13]].iloc[j])
+
+                   if(DF[DF.columns[14]].iloc[j] == '-'):
+                       statsList[n].RegularGSAx60 = float("NaN")
+                   else:
+                       statsList[n].RegularGSAx60 = float(DF[DF.columns[14]].iloc[j])
+
+                   if(DF[DF.columns[17]].iloc[j] == '-'):
+                       statsList[n].PlayoffGA60 = float("NaN")
+                   else:
+                       statsList[n].PlayoffGA60 = float(DF[DF.columns[17]].iloc[j])
+
+                   if(DF[DF.columns[18]].iloc[j] == '-'):
+                       statsList[n].PlayoffxGA60 = float("NaN")
+                   else:
+                       statsList[n].PlayoffxGA60 = float(DF[DF.columns[18]].iloc[j])
+
+                   if(DF[DF.columns[19]].iloc[j] == '-'):
+                       statsList[n].PlayoffGSAx60 = float("NaN")
+                   else:
+                       statsList[n].PlayoffGSAx60 = float(DF[DF.columns[19]].iloc[j])
 
 
                n = n+1
 
         # Append this to player
         ActivePlayerList[i].StatHistory = statsList
+        i = i + 1;
 
 
 
@@ -318,7 +457,7 @@ def GetPlayerStatsFromCapFriendly():
 
     print("     " + str(int((i+1)*100/len(ActivePlayerList))) + "% complete")
 
-    print("Done retrieving stats from capfriendly.")
+    print("Done retrieving stats from CapFriendly.")
 
     
 

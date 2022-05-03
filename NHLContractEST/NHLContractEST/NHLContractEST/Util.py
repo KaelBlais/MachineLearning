@@ -108,41 +108,40 @@ def FormatURL(name):
     return name
 
 # This function will print all player list info to the console
-def PrintPlayerList(list):
-    print("Player List: \n")
+def PrintPlayerInfo(Player):
 
-    for i in range(0, len(list)):
-        print("Player " + str(i) + ": " + list[i].Name)
-        print("    Age: " + str(list[i].Age) + "   Position: " + list[i].Position)
+    print("Player " + str(i) + ": " + Player.Name)
+    print("    Age: " + str(Player.Age) + "   Position: " + Player.Position)
 
-        for j in range(0, list[i].NumContracts):
-            print("        Contract Start: " + str(list[i].ContractDates[j]) + "   Length: " + str(list[i].ContractLength[j]) + " AAV:" + str(list[i].ContractAAV[j]))
+    for j in range(0, Player.NumContracts):
+        print("\nContract Start: " + str(Player.ContractDates[j]) + "   Length: " + str(Player.ContractLength[j]) + " AAV:" + str(Player.ContractAAV[j]))
 
-        for j in range (0, len(list[i].StatHistory)):
-            if(list[i].Position == 'G'):
-                print("    " + str(list[i].StatHistory[j].Year) + " Regular Season: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
-                      str(list[i].StatHistory[j].RegularGP) + ", GAA = " + str(list[i].StatHistory[j].RegularGAA) \
-                      + ", Sv% = " + str(list[i].StatHistory[j].RegularSavePercent) + ", GA60 = " + str(list[i].StatHistory[j].RegularGA60) \
-                      + ", xGA60 = " + str(list[i].StatHistory[j].RegularxGA60) + ", GSAx60 " + str(list[i].StatHistory[j].RegularGSAx60))
-                print("    " + str(list[i].StatHistory[j].Year) + " Playoffs: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
-                      str(list[i].StatHistory[j].PlayoffGP) + ", GAA = " + str(list[i].StatHistory[j].PlayoffGAA) \
-                      + ", Sv% = " + str(list[i].StatHistory[j].PlayoffSavePercent) + ", GA60 = " + str(list[i].StatHistory[j].PlayoffGA60) \
-                      + ", xGA60 = " + str(list[i].StatHistory[j].PlayoffxGA60) + ", GSAx60 " + str(list[i].StatHistory[j].PlayoffGSAx60))
-            else:
-                print("    " + str(list[i].StatHistory[j].Year) + " Regular Season: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
-                      str(list[i].StatHistory[j].RegularGP) + ", G = " + str(list[i].StatHistory[j].RegularGoals) \
-                      + ", A = " + str(list[i].StatHistory[j].RegularAssists) + ", +/- = " + str(list[i].StatHistory[j].RegularPlusMinus) \
-                      + ", PIM = " + str(list[i].StatHistory[j].RegularPIM) + "\n             TOI = " + str(list[i].StatHistory[j].RegularEVTOI) \
-                      + ", EVG = " + str(list[i].StatHistory[j].RegularEVG) + ", ixG = " + str(list[i].StatHistory[j].RegularixG) \
-                      + ", xG+/60 = " + str(list[i].StatHistory[j].RegularxG60) + ", RelxG+/60 = " + str(list[i].StatHistory[j].RegularRelxG60) \
-                      + ", C+60 = " + str(list[i].StatHistory[j].RegularC60) + ", RelC+60 = " + str(list[i].StatHistory[j].RegularRelC60))
-                print("    " + str(list[i].StatHistory[j].Year) + " Playoffs: Team = " + list[i].StatHistory[j].Team + ", GP = " + \
-                      str(list[i].StatHistory[j].PlayoffGP) + ", G = " + str(list[i].StatHistory[j].PlayoffGoals) \
-                      + ", A = " + str(list[i].StatHistory[j].PlayoffAssists) + ", +/- = " + str(list[i].StatHistory[j].PlayoffPlusMinus) \
-                      + ", PIM = " + str(list[i].StatHistory[j].PlayoffPIM) + "\n             TOI = " + str(list[i].StatHistory[j].PlayoffEVTOI) \
-                      + ", EVG = " + str(list[i].StatHistory[j].PlayoffEVG) + ", ixG = " + str(list[i].StatHistory[j].PlayoffixG) \
-                      + ", xG+/60 = " + str(list[i].StatHistory[j].PlayoffxG60) + ", RelxG+/60 = " + str(list[i].StatHistory[j].PlayoffRelxG60) \
-                      + ", C+60 = " + str(list[i].StatHistory[j].PlayoffC60) + ", RelC+60 = " + str(list[i].StatHistory[j].PlayoffRelC60))
+        print("\nStatistics: ")
+    for j in range (0, len(Player.StatHistory)):
+        if(Player.Position == 'G'):
+            print("    " + str(Player.StatHistory[j].Year) + " Regular Season: Team = " + Player.StatHistory[j].Team + ", GP = " + \
+                    str(Player.StatHistory[j].RegularGP) + ", GAA = " + str(Player.StatHistory[j].RegularGAA) \
+                    + ", Sv% = " + str(Player.StatHistory[j].RegularSavePercent) + ", GA60 = " + str(Player.StatHistory[j].RegularGA60) \
+                    + ", xGA60 = " + str(Player.StatHistory[j].RegularxGA60) + ", GSAx60 " + str(Player.StatHistory[j].RegularGSAx60))
+            print("    " + str(Player.StatHistory[j].Year) + " Playoffs: Team = " + Player.StatHistory[j].Team + ", GP = " + \
+                    str(Player.StatHistory[j].PlayoffGP) + ", GAA = " + str(Player.StatHistory[j].PlayoffGAA) \
+                    + ", Sv% = " + str(Player.StatHistory[j].PlayoffSavePercent) + ", GA60 = " + str(Player.StatHistory[j].PlayoffGA60) \
+                    + ", xGA60 = " + str(Player.StatHistory[j].PlayoffxGA60) + ", GSAx60 " + str(Player.StatHistory[j].PlayoffGSAx60))
+        else:
+            print("    " + str(Player.StatHistory[j].Year) + " Regular Season: Team = " + Player.StatHistory[j].Team + ", GP = " + \
+                    str(Player.StatHistory[j].RegularGP) + ", G = " + str(Player.StatHistory[j].RegularGoals) \
+                    + ", A = " + str(Player.StatHistory[j].RegularAssists) + ", +/- = " + str(Player.StatHistory[j].RegularPlusMinus) \
+                    + ", PIM = " + str(Player.StatHistory[j].RegularPIM) + "\n             TOI = " + str(Player.StatHistory[j].RegularEVTOI) \
+                    + ", EVG = " + str(Player.StatHistory[j].RegularEVG) + ", ixG = " + str(Player.StatHistory[j].RegularixG) \
+                    + ", xG+/60 = " + str(Player.StatHistory[j].RegularxG60) + ", RelxG+/60 = " + str(Player.StatHistory[j].RegularRelxG60) \
+                    + ", C+60 = " + str(Player.StatHistory[j].RegularC60) + ", RelC+60 = " + str(Player.StatHistory[j].RegularRelC60))
+            print("    " + str(Player.StatHistory[j].Year) + " Playoffs: Team = " + Player.StatHistory[j].Team + ", GP = " + \
+                    str(Player.StatHistory[j].PlayoffGP) + ", G = " + str(Player.StatHistory[j].PlayoffGoals) \
+                    + ", A = " + str(Player.StatHistory[j].PlayoffAssists) + ", +/- = " + str(Player.StatHistory[j].PlayoffPlusMinus) \
+                    + ", PIM = " + str(Player.StatHistory[j].PlayoffPIM) + "\n             TOI = " + str(Player.StatHistory[j].PlayoffEVTOI) \
+                    + ", EVG = " + str(Player.StatHistory[j].PlayoffEVG) + ", ixG = " + str(Player.StatHistory[j].PlayoffixG) \
+                    + ", xG+/60 = " + str(Player.StatHistory[j].PlayoffxG60) + ", RelxG+/60 = " + str(Player.StatHistory[j].PlayoffRelxG60) \
+                    + ", C+60 = " + str(Player.StatHistory[j].PlayoffC60) + ", RelC+60 = " + str(Player.StatHistory[j].PlayoffRelC60))
            
 
 

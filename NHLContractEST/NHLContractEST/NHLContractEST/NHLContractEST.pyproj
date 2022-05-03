@@ -22,6 +22,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GetData.py" />
+    <Compile Include="UI.py" />
     <Compile Include="Util.py" />
     <Compile Include="NHLContractEST.py" />
   </ItemGroup>

@@ -110,13 +110,13 @@ def FormatURL(name):
 # This function will print all player list info to the console
 def PrintPlayerInfo(Player):
 
-    print("Player " + str(i) + ": " + Player.Name)
+    print("Player Name: " + Player.Name)
     print("    Age: " + str(Player.Age) + "   Position: " + Player.Position)
 
     for j in range(0, Player.NumContracts):
         print("\nContract Start: " + str(Player.ContractDates[j]) + "   Length: " + str(Player.ContractLength[j]) + " AAV:" + str(Player.ContractAAV[j]))
 
-        print("\nStatistics: ")
+    print("\nStatistics: ")
     for j in range (0, len(Player.StatHistory)):
         if(Player.Position == 'G'):
             print("    " + str(Player.StatHistory[j].Year) + " Regular Season: Team = " + Player.StatHistory[j].Team + ", GP = " + \
@@ -142,7 +142,7 @@ def PrintPlayerInfo(Player):
                     + ", EVG = " + str(Player.StatHistory[j].PlayoffEVG) + ", ixG = " + str(Player.StatHistory[j].PlayoffixG) \
                     + ", xG+/60 = " + str(Player.StatHistory[j].PlayoffxG60) + ", RelxG+/60 = " + str(Player.StatHistory[j].PlayoffRelxG60) \
                     + ", C+60 = " + str(Player.StatHistory[j].PlayoffC60) + ", RelC+60 = " + str(Player.StatHistory[j].PlayoffRelC60))
-           
+        print("\n")   
 
 
 

@@ -13,4 +13,4 @@ ActivePlayerList = GetInputsUI()
 
 
 # Print first 10 players for debug
-PrintPlayerList(ActivePlayerList[0:5])
+PrintPlayerInfo(ActivePlayerList[300])

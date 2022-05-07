@@ -13,8 +13,9 @@ def GetInputsUI(LoadDefaults = False):
     # If LoadDefaults is on, UI will be bypassed and default files will be read
     if(LoadDefaults == True):
         ActivePlayerList = ReadFromFile(playerStatsDefaultFilename)
+        SalaryCapTable = ReadFromFile(salaryCapDefaultFilename)
 
-        return ActivePlayerList
+        return ActivePlayerList, SalaryCapTable
         
 
     c = input('Load player stats from file? (y/n)')

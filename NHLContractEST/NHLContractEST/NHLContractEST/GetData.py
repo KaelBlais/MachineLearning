@@ -2,6 +2,7 @@
 
 import pandas as pd
 import urllib
+import numpy as np
 from Util import *
 
 class SkaterSeasonStats:
@@ -62,6 +63,7 @@ class Player:
     ContractAAV = []
     ContractLength = []
     StatHistory = []
+
 
 # Note: Might need to add old team e.g. Atlanta Trashers to this list
 TeamList = ["Anaheim Duck", "Arizona Coyotes", "Boston Bruins",
@@ -462,3 +464,51 @@ def GetPlayerStatsFromCapFriendly():
     
 
     return ActivePlayerList
+
+
+
+
+def GetSalaryCapFromCapFriendly():
+   print("Getting data from CapFriendly...")
+
+   SalaryCapTable = []
+
+   L = pd.read_html("https://www.capfriendly.com/salary-cap")
+
+   # Convert list to data frame. This list only has one dataframe. 
+   DF = L[0]
+
+   n = len(DF["SEASON"])
+
+   Seasons = np.zeros(n, dtype = int)
+   UpperLimits = np.zeros(n, dtype = int)
+   MinSalary = np.zeros(n, dtype = int)
+
+   for i in range(n):
+
+       # Only grab 1st year of seasons (4 first characters)
+       s = DF["SEASON"].iloc[i]
+       s = s[0:4]
+       Seasons[i] = int(s)
+
+       # Remove $ and , from dollar value
+       s = DF["UPPER LIMIT"].iloc[i]
+       s = s.replace("$", "")
+       s = s.replace(",", "")
+       UpperLimits[i] = int(s)
+
+       # Remove $ and , from dollar value
+       s = DF["MIN. SALARY"].iloc[i]
+       s = s.replace("$", "")
+       s = s.replace(",", "")
+       MinSalary[i] = int(s)
+
+   print("Done retrieving data from CapFriendly.")
+
+   SalaryCapTable = {
+       "Seasons" : Seasons, 
+       "Upper Cap" : UpperLimits,  
+       "Min Salary" : MinSalary 
+   }
+
+   return SalaryCapTable

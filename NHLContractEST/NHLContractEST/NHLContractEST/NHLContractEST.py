@@ -9,8 +9,12 @@ from Util import *
 from UI import *
 
 
-ActivePlayerList = GetInputsUI()
+ActivePlayerList, SalaryCapTable = GetInputsUI(LoadDefaults = False)
 
 
-# Print first 10 players for debug
-PrintPlayerInfo(ActivePlayerList[300])
+print(SalaryCapTable["Seasons"])
+print(SalaryCapTable["Upper Cap"])
+print(SalaryCapTable["Min Salary"])
+
+# Print random player for debug
+# PrintPlayerInfo(ActivePlayerList[300])

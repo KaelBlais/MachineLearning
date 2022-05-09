@@ -15,10 +15,11 @@ def GetInputsUI(CurrentYear = 2021, LoadDefaults = False):
     if(LoadDefaults == True):
         ActivePlayerList = ReadFromFile(playerStatsDefaultFilename)
         SalaryCapTable = ReadFromFile(salaryCapDefaultFilename)
+        TeamStatsList = ReadFromFile(teamStatsDefaultFilename)
 
         
 
-        return ActivePlayerList, SalaryCapTable
+        return ActivePlayerList, SalaryCapTable, TeamStatsList
         
 
     c = input('Load player stats from file? (y/n)')

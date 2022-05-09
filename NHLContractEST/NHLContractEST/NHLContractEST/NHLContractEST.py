@@ -9,12 +9,14 @@ from Util import *
 from UI import *
 
 
-ActivePlayerList, SalaryCapTable, TeamStatsList = GetInputsUI(LoadDefaults = False)
+ActivePlayerList, SalaryCapTable, TeamStatsList = GetInputsUI(LoadDefaults = True)
 
-
-print(SalaryCapTable["Seasons"])
-print(SalaryCapTable["Upper Cap"])
-print(SalaryCapTable["Min Salary"])
 
 # Print random player for debug
-PrintPlayerInfo(ActivePlayerList[300])
+# PrintPlayerInfo(ActivePlayerList[300])
+
+# Print salary cap value
+# print(SalaryCapTable["Seasons"])
+# print(SalaryCapTable["Upper Cap"])
+# print(SalaryCapTable["Min Salary"])
+

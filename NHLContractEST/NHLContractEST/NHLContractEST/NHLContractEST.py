@@ -9,7 +9,7 @@ from Util import *
 from UI import *
 
 
-ActivePlayerList, SalaryCapTable = GetInputsUI(LoadDefaults = True)
+ActivePlayerList, SalaryCapTable, TeamStatsList = GetInputsUI(LoadDefaults = False)
 
 
 print(SalaryCapTable["Seasons"])

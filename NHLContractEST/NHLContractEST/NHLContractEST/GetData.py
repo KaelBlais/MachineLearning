@@ -65,6 +65,17 @@ class Player:
     StatHistory = []
 
 
+class TeamSeasonStats:
+    def __init__(self, year):
+        self.year = year
+    TeamList = []
+    GPList = []
+    WinList = []
+    LossList = []
+    OTLossList = []
+    GFList = []
+    GAList = []
+
 # Note: Might need to add old team e.g. Atlanta Trashers to this list
 TeamList = ["Anaheim Duck", "Arizona Coyotes", "Boston Bruins",
             "Buffalo Sabres", "Calgary Flame", "Carolina Hurricanes",
@@ -467,7 +478,7 @@ def GetPlayerStatsFromCapFriendly():
 
 
 
-
+# This function will load all of the required salary cap info history from CapFriendly
 def GetSalaryCapFromCapFriendly():
    print("Getting data from CapFriendly...")
 
@@ -512,3 +523,63 @@ def GetSalaryCapFromCapFriendly():
    }
 
    return SalaryCapTable
+
+
+# This function will load all of the required team performance history from ESPN
+# This requires an input "yearList" which is the list of years that this will fetch
+# Each element in the list should be the starting year i.e. 2021-2022 season is 2021
+def GetTeamStatsFromESPN(yearList):
+
+    print("Getting data from ESPN...")
+
+    TeamStatsList = []
+
+    for i in range(len(yearList)):
+        year = yearList[i]
+        TeamStatsList.append(TeamSeasonStats(year))
+
+        # Note that this url has the later year as reference so year+1 is used
+        url = "https://www.espn.com/nhl/standings/_/season/" + str(year+1) + "/group/league"
+        L = pd.read_html(url)
+
+        # Teams list is first table entry
+        DF = L[0]
+
+        Teams = DF[0]
+
+        TeamList = []
+
+        # Strip unecessary characters from team list
+        for team in Teams:
+            team = team[5:len(team)] # This is playoff clinching info, unecessary
+
+            # Next is team abbreviation. This is all in capital letters
+            # Therefore, look for first non-capital letter and only grab one previous later
+            j = 0
+            while(team[j] < 'a' or team[j] > 'z'):
+                j = j + 1
+
+            team = team[j-1: len(team)]
+            TeamList.append(team)
+
+
+
+
+        TeamStatsList[i].TeamList = TeamList
+
+
+        # All other info is in second table entry
+        DF = L[1]
+
+        TeamStatsList[i].GPList = DF["GP"]
+        TeamStatsList[i].WinList = DF["W"]
+        TeamStatsList[i].LossList = DF["L"]
+        TeamStatsList[i].OTLossList = DF["OTL"]
+        TeamStatsList[i].GFList = DF["GF"]
+        TeamStatsList[i].GAList = DF["GA"]
+
+
+
+    print("Done retrieving data from ESPN.")
+
+    return TeamStatsList

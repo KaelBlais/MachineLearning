@@ -7,7 +7,7 @@ salaryCapDefaultFilename = 'SalaryCap.txt'
 teamStatsDefaultFilename = 'TeamStats.txt'
 
 
-def GetInputsUI(CurrentYear = 2021, LoadDefaults = False):
+def GetInputsUI(CurrentYear, LoadDefaults = False):
 
 
 

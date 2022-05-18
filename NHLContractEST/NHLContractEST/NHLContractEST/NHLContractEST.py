@@ -17,7 +17,7 @@ ActivePlayerList, SalaryCapTable, TeamStatsList = GetInputsUI(CurrentYear, LoadD
 PrintPlayerInfo(ActivePlayerList[300])
 
 
-testContract = CreateContractEntry(ActivePlayerList[300], 2016, SalaryCapTable, TeamStatsList, \
+testContract = CreateContractEntry(ActivePlayerList[46], 2020, SalaryCapTable, TeamStatsList, \
     CurrentYear, 5, 1000000)
 
 

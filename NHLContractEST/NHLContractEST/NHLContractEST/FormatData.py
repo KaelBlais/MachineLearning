@@ -3,6 +3,7 @@
 
 
 from GetData import *
+import math
 
 class ContractEntry:
     def __init__(self, Name, year):
@@ -151,6 +152,226 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
     c.PlayerPosition = Player.Position
     c.NumYears = numYears
     c.Salary = Salary
+
+    # Add season stats. Note that this is only done for skaters right now. Goalies will be handled later
+
+    # First we need to find the right index in the stats table.
+    # Note that player seasons are stored in this format: "20xx-20xx"
+    # The later year will correspond to the contract year for the last regular season
+    StatHistory = Player.StatHistory
+
+    year0Index = len(StatHistory) # This one defaults to end of table
+    year1Index = -1 # Default to invalid value
+    year2Index = -1 # Default to invalid value
+    year3Index = -1 # Default to invalid value
+
+    for i in range (0, len(StatHistory)):
+        try: 
+            seasonYear = int(StatHistory[i].Year[0:4])
+
+            if(seasonYear == year - 1):
+                # This is the last season
+                year1Index = i
+
+            if(seasonYear == year - 2):
+                # This is the 2nd last season
+                year2Index = i
+
+            if(seasonYear == year - 3):
+                # This is the 3rd last season
+                year3Index = i
+
+            if(seasonYear == year):
+                # This is the current season
+                # Note that this might not always be found if the year corresponds to the current year
+                # In that case, this will grab all stats until the end of the table
+                year0Index = i
+
+
+        except: 
+            # Invalid season
+            seasonYear = 0
+
+
+    if(year1Index != -1):
+        for i in range(year1Index, year0Index):
+            # All of these indeces correspond to year 1 stats
+            # Most of the time, this should only be one or no entries. 
+            # However, if a player gets traded halfway through the year, 
+            # This will be multiple entries
+            # For multiple entries, some values will be added (e.g. goals, assists, etc.)
+            # and some will be averaged (e.g. time on ice, goals per 60 etc.)
+
+            # First handle all entries that are simply added
+            if(math.isnan(StatHistory[i].RegularGP) == False):
+               c.Year1RegSeasonGP += StatHistory[i].RegularGP
+
+            if(math.isnan(StatHistory[i].RegularGoals) == False):
+               c.Year1RegSeasonG += StatHistory[i].RegularGoals
+
+            if(math.isnan(StatHistory[i].RegularAssists) == False):
+               c.Year1RegSeasonA += StatHistory[i].RegularAssists
+
+            if(math.isnan(StatHistory[i].RegularPlusMinus) == False):
+               c.Year1RegSeasonPlusMinus += StatHistory[i].RegularPlusMinus
+
+            if(math.isnan(StatHistory[i].RegularPIM) == False):
+               c.Year1RegSeasonPIM += StatHistory[i].RegularPIM
+
+            if(math.isnan(StatHistory[i].RegularEVG) == False):
+               c.Year1RegSeasonEVG += StatHistory[i].RegularEVG
+
+            if(math.isnan(StatHistory[i].RegularixG) == False):
+               c.Year1RegSeasonixG += StatHistory[i].RegularixG
+
+            if(math.isnan(StatHistory[i].PlayoffGP) == False):
+               c.Year11PlayoffSeasonGP += StatHistory[i].PlayoffGP
+
+            if(math.isnan(StatHistory[i].PlayoffGoals) == False):
+               c.Year11PlayoffSeasonG += StatHistory[i].PlayoffGoals
+
+            if(math.isnan(StatHistory[i].PlayoffAssists) == False):
+               c.Year1PlayoffSeasonA += StatHistory[i].PlayoffAssists
+
+            if(math.isnan(StatHistory[i].PlayoffPlusMinus) == False):
+               c.Year1PlayoffSeasonPlusMinus += StatHistory[i].PlayoffPlusMinus
+
+            if(math.isnan(StatHistory[i].PlayoffPIM) == False):
+               c.Year1PlayoffSeasonPIM += StatHistory[i].PlayoffPIM
+
+            if(math.isnan(StatHistory[i].PlayoffEVG) == False):
+               c.Year1PlayoffSeasonEVG += StatHistory[i].PlayoffEVG
+
+            if(math.isnan(StatHistory[i].PlayoffixG) == False):
+               c.Year1PlayoffSeasonixG += StatHistory[i].PlayoffixG
+
+
+    # Do the same thing for the 2nd last year
+    if(year2Index != -1):
+        for i in range(year2Index, year1Index):
+
+            # First handle all entries that are simply added
+            if(math.isnan(StatHistory[i].RegularGP) == False):
+               c.Year2RegSeasonGP += StatHistory[i].RegularGP
+
+            if(math.isnan(StatHistory[i].RegularGoals) == False):
+               c.Year2RegSeasonG += StatHistory[i].RegularGoals
+
+            if(math.isnan(StatHistory[i].RegularAssists) == False):
+               c.Year2RegSeasonA += StatHistory[i].RegularAssists
+
+            if(math.isnan(StatHistory[i].RegularPlusMinus) == False):
+               c.Year2RegSeasonPlusMinus += StatHistory[i].RegularPlusMinus
+
+            if(math.isnan(StatHistory[i].RegularPIM) == False):
+               c.Year2RegSeasonPIM += StatHistory[i].RegularPIM
+
+            if(math.isnan(StatHistory[i].RegularEVG) == False):
+               c.Year2RegSeasonEVG += StatHistory[i].RegularEVG
+
+            if(math.isnan(StatHistory[i].RegularixG) == False):
+               c.Year2RegSeasonixG += StatHistory[i].RegularixG
+
+            if(math.isnan(StatHistory[i].PlayoffGP) == False):
+               c.Year2PlayoffSeasonGP += StatHistory[i].PlayoffGP
+
+            if(math.isnan(StatHistory[i].PlayoffGoals) == False):
+               c.Year2PlayoffSeasonG += StatHistory[i].PlayoffGoals
+
+            if(math.isnan(StatHistory[i].PlayoffAssists) == False):
+               c.Year2PlayoffSeasonA += StatHistory[i].PlayoffAssists
+
+            if(math.isnan(StatHistory[i].PlayoffPlusMinus) == False):
+               c.Year2PlayoffSeasonPlusMinus += StatHistory[i].PlayoffPlusMinus
+
+            if(math.isnan(StatHistory[i].PlayoffPIM) == False):
+               c.Year2PlayoffSeasonPIM += StatHistory[i].PlayoffPIM
+
+            if(math.isnan(StatHistory[i].PlayoffEVG) == False):
+               c.Year2PlayoffSeasonEVG += StatHistory[i].PlayoffEVG
+
+            if(math.isnan(StatHistory[i].PlayoffixG) == False):
+               c.Year2PlayoffSeasonixG += StatHistory[i].PlayoffixG
+
+
+    # Do the same thing for the 3rd last year
+    if(year3Index != -1):
+        for i in range(year3Index, year2Index):
+
+            # First handle all entries that are simply added
+            if(math.isnan(StatHistory[i].RegularGP) == False):
+               c.Year3RegSeasonGP += StatHistory[i].RegularGP
+
+            if(math.isnan(StatHistory[i].RegularGoals) == False):
+               c.Year3RegSeasonG += StatHistory[i].RegularGoals
+
+            if(math.isnan(StatHistory[i].RegularAssists) == False):
+               c.Year3RegSeasonA += StatHistory[i].RegularAssists
+
+            if(math.isnan(StatHistory[i].RegularPlusMinus) == False):
+               c.Year3RegSeasonPlusMinus += StatHistory[i].RegularPlusMinus
+
+            if(math.isnan(StatHistory[i].RegularPIM) == False):
+               c.Year3RegSeasonPIM += StatHistory[i].RegularPIM
+
+            if(math.isnan(StatHistory[i].RegularEVG) == False):
+               c.Year3RegSeasonEVG += StatHistory[i].RegularEVG
+
+            if(math.isnan(StatHistory[i].RegularixG) == False):
+               c.Year3RegSeasonixG += StatHistory[i].RegularixG
+
+            if(math.isnan(StatHistory[i].PlayoffGP) == False):
+               c.Year3PlayoffSeasonGP += StatHistory[i].PlayoffGP
+
+            if(math.isnan(StatHistory[i].PlayoffGoals) == False):
+               c.Year3PlayoffSeasonG += StatHistory[i].PlayoffGoals
+
+            if(math.isnan(StatHistory[i].PlayoffAssists) == False):
+               c.Year3PlayoffSeasonA += StatHistory[i].PlayoffAssists
+
+            if(math.isnan(StatHistory[i].PlayoffPlusMinus) == False):
+               c.Year3PlayoffSeasonPlusMinus += StatHistory[i].PlayoffPlusMinus
+
+            if(math.isnan(StatHistory[i].PlayoffPIM) == False):
+               c.Year3PlayoffSeasonPIM += StatHistory[i].PlayoffPIM
+
+            if(math.isnan(StatHistory[i].PlayoffEVG) == False):
+               c.Year3PlayoffSeasonEVG += StatHistory[i].PlayoffEVG
+
+            if(math.isnan(StatHistory[i].PlayoffixG) == False):
+               c.Year3PlayoffSeasonixG += StatHistory[i].PlayoffixG
+
+
+
+
+    # Stats from last regular season
+    Year1RegSeasonGP = 0
+    Year1RegSeasonG = 0
+    Year1RegSeasonA = 0
+    Year1RegSeasonPlusMinus = 0
+    Year1RegSeasonPIM = 0
+    Year1RegSeasonEVTOI = 0
+    Year1RegSeasonEVG = 0
+    Year1RegSeasonixG = 0
+    Year1RegSeasonxG60 = 0
+    Year1RegSeasonC60 = 0
+    Year1RegSeasonRelC60 = 0
+    Year1RegSeasonA = 0
+
+    # Stats from last playoffs
+    Year11PlayoffSeasonGP = 0
+    Year11PlayoffSeasonG = 0
+    Year1PlayoffSeasonA = 0
+    Year1PlayoffSeasonPlusMinus = 0
+    Year1PlayoffSeasonPIM = 0
+    Year1PlayoffSeasonEVTOI = 0
+    Year1PlayoffSeasonEVG = 0
+    Year1PlayoffSeasonixG = 0
+    Year1PlayoffSeasonxG60 = 0
+    Year1PlayoffSeasonC60 = 0
+    Year1PlayoffSeasonRelC60 = 0
+    Year1PlayoffSeasonA = 0
+
 
 
     return c

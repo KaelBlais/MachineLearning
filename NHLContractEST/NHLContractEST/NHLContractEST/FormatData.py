@@ -32,18 +32,18 @@ class ContractEntry:
     Year1RegSeasonA = 0
 
     # Stats from last playoffs
-    Year11PlayoffSeasonGP = 0
-    Year11PlayoffSeasonG = 0
-    Year1PlayoffSeasonA = 0
-    Year1PlayoffSeasonPlusMinus = 0
-    Year1PlayoffSeasonPIM = 0
-    Year1PlayoffSeasonEVTOI = 0
-    Year1PlayoffSeasonEVG = 0
-    Year1PlayoffSeasonixG = 0
-    Year1PlayoffSeasonxG60 = 0
-    Year1PlayoffSeasonC60 = 0
-    Year1PlayoffSeasonRelC60 = 0
-    Year1PlayoffSeasonA = 0
+    Year1PlayoffsGP = 0
+    Year1PlayoffsG = 0
+    Year1PlayoffsA = 0
+    Year1PlayoffsPlusMinus = 0
+    Year1PlayoffsPIM = 0
+    Year1PlayoffsEVTOI = 0
+    Year1PlayoffsEVG = 0
+    Year1PlayoffsixG = 0
+    Year1PlayoffsxG60 = 0
+    Year1PlayoffsC60 = 0
+    Year1PlayoffsRelC60 = 0
+    Year1PlayoffsA = 0
 
     # Stats from 2nd last regular season
     Year2RegSeasonGP = 0
@@ -60,18 +60,18 @@ class ContractEntry:
     Year2RegSeasonA = 0
 
     # Stats from 2nd last playoffs
-    Year2PlayoffSeasonGP = 0
-    Year2PlayoffSeasonG = 0
-    Year2PlayoffSeasonA = 0
-    Year2PlayoffSeasonPlusMinus = 0
-    Year2PlayoffSeasonPIM = 0
-    Year2PlayoffSeasonEVTOI = 0
-    Year2PlayoffSeasonEVG = 0
-    Year2PlayoffSeasonixG = 0
-    Year2PlayoffSeasonxG60 = 0
-    Year2PlayoffSeasonC60 = 0
-    Year2PlayoffSeasonRelC60 = 0
-    Year2PlayoffSeasonA = 0
+    Year2PlayoffsGP = 0
+    Year2PlayoffsG = 0
+    Year2PlayoffsA = 0
+    Year2PlayoffsPlusMinus = 0
+    Year2PlayoffsPIM = 0
+    Year2PlayoffsEVTOI = 0
+    Year2PlayoffsEVG = 0
+    Year2PlayoffsixG = 0
+    Year2PlayoffsxG60 = 0
+    Year2PlayoffsC60 = 0
+    Year2PlayoffsRelC60 = 0
+    Year2PlayoffsA = 0
 
     # Stats from 3rd last regular season
     Year3RegSeasonGP = 0
@@ -88,18 +88,18 @@ class ContractEntry:
     Year3RegSeasonA = 0
 
     # Stats from 3rd last playoffs
-    Year3PlayoffSeasonGP = 0
-    Year3PlayoffSeasonG = 0
-    Year3PlayoffSeasonA = 0
-    Year3PlayoffSeasonPlusMinus = 0
-    Year3PlayoffSeasonPIM = 0
-    Year3PlayoffSeasonEVTOI = 0
-    Year3PlayoffSeasonEVG = 0
-    Year3PlayoffSeasonixG = 0
-    Year3PlayoffSeasonxG60 = 0
-    Year3PlayoffSeasonC60 = 0
-    Year3PlayoffSeasonRelC60 = 0
-    Year3PlayoffSeasonA = 0
+    Year3PlayoffsGP = 0
+    Year3PlayoffsG = 0
+    Year3PlayoffsA = 0
+    Year3PlayoffsPlusMinus = 0
+    Year3PlayoffsPIM = 0
+    Year3PlayoffsEVTOI = 0
+    Year3PlayoffsEVG = 0
+    Year3PlayoffsixG = 0
+    Year3PlayoffsxG60 = 0
+    Year3PlayoffsC60 = 0
+    Year3PlayoffsRelC60 = 0
+    Year3PlayoffsA = 0
 
     # Salary cap info from last 3 years
     Year1Cap = 0
@@ -225,25 +225,25 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
                c.Year1RegSeasonixG += StatHistory[i].RegularixG
 
             if(math.isnan(StatHistory[i].PlayoffGP) == False):
-               c.Year11PlayoffSeasonGP += StatHistory[i].PlayoffGP
+               c.Year1PlayoffsGP += StatHistory[i].PlayoffGP
 
             if(math.isnan(StatHistory[i].PlayoffGoals) == False):
-               c.Year11PlayoffSeasonG += StatHistory[i].PlayoffGoals
+               c.Year1PlayoffsG += StatHistory[i].PlayoffGoals
 
             if(math.isnan(StatHistory[i].PlayoffAssists) == False):
-               c.Year1PlayoffSeasonA += StatHistory[i].PlayoffAssists
+               c.Year1PlayoffsA += StatHistory[i].PlayoffAssists
 
             if(math.isnan(StatHistory[i].PlayoffPlusMinus) == False):
-               c.Year1PlayoffSeasonPlusMinus += StatHistory[i].PlayoffPlusMinus
+               c.Year1PlayoffsPlusMinus += StatHistory[i].PlayoffPlusMinus
 
             if(math.isnan(StatHistory[i].PlayoffPIM) == False):
-               c.Year1PlayoffSeasonPIM += StatHistory[i].PlayoffPIM
+               c.Year1PlayoffsPIM += StatHistory[i].PlayoffPIM
 
             if(math.isnan(StatHistory[i].PlayoffEVG) == False):
-               c.Year1PlayoffSeasonEVG += StatHistory[i].PlayoffEVG
+               c.Year1PlayoffsEVG += StatHistory[i].PlayoffEVG
 
             if(math.isnan(StatHistory[i].PlayoffixG) == False):
-               c.Year1PlayoffSeasonixG += StatHistory[i].PlayoffixG
+               c.Year1PlayoffsixG += StatHistory[i].PlayoffixG
 
 
     # Do the same thing for the 2nd last year
@@ -273,25 +273,25 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
                c.Year2RegSeasonixG += StatHistory[i].RegularixG
 
             if(math.isnan(StatHistory[i].PlayoffGP) == False):
-               c.Year2PlayoffSeasonGP += StatHistory[i].PlayoffGP
+               c.Year2PlayoffsGP += StatHistory[i].PlayoffGP
 
             if(math.isnan(StatHistory[i].PlayoffGoals) == False):
-               c.Year2PlayoffSeasonG += StatHistory[i].PlayoffGoals
+               c.Year2PlayoffsG += StatHistory[i].PlayoffGoals
 
             if(math.isnan(StatHistory[i].PlayoffAssists) == False):
-               c.Year2PlayoffSeasonA += StatHistory[i].PlayoffAssists
+               c.Year2PlayoffsA += StatHistory[i].PlayoffAssists
 
             if(math.isnan(StatHistory[i].PlayoffPlusMinus) == False):
-               c.Year2PlayoffSeasonPlusMinus += StatHistory[i].PlayoffPlusMinus
+               c.Year2PlayoffsPlusMinus += StatHistory[i].PlayoffPlusMinus
 
             if(math.isnan(StatHistory[i].PlayoffPIM) == False):
-               c.Year2PlayoffSeasonPIM += StatHistory[i].PlayoffPIM
+               c.Year2PlayoffsPIM += StatHistory[i].PlayoffPIM
 
             if(math.isnan(StatHistory[i].PlayoffEVG) == False):
-               c.Year2PlayoffSeasonEVG += StatHistory[i].PlayoffEVG
+               c.Year2PlayoffsEVG += StatHistory[i].PlayoffEVG
 
             if(math.isnan(StatHistory[i].PlayoffixG) == False):
-               c.Year2PlayoffSeasonixG += StatHistory[i].PlayoffixG
+               c.Year2PlayoffsixG += StatHistory[i].PlayoffixG
 
 
     # Do the same thing for the 3rd last year
@@ -321,57 +321,24 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
                c.Year3RegSeasonixG += StatHistory[i].RegularixG
 
             if(math.isnan(StatHistory[i].PlayoffGP) == False):
-               c.Year3PlayoffSeasonGP += StatHistory[i].PlayoffGP
+               c.Year3PlayoffsGP += StatHistory[i].PlayoffGP
 
             if(math.isnan(StatHistory[i].PlayoffGoals) == False):
-               c.Year3PlayoffSeasonG += StatHistory[i].PlayoffGoals
+               c.Year3PlayoffsG += StatHistory[i].PlayoffGoals
 
             if(math.isnan(StatHistory[i].PlayoffAssists) == False):
-               c.Year3PlayoffSeasonA += StatHistory[i].PlayoffAssists
+               c.Year3PlayoffsA += StatHistory[i].PlayoffAssists
 
             if(math.isnan(StatHistory[i].PlayoffPlusMinus) == False):
-               c.Year3PlayoffSeasonPlusMinus += StatHistory[i].PlayoffPlusMinus
+               c.Year3PlayoffsPlusMinus += StatHistory[i].PlayoffPlusMinus
 
             if(math.isnan(StatHistory[i].PlayoffPIM) == False):
-               c.Year3PlayoffSeasonPIM += StatHistory[i].PlayoffPIM
+               c.Year3PlayoffsPIM += StatHistory[i].PlayoffPIM
 
             if(math.isnan(StatHistory[i].PlayoffEVG) == False):
-               c.Year3PlayoffSeasonEVG += StatHistory[i].PlayoffEVG
+               c.Year3PlayoffsEVG += StatHistory[i].PlayoffEVG
 
             if(math.isnan(StatHistory[i].PlayoffixG) == False):
-               c.Year3PlayoffSeasonixG += StatHistory[i].PlayoffixG
-
-
-
-
-    # Stats from last regular season
-    Year1RegSeasonGP = 0
-    Year1RegSeasonG = 0
-    Year1RegSeasonA = 0
-    Year1RegSeasonPlusMinus = 0
-    Year1RegSeasonPIM = 0
-    Year1RegSeasonEVTOI = 0
-    Year1RegSeasonEVG = 0
-    Year1RegSeasonixG = 0
-    Year1RegSeasonxG60 = 0
-    Year1RegSeasonC60 = 0
-    Year1RegSeasonRelC60 = 0
-    Year1RegSeasonA = 0
-
-    # Stats from last playoffs
-    Year11PlayoffSeasonGP = 0
-    Year11PlayoffSeasonG = 0
-    Year1PlayoffSeasonA = 0
-    Year1PlayoffSeasonPlusMinus = 0
-    Year1PlayoffSeasonPIM = 0
-    Year1PlayoffSeasonEVTOI = 0
-    Year1PlayoffSeasonEVG = 0
-    Year1PlayoffSeasonixG = 0
-    Year1PlayoffSeasonxG60 = 0
-    Year1PlayoffSeasonC60 = 0
-    Year1PlayoffSeasonRelC60 = 0
-    Year1PlayoffSeasonA = 0
-
-
+               c.Year3PlayoffsixG += StatHistory[i].PlayoffixG
 
     return c

@@ -27,9 +27,9 @@ class ContractEntry:
     Year1RegSeasonEVG = 0
     Year1RegSeasonixG = 0
     Year1RegSeasonxG60 = 0
+    Year1RegSeasonRelxG60 = 0
     Year1RegSeasonC60 = 0
     Year1RegSeasonRelC60 = 0
-    Year1RegSeasonA = 0
 
     # Stats from last playoffs
     Year1PlayoffsGP = 0
@@ -41,9 +41,9 @@ class ContractEntry:
     Year1PlayoffsEVG = 0
     Year1PlayoffsixG = 0
     Year1PlayoffsxG60 = 0
+    Year1PlayoffsRelxG60 = 0
     Year1PlayoffsC60 = 0
     Year1PlayoffsRelC60 = 0
-    Year1PlayoffsA = 0
 
     # Stats from 2nd last regular season
     Year2RegSeasonGP = 0
@@ -55,9 +55,9 @@ class ContractEntry:
     Year2RegSeasonEVG = 0
     Year2RegSeasonixG = 0
     Year2RegSeasonxG60 = 0
+    Year2RegSeasonRelxG60 = 0
     Year2RegSeasonC60 = 0
     Year2RegSeasonRelC60 = 0
-    Year2RegSeasonA = 0
 
     # Stats from 2nd last playoffs
     Year2PlayoffsGP = 0
@@ -69,9 +69,9 @@ class ContractEntry:
     Year2PlayoffsEVG = 0
     Year2PlayoffsixG = 0
     Year2PlayoffsxG60 = 0
+    Year2PlayoffsRelxG60 = 0
     Year2PlayoffsC60 = 0
     Year2PlayoffsRelC60 = 0
-    Year2PlayoffsA = 0
 
     # Stats from 3rd last regular season
     Year3RegSeasonGP = 0
@@ -83,9 +83,9 @@ class ContractEntry:
     Year3RegSeasonEVG = 0
     Year3RegSeasonixG = 0
     Year3RegSeasonxG60 = 0
+    Year3RegSeasonRelxG60 = 0
     Year3RegSeasonC60 = 0
     Year3RegSeasonRelC60 = 0
-    Year3RegSeasonA = 0
 
     # Stats from 3rd last playoffs
     Year3PlayoffsGP = 0
@@ -97,11 +97,12 @@ class ContractEntry:
     Year3PlayoffsEVG = 0
     Year3PlayoffsixG = 0
     Year3PlayoffsxG60 = 0
+    Year3PlayoffsRelxG60 = 0
     Year3PlayoffsC60 = 0
     Year3PlayoffsRelC60 = 0
-    Year3PlayoffsA = 0
 
-    # Salary cap info from last 3 years
+    # Salary cap info from next 3 years
+    # In this case, year 1 refers to next year instead of last
     Year1Cap = 0
     Year2Cap = 0
     Year3Cap = 0
@@ -192,16 +193,18 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
             # Invalid season
             seasonYear = 0
 
-
+    # Process years with valid indeces. 
+    # Note that an invalid index means a year with no NHL games played
+    # In those cases, it is ok to leave all stats at 0
     if(year1Index != -1):
-        for i in range(year1Index, year0Index):
-            # All of these indeces correspond to year 1 stats
-            # Most of the time, this should only be one or no entries. 
-            # However, if a player gets traded halfway through the year, 
-            # This will be multiple entries
-            # For multiple entries, some values will be added (e.g. goals, assists, etc.)
-            # and some will be averaged (e.g. time on ice, goals per 60 etc.)
 
+        # All of these indeces correspond to year 1 stats
+        # Most of the time, this should only be one or no entries. 
+        # However, if a player gets traded halfway through the year, 
+        # This will be multiple entries
+        # For multiple entries, some values will be added (e.g. goals, assists, etc.)
+        # and some will be averaged (e.g. time on ice, goals per 60 etc.)
+        for i in range(year1Index, year0Index):
             # First handle all entries that are simply added
             if(math.isnan(StatHistory[i].RegularGP) == False):
                c.Year1RegSeasonGP += StatHistory[i].RegularGP
@@ -245,6 +248,76 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
             if(math.isnan(StatHistory[i].PlayoffixG) == False):
                c.Year1PlayoffsixG += StatHistory[i].PlayoffixG
 
+        # Now handle all entries that need to be averaged
+        # These will be weighted by how many games the player played for each team
+        for i in range(year1Index, year0Index):
+
+            if(c.Year1RegSeasonGP == 0 or math.isnan(StatHistory[i].RegularGP) == True):
+                ratio = 0 # If there are no GP, all entries will be 0 anyways
+            else:
+                ratio = StatHistory[i].RegularGP / c.Year1RegSeasonGP
+
+            if(math.isnan(StatHistory[i].RegularxG60) == False):
+               c.Year1RegSeasonxG60 += ratio * StatHistory[i].RegularxG60
+
+            if(math.isnan(StatHistory[i].RegularRelxG60) == False):
+               c.Year1RegSeasonRelxG60 += ratio * StatHistory[i].RegularRelxG60
+
+            if(math.isnan(StatHistory[i].RegularC60) == False):
+               c.Year1RegSeasonC60 += ratio * StatHistory[i].RegularC60
+
+            if(math.isnan(StatHistory[i].RegularRelC60) == False):
+               c.Year1RegSeasonRelC60 += ratio * StatHistory[i].RegularRelC60
+
+
+            # TOI has to be converted to number of seconds first
+
+            # Check if this is even a valid number
+            try: 
+
+                # First 2 digits are minutes
+                numSec = int(StatHistory[i].RegularEVTOI[0:2])
+                numSec *= 60;
+                numSec += int(StatHistory[i].RegularEVTOI[3:5])
+
+            except:
+                numSec = 0
+
+            c.Year1RegSeasonEVTOI += numSec * ratio
+
+            # Playoff entries are handled the same way
+            # This isn't technically necessary since it's impossible for a player 
+            # to play on multiple teams in the playoffs. 
+            # Simply set up in here for organization's sake.
+            if(c.Year1PlayoffsGP == 0 or math.isnan(StatHistory[i].PlayoffGP) == True):
+                ratio = 0 # If there are no GP, all entries will be 0 anyways
+            else:
+                ratio = StatHistory[i].PlayoffGP / c.Year1PlayoffsGP
+
+            if(math.isnan(StatHistory[i].PlayoffxG60) == False):
+               c.Year1PlayoffsxG60 += ratio * StatHistory[i].PlayoffxG60
+
+            if(math.isnan(StatHistory[i].PlayoffRelxG60) == False):
+               c.Year1PlayoffsRelxG60 += ratio * StatHistory[i].PlayoffRelxG60
+
+            if(math.isnan(StatHistory[i].PlayoffC60) == False):
+               c.Year1PlayoffsC60 += ratio * StatHistory[i].PlayoffC60
+
+            if(math.isnan(StatHistory[i].PlayoffRelC60) == False):
+               c.Year1PlayoffsRelC60 += ratio * StatHistory[i].PlayoffRelC60
+
+            # Check if this is even a valid number
+            try: 
+
+                # First 2 digits are minutes
+                numSec = int(StatHistory[i].PlayoffEVTOI[0:2])
+                numSec *= 60;
+                numSec += int(StatHistory[i].PlayoffEVTOI[3:5])
+
+            except:
+                numSec = 0
+
+            c.Year1PlayoffsEVTOI += numSec * ratio
 
     # Do the same thing for the 2nd last year
     if(year2Index != -1):
@@ -294,6 +367,78 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
                c.Year2PlayoffsixG += StatHistory[i].PlayoffixG
 
 
+        # Now handle all entries that need to be averaged
+        # These will be weighted by how many games the player played for each team
+        for i in range(year2Index, year1Index):
+
+            if(c.Year2RegSeasonGP == 0 or math.isnan(StatHistory[i].RegularGP) == True):
+                ratio = 0 # If there are no GP, all entries will be 0 anyways
+            else:
+                ratio = StatHistory[i].RegularGP / c.Year2RegSeasonGP
+
+            if(math.isnan(StatHistory[i].RegularxG60) == False):
+               c.Year2RegSeasonxG60 += ratio * StatHistory[i].RegularxG60
+
+            if(math.isnan(StatHistory[i].RegularRelxG60) == False):
+               c.Year2RegSeasonRelxG60 += ratio * StatHistory[i].RegularRelxG60
+
+            if(math.isnan(StatHistory[i].RegularC60) == False):
+               c.Year2RegSeasonC60 += ratio * StatHistory[i].RegularC60
+
+            if(math.isnan(StatHistory[i].RegularRelC60) == False):
+               c.Year2RegSeasonRelC60 += ratio * StatHistory[i].RegularRelC60
+
+
+            # TOI has to be converted to number of seconds first
+
+            # Check if this is even a valid number
+            try: 
+
+                # First 2 digits are minutes
+                numSec = int(StatHistory[i].RegularEVTOI[0:2])
+                numSec *= 60;
+                numSec += int(StatHistory[i].RegularEVTOI[3:5])
+
+            except:
+                numSec = 0
+
+            c.Year2RegSeasonEVTOI += numSec * ratio
+
+            # Playoff entries are handled the same way
+            # This isn't technically necessary since it's impossible for a player 
+            # to play on multiple teams in the playoffs. 
+            # Simply set up in here for organization's sake.
+            if(c.Year2PlayoffsGP == 0 or math.isnan(StatHistory[i].PlayoffGP) == True):
+                ratio = 0 # If there are no GP, all entries will be 0 anyways
+            else:
+                ratio = StatHistory[i].PlayoffGP / c.Year2PlayoffsGP
+
+            if(math.isnan(StatHistory[i].PlayoffxG60) == False):
+               c.Year2PlayoffsxG60 += ratio * StatHistory[i].PlayoffxG60
+
+            if(math.isnan(StatHistory[i].PlayoffRelxG60) == False):
+               c.Year2PlayoffsRelxG60 += ratio * StatHistory[i].PlayoffRelxG60
+
+            if(math.isnan(StatHistory[i].PlayoffC60) == False):
+               c.Year2PlayoffsC60 += ratio * StatHistory[i].PlayoffC60
+
+            if(math.isnan(StatHistory[i].PlayoffRelC60) == False):
+               c.Year2PlayoffsRelC60 += ratio * StatHistory[i].PlayoffRelC60
+
+            # Check if this is even a valid number
+            try: 
+
+                # First 2 digits are minutes
+                numSec = int(StatHistory[i].PlayoffEVTOI[0:2])
+                numSec *= 60;
+                numSec += int(StatHistory[i].PlayoffEVTOI[3:5])
+
+            except:
+                numSec = 0
+
+            c.Year2PlayoffsEVTOI += numSec * ratio
+
+
     # Do the same thing for the 3rd last year
     if(year3Index != -1):
         for i in range(year3Index, year2Index):
@@ -340,5 +485,77 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
 
             if(math.isnan(StatHistory[i].PlayoffixG) == False):
                c.Year3PlayoffsixG += StatHistory[i].PlayoffixG
+
+
+        # Now handle all entries that need to be averaged
+        # These will be weighted by how many games the player played for each team
+        for i in range(year3Index, year2Index):
+
+            if(c.Year3RegSeasonGP == 0 or math.isnan(StatHistory[i].RegularGP) == True):
+                ratio = 0 # If there are no GP, all entries will be 0 anyways
+            else:
+                ratio = StatHistory[i].RegularGP / c.Year3RegSeasonGP
+
+            if(math.isnan(StatHistory[i].RegularxG60) == False):
+               c.Year3RegSeasonxG60 += ratio * StatHistory[i].RegularxG60
+
+            if(math.isnan(StatHistory[i].RegularRelxG60) == False):
+               c.Year3RegSeasonRelxG60 += ratio * StatHistory[i].RegularRelxG60
+
+            if(math.isnan(StatHistory[i].RegularC60) == False):
+               c.Year3RegSeasonC60 += ratio * StatHistory[i].RegularC60
+
+            if(math.isnan(StatHistory[i].RegularRelC60) == False):
+               c.Year3RegSeasonRelC60 += ratio * StatHistory[i].RegularRelC60
+
+
+            # TOI has to be converted to number of seconds first
+
+            # Check if this is even a valid number
+            try: 
+
+                # First 2 digits are minutes
+                numSec = int(StatHistory[i].RegularEVTOI[0:2])
+                numSec *= 60;
+                numSec += int(StatHistory[i].RegularEVTOI[3:5])
+
+            except:
+                numSec = 0
+
+            c.Year3RegSeasonEVTOI += numSec * ratio
+
+            # Playoff entries are handled the same way
+            # This isn't technically necessary since it's impossible for a player 
+            # to play on multiple teams in the playoffs. 
+            # Simply set up in here for organization's sake.
+            if(c.Year3PlayoffsGP == 0 or math.isnan(StatHistory[i].PlayoffGP) == True):
+                ratio = 0 # If there are no GP, all entries will be 0 anyways
+            else:
+                ratio = StatHistory[i].PlayoffGP / c.Year3PlayoffsGP
+
+            if(math.isnan(StatHistory[i].PlayoffxG60) == False):
+               c.Year3PlayoffsxG60 += ratio * StatHistory[i].PlayoffxG60
+
+            if(math.isnan(StatHistory[i].PlayoffRelxG60) == False):
+               c.Year3PlayoffsRelxG60 += ratio * StatHistory[i].PlayoffRelxG60
+
+            if(math.isnan(StatHistory[i].PlayoffC60) == False):
+               c.Year3PlayoffsC60 += ratio * StatHistory[i].PlayoffC60
+
+            if(math.isnan(StatHistory[i].PlayoffRelC60) == False):
+               c.Year3PlayoffsRelC60 += ratio * StatHistory[i].PlayoffRelC60
+
+            # Check if this is even a valid number
+            try: 
+
+                # First 2 digits are minutes
+                numSec = int(StatHistory[i].PlayoffEVTOI[0:2])
+                numSec *= 60;
+                numSec += int(StatHistory[i].PlayoffEVTOI[3:5])
+
+            except:
+                numSec = 0
+
+            c.Year3PlayoffsEVTOI += numSec * ratio
 
     return c

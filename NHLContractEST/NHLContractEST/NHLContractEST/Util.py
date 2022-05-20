@@ -107,7 +107,7 @@ def FormatURL(name):
 
     return name
 
-# This function will print all player list info to the console
+# This function will print a player's information to the screen
 def PrintPlayerInfo(Player):
 
     print("Player Name: " + Player.Name)
@@ -149,12 +149,49 @@ def PrintPlayerInfo(Player):
     return 
 
 
+# This function will print all info from a contract entry to the screen
+def PrintContractEntry(c):
+    print("CONTRACT ENTRY:             PLAYER: " + c.Name + "  AGE: " + str(c.PlayerAge) + "  POSITION: " + c.PlayerPosition)
+    print("Contract Signed in " + str(c.year) + "     AAV: " + str(c.Salary) + "$  Length: " + str(c.NumYears) + " years")
+    
+    print("Year-1 Stats (Regular Season):     GP: " + str(c.Year1RegSeasonGP) + "  G: " + str(c.Year1RegSeasonG) + "  A: " \
+         + str(c.Year1RegSeasonA) + "  +/-: " + str(c.Year1RegSeasonPlusMinus) + "  PIM: " + str(c.Year1RegSeasonPIM))
+    print("                                   EVTOI: " + str(c.Year1RegSeasonEVTOI) + "  ixG: " + str(c.Year1RegSeasonixG) + "  xG+/60: " \
+        + str(c.Year1RegSeasonxG60) + " RelxG+/60: " + str(c.Year1RegSeasonRelxG60) + "  C+60: " + str(c.Year1RegSeasonC60) + "  RelC+60: " + str(c.Year1RegSeasonRelC60))
+    print("Year-2 Stats (Playoffs):           GP: " + str(c.Year2PlayoffsGP) + "  G: " + str(c.Year2PlayoffsG) + "  A: " \
+         + str(c.Year2PlayoffsA) + "  +/-: " + str(c.Year2PlayoffsPlusMinus) + "  PIM: " + str(c.Year2PlayoffsPIM))
+    print("                                   EVTOI: " + str(c.Year2PlayoffsEVTOI) + "  ixG: " + str(c.Year2PlayoffsixG) + "  xG+/60: " \
+        + str(c.Year2PlayoffsxG60) + " RelxG+/60: " + str(c.Year2PlayoffsRelxG60) + "  C+60: " + str(c.Year2PlayoffsC60) + "  RelC+60: " + str(c.Year2PlayoffsRelC60))
+    print("Year-3 Stats (Playoffs):           GP: " + str(c.Year3PlayoffsGP) + "  G: " + str(c.Year3PlayoffsG) + "  A: " \
+         + str(c.Year3PlayoffsA) + "  +/-: " + str(c.Year3PlayoffsPlusMinus) + "  PIM: " + str(c.Year3PlayoffsPIM))
+    print("                                   EVTOI: " + str(c.Year3PlayoffsEVTOI) + "  ixG: " + str(c.Year3PlayoffsixG) + "  xG+/60: " \
+        + str(c.Year3PlayoffsxG60) + " RelxG+/60: " + str(c.Year3PlayoffsRelxG60) + "  C+60: " + str(c.Year3PlayoffsC60) + "  RelC+60: " + str(c.Year3PlayoffsRelC60))
+    
+    
+    print("Team Stats (Year-1 Season):         Rank: " + str(c.Year1TeamPosition) + " GP: " + str(c.Year1TeamGP) + " W: " \
+        + str(c.Year1TeamWins) + " L: "+ str(c.Year1TeamLosses) + " OT: " + str(c.Year1TeamOTLosses) + " GF: " \
+        + str(c.Year1TeamGF) + " GA: " + str(c.Year1TeamGA))
+    print("Team Stats (Year-2 Season):         Rank: " + str(c.Year2TeamPosition) + " GP: " + str(c.Year2TeamGP) + " W: " \
+        + str(c.Year2TeamWins) + " L: "+ str(c.Year2TeamLosses) + " OT: " + str(c.Year2TeamOTLosses) + " GF: " \
+        + str(c.Year2TeamGF) + " GA: " + str(c.Year2TeamGA))
+    print("Team Stats (Year-3 Season):         Rank: " + str(c.Year3TeamPosition) + " GP: " + str(c.Year3TeamGP) + " W: " \
+        + str(c.Year3TeamWins) + " L: "+ str(c.Year3TeamLosses) + " OT: " + str(c.Year3TeamOTLosses) + " GF: " \
+        + str(c.Year3TeamGF) + " GA: " + str(c.Year3TeamGA))
+
+    print("Salary Cap (Year+1 Season): " + str(c.Year1Cap) + "$     Min Salary: " + str(c.Year1MinSalary) + "$")
+    print("Salary Cap (Year+2 Season): " + str(c.Year2Cap) + "$     Min Salary: " + str(c.Year2MinSalary) + "$")
+    print("Salary Cap (Year+3 Season): " + str(c.Year3Cap) + "$     Min Salary: " + str(c.Year3MinSalary) + "$")
+    return
+
+
 
 # NOTE: Pickle IO is not ideal for safety reasons but since I am just creating my own data file
 # and re-using it, this should be ok. 
 def DumpToFile(data, fileName):
     with open(fileName, 'wb') as handle:
         pickle.dump(data, handle)
+
+    return
 
 
 def ReadFromFile(fileName):

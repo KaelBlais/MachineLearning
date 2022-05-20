@@ -154,29 +154,29 @@ def PrintContractEntry(c):
     print("CONTRACT ENTRY:             PLAYER: " + c.Name + "  AGE: " + str(c.PlayerAge) + "  POSITION: " + c.PlayerPosition)
     print("Contract Signed in " + str(c.year) + "     AAV: " + str(c.Salary) + "$  Length: " + str(c.NumYears) + " years")
     
-    print("Year-1 Stats (Regular Season):     GP: " + str(c.Year1RegSeasonGP) + "  G: " + str(c.Year1RegSeasonG) + "  A: " \
-         + str(c.Year1RegSeasonA) + "  +/-: " + str(c.Year1RegSeasonPlusMinus) + "  PIM: " + str(c.Year1RegSeasonPIM))
-    print("                                   EVTOI: " + str(c.Year1RegSeasonEVTOI) + "  ixG: " + str(c.Year1RegSeasonixG) + "  xG+/60: " \
-        + str(c.Year1RegSeasonxG60) + " RelxG+/60: " + str(c.Year1RegSeasonRelxG60) + "  C+60: " + str(c.Year1RegSeasonC60) + "  RelC+60: " + str(c.Year1RegSeasonRelC60))
-    print("Year-2 Stats (Playoffs):           GP: " + str(c.Year2PlayoffsGP) + "  G: " + str(c.Year2PlayoffsG) + "  A: " \
-         + str(c.Year2PlayoffsA) + "  +/-: " + str(c.Year2PlayoffsPlusMinus) + "  PIM: " + str(c.Year2PlayoffsPIM))
-    print("                                   EVTOI: " + str(c.Year2PlayoffsEVTOI) + "  ixG: " + str(c.Year2PlayoffsixG) + "  xG+/60: " \
-        + str(c.Year2PlayoffsxG60) + " RelxG+/60: " + str(c.Year2PlayoffsRelxG60) + "  C+60: " + str(c.Year2PlayoffsC60) + "  RelC+60: " + str(c.Year2PlayoffsRelC60))
-    print("Year-3 Stats (Playoffs):           GP: " + str(c.Year3PlayoffsGP) + "  G: " + str(c.Year3PlayoffsG) + "  A: " \
-         + str(c.Year3PlayoffsA) + "  +/-: " + str(c.Year3PlayoffsPlusMinus) + "  PIM: " + str(c.Year3PlayoffsPIM))
-    print("                                   EVTOI: " + str(c.Year3PlayoffsEVTOI) + "  ixG: " + str(c.Year3PlayoffsixG) + "  xG+/60: " \
-        + str(c.Year3PlayoffsxG60) + " RelxG+/60: " + str(c.Year3PlayoffsRelxG60) + "  C+60: " + str(c.Year3PlayoffsC60) + "  RelC+60: " + str(c.Year3PlayoffsRelC60))
+    print("Year-1 Stats (Regular Season):     GP: " + str(round(c.Year1RegSeasonGP, 2)) + "  G: " + str(round(c.Year1RegSeasonG, 2)) + "  A: " \
+         + str(round(c.Year1RegSeasonA, 2)) + "  +/-: " + str(round(c.Year1RegSeasonPlusMinus, 2)) + "  PIM: " + str(round(c.Year1RegSeasonPIM, 2)))
+    print("                                   EVTOI: " + str(round(c.Year1RegSeasonEVTOI, 2)) + "  ixG: " + str(round(c.Year1RegSeasonixG, 2)) + "  xG+/60: " \
+        + str(round(c.Year1RegSeasonxG60, 2)) + " RelxG+/60: " + str(round(c.Year1RegSeasonRelxG60, 2)) + "  C+60: " + str(round(c.Year1RegSeasonC60, 2)) + "  RelC+60: " + str(round(c.Year1RegSeasonRelC60, 2)))
+    print("Year-2 Stats (Playoffs):           GP: " + str(round(c.Year2PlayoffsGP, 2)) + "  G: " + str(round(c.Year2PlayoffsG, 2)) + "  A: " \
+         + str(round(c.Year2PlayoffsA, 2)) + "  +/-: " + str(round(c.Year2PlayoffsPlusMinus, 2)) + "  PIM: " + str(round(c.Year2PlayoffsPIM, 2)))
+    print("                                   EVTOI: " + str(round(c.Year2PlayoffsEVTOI, 2)) + "  ixG: " + str(round(c.Year2PlayoffsixG, 2)) + "  xG+/60: " \
+        + str(round(c.Year2PlayoffsxG60, 2)) + " RelxG+/60: " + str(round(c.Year2PlayoffsRelxG60, 2)) + "  C+60: " + str(round(c.Year2PlayoffsC60, 2)) + "  RelC+60: " + str(round(c.Year2PlayoffsRelC60, 2)))
+    print("Year-3 Stats (Playoffs):           GP: " + str(round(c.Year3PlayoffsGP, 2)) + "  G: " + str(round(c.Year3PlayoffsG, 2)) + "  A: " \
+         + str(round(c.Year3PlayoffsA, 2)) + "  +/-: " + str(round(c.Year3PlayoffsPlusMinus, 2)) + "  PIM: " + str(round(c.Year3PlayoffsPIM, 2)))
+    print("                                   EVTOI: " + str(round(c.Year3PlayoffsEVTOI, 2)) + "  ixG: " + str(round(c.Year3PlayoffsixG, 2)) + "  xG+/60: " \
+        + str(round(c.Year3PlayoffsxG60, 2)) + " RelxG+/60: " + str(round(c.Year3PlayoffsRelxG60, 2)) + "  C+60: " + str(round(c.Year3PlayoffsC60, 2)) + "  RelC+60: " + str(round(c.Year3PlayoffsRelC60, 2)))
     
     
-    print("Team Stats (Year-1 Season):         Rank: " + str(c.Year1TeamPosition) + " GP: " + str(c.Year1TeamGP) + " W: " \
-        + str(c.Year1TeamWins) + " L: "+ str(c.Year1TeamLosses) + " OT: " + str(c.Year1TeamOTLosses) + " GF: " \
-        + str(c.Year1TeamGF) + " GA: " + str(c.Year1TeamGA))
-    print("Team Stats (Year-2 Season):         Rank: " + str(c.Year2TeamPosition) + " GP: " + str(c.Year2TeamGP) + " W: " \
-        + str(c.Year2TeamWins) + " L: "+ str(c.Year2TeamLosses) + " OT: " + str(c.Year2TeamOTLosses) + " GF: " \
-        + str(c.Year2TeamGF) + " GA: " + str(c.Year2TeamGA))
-    print("Team Stats (Year-3 Season):         Rank: " + str(c.Year3TeamPosition) + " GP: " + str(c.Year3TeamGP) + " W: " \
-        + str(c.Year3TeamWins) + " L: "+ str(c.Year3TeamLosses) + " OT: " + str(c.Year3TeamOTLosses) + " GF: " \
-        + str(c.Year3TeamGF) + " GA: " + str(c.Year3TeamGA))
+    print("Team Stats (Year-1 Season):         Rank: " + str(round(c.Year1TeamPosition, 2)) + " GP: " + str(round(c.Year1TeamGP, 2)) + " W: " \
+        + str(round(c.Year1TeamWins, 2)) + " L: "+ str(round(c.Year1TeamLosses, 2)) + " OT: " + str(round(c.Year1TeamOTLosses, 2)) + " GF: " \
+        + str(round(c.Year1TeamGF, 2)) + " GA: " + str(round(c.Year1TeamGA, 2)))
+    print("Team Stats (Year-2 Season):         Rank: " + str(round(c.Year2TeamPosition, 2)) + " GP: " + str(round(c.Year2TeamGP, 2)) + " W: " \
+        + str(round(c.Year2TeamWins, 2)) + " L: "+ str(round(c.Year2TeamLosses, 2)) + " OT: " + str(round(c.Year2TeamOTLosses, 2)) + " GF: " \
+        + str(round(c.Year2TeamGF, 2)) + " GA: " + str(round(c.Year2TeamGA, 2)))
+    print("Team Stats (Year-3 Season):         Rank: " + str(round(c.Year3TeamPosition, 2)) + " GP: " + str(round(c.Year3TeamGP, 2)) + " W: " \
+        + str(round(c.Year3TeamWins, 2)) + " L: "+ str(round(c.Year3TeamLosses, 2)) + " OT: " + str(round(c.Year3TeamOTLosses, 2)) + " GF: " \
+        + str(round(c.Year3TeamGF, 2)) + " GA: " + str(round(c.Year3TeamGA, 2)))
 
     print("Salary Cap (Year+1 Season): " + str(c.Year1Cap) + "$     Min Salary: " + str(c.Year1MinSalary) + "$")
     print("Salary Cap (Year+2 Season): " + str(c.Year2Cap) + "$     Min Salary: " + str(c.Year2MinSalary) + "$")

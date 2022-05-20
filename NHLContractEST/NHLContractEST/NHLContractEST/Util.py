@@ -158,10 +158,26 @@ def PrintContractEntry(c):
          + str(round(c.Year1RegSeasonA, 2)) + "  +/-: " + str(round(c.Year1RegSeasonPlusMinus, 2)) + "  PIM: " + str(round(c.Year1RegSeasonPIM, 2)))
     print("                                   EVTOI: " + str(round(c.Year1RegSeasonEVTOI, 2)) + "  ixG: " + str(round(c.Year1RegSeasonixG, 2)) + "  xG+/60: " \
         + str(round(c.Year1RegSeasonxG60, 2)) + " RelxG+/60: " + str(round(c.Year1RegSeasonRelxG60, 2)) + "  C+60: " + str(round(c.Year1RegSeasonC60, 2)) + "  RelC+60: " + str(round(c.Year1RegSeasonRelC60, 2)))
+    print("Year-1 Stats (Playoffs):           GP: " + str(round(c.Year1PlayoffsGP, 2)) + "  G: " + str(round(c.Year1PlayoffsG, 2)) + "  A: " \
+         + str(round(c.Year1PlayoffsA, 2)) + "  +/-: " + str(round(c.Year1PlayoffsPlusMinus, 2)) + "  PIM: " + str(round(c.Year1PlayoffsPIM, 2))) 
+    print("                                   EVTOI: " + str(round(c.Year1PlayoffsEVTOI, 2)) + "  ixG: " + str(round(c.Year1PlayoffsixG, 2)) + "  xG+/60: " \
+        + str(round(c.Year1PlayoffsxG60, 2)) + " RelxG+/60: " + str(round(c.Year1PlayoffsRelxG60, 2)) + "  C+60: " + str(round(c.Year1PlayoffsC60, 2)) + "  RelC+60: " + str(round(c.Year1PlayoffsRelC60, 2)))
+    
+
+    print("Year-2 Stats (Regular Season):     GP: " + str(round(c.Year2RegSeasonGP, 2)) + "  G: " + str(round(c.Year2RegSeasonG, 2)) + "  A: " \
+         + str(round(c.Year2RegSeasonA, 2)) + "  +/-: " + str(round(c.Year2RegSeasonPlusMinus, 2)) + "  PIM: " + str(round(c.Year2RegSeasonPIM, 2)))
+    print("                                   EVTOI: " + str(round(c.Year2RegSeasonEVTOI, 2)) + "  ixG: " + str(round(c.Year2RegSeasonixG, 2)) + "  xG+/60: " \
+        + str(round(c.Year2RegSeasonxG60, 2)) + " RelxG+/60: " + str(round(c.Year2RegSeasonRelxG60, 2)) + "  C+60: " + str(round(c.Year2RegSeasonC60, 2)) + "  RelC+60: " + str(round(c.Year2RegSeasonRelC60, 2)))
     print("Year-2 Stats (Playoffs):           GP: " + str(round(c.Year2PlayoffsGP, 2)) + "  G: " + str(round(c.Year2PlayoffsG, 2)) + "  A: " \
          + str(round(c.Year2PlayoffsA, 2)) + "  +/-: " + str(round(c.Year2PlayoffsPlusMinus, 2)) + "  PIM: " + str(round(c.Year2PlayoffsPIM, 2)))
     print("                                   EVTOI: " + str(round(c.Year2PlayoffsEVTOI, 2)) + "  ixG: " + str(round(c.Year2PlayoffsixG, 2)) + "  xG+/60: " \
         + str(round(c.Year2PlayoffsxG60, 2)) + " RelxG+/60: " + str(round(c.Year2PlayoffsRelxG60, 2)) + "  C+60: " + str(round(c.Year2PlayoffsC60, 2)) + "  RelC+60: " + str(round(c.Year2PlayoffsRelC60, 2)))
+    
+    print("Year-3 Stats (Regular Season):     GP: " + str(round(c.Year3RegSeasonGP, 2)) + "  G: " + str(round(c.Year3RegSeasonG, 2)) + "  A: " \
+         + str(round(c.Year3RegSeasonA, 2)) + "  +/-: " + str(round(c.Year3RegSeasonPlusMinus, 2)) + "  PIM: " + str(round(c.Year3RegSeasonPIM, 2)))
+    print("                                   EVTOI: " + str(round(c.Year3RegSeasonEVTOI, 2)) + "  ixG: " + str(round(c.Year3RegSeasonixG, 2)) + "  xG+/60: " \
+        + str(round(c.Year3RegSeasonxG60, 2)) + " RelxG+/60: " + str(round(c.Year3RegSeasonRelxG60, 2)) + "  C+60: " + str(round(c.Year3RegSeasonC60, 2)) + "  RelC+60: " + str(round(c.Year1RegSeasonRelC60, 2)))
+  
     print("Year-3 Stats (Playoffs):           GP: " + str(round(c.Year3PlayoffsGP, 2)) + "  G: " + str(round(c.Year3PlayoffsG, 2)) + "  A: " \
          + str(round(c.Year3PlayoffsA, 2)) + "  +/-: " + str(round(c.Year3PlayoffsPlusMinus, 2)) + "  PIM: " + str(round(c.Year3PlayoffsPIM, 2)))
     print("                                   EVTOI: " + str(round(c.Year3PlayoffsEVTOI, 2)) + "  ixG: " + str(round(c.Year3PlayoffsixG, 2)) + "  xG+/60: " \

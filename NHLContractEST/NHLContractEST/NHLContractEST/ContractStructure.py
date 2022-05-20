@@ -436,7 +436,7 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
 
             rank = -1 # Invalid Entry
             for j in range(0, len(TeamStatsList)):
-                if(TeamStatsList[j].year == year - 1): # Last year
+                if(TeamStatsList[j].year == year - 2): 
                     rank = TeamStatsList[j].TeamList.index(TeamName)
                     c.Year2TeamPosition += rank * ratio
                     c.Year2TeamGP += TeamStatsList[j].GPList[rank] * ratio
@@ -580,7 +580,7 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
 
             rank = -1 # Invalid Entry
             for j in range(0, len(TeamStatsList)):
-                if(TeamStatsList[j].year == year - 1): # Last year
+                if(TeamStatsList[j].year == year - 3):
                     rank = TeamStatsList[j].TeamList.index(TeamName)
                     c.Year3TeamPosition += rank * ratio
                     c.Year3TeamGP += TeamStatsList[j].GPList[rank] * ratio

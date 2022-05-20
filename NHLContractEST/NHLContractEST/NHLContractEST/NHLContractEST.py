@@ -9,6 +9,10 @@ from FormatData import *
 
 CurrentYear = 2021 
 
+# NOTE: Use this command to change VS interactive window directory to desired path
+# import os
+# os.chdir("Path\\To\\File")
+
 
 ActivePlayerList, SalaryCapTable, TeamStatsList = GetInputsUI(CurrentYear, LoadDefaults = True)
 
@@ -25,4 +29,3 @@ testContract = CreateContractEntry(ActivePlayerList[46], 2020, SalaryCapTable, T
 print(SalaryCapTable["Seasons"])
 # print(SalaryCapTable["Upper Cap"])
 # print(SalaryCapTable["Min Salary"])
-

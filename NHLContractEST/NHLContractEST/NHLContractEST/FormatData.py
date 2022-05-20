@@ -285,6 +285,29 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
 
             c.Year1RegSeasonEVTOI += numSec * ratio
 
+            # Now use the same ratio for team stats
+            TeamName = StatHistory[i].Team
+
+            # Need to find the right index for this year.
+            # This does not necessarily correspond to the index in StatHistory since that one can have multiple
+            # entries per year.
+
+            rank = -1 # Invalid Entry
+            for j in range(0, len(TeamStatsList)):
+                if(TeamStatsList[j].year == year - 1): # Last year
+                    rank = TeamStatsList[j].TeamList.index(TeamName)
+                    c.Year1TeamPosition += rank * ratio
+                    c.Year1TeamGP += TeamStatsList[j].GPList[rank] * ratio
+                    c.Year1TeamWins += TeamStatsList[j].WinList[rank] * ratio
+                    c.Year1TeamLosses += TeamStatsList[j].LossList[rank] * ratio
+                    c.Year1TeamOTLosses += TeamStatsList[j].OTLossList[rank] * ratio
+                    c.Year1TeamGF += TeamStatsList[j].GFList[rank] * ratio
+                    c.Year1TeamGA += TeamStatsList[j].GAList[rank] * ratio
+
+            if(rank == -1):
+                print("\nERROR: Team stats could not be retrieved. This contract is invalid\n")
+
+
             # Playoff entries are handled the same way
             # This isn't technically necessary since it's impossible for a player 
             # to play on multiple teams in the playoffs. 
@@ -403,6 +426,29 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
                 numSec = 0
 
             c.Year2RegSeasonEVTOI += numSec * ratio
+
+            # Now use the same ratio for team stats
+            TeamName = StatHistory[i].Team
+
+            # Need to find the right index for this year.
+            # This does not necessarily correspond to the index in StatHistory since that one can have multiple
+            # entries per year.
+
+            rank = -1 # Invalid Entry
+            for j in range(0, len(TeamStatsList)):
+                if(TeamStatsList[j].year == year - 1): # Last year
+                    rank = TeamStatsList[j].TeamList.index(TeamName)
+                    c.Year2TeamPosition += rank * ratio
+                    c.Year2TeamGP += TeamStatsList[j].GPList[rank] * ratio
+                    c.Year2TeamWins += TeamStatsList[j].WinList[rank] * ratio
+                    c.Year2TeamLosses += TeamStatsList[j].LossList[rank] * ratio
+                    c.Year2TeamOTLosses += TeamStatsList[j].OTLossList[rank] * ratio
+                    c.Year2TeamGF += TeamStatsList[j].GFList[rank] * ratio
+                    c.Year2TeamGA += TeamStatsList[j].GAList[rank] * ratio
+
+            if(rank == -1):
+                print("\nERROR: Team stats could not be retrieved. This contract is invalid\n")
+    
 
             # Playoff entries are handled the same way
             # This isn't technically necessary since it's impossible for a player 
@@ -524,6 +570,29 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
 
             c.Year3RegSeasonEVTOI += numSec * ratio
 
+
+            # Now use the same ratio for team stats
+            TeamName = StatHistory[i].Team
+
+            # Need to find the right index for this year.
+            # This does not necessarily correspond to the index in StatHistory since that one can have multiple
+            # entries per year.
+
+            rank = -1 # Invalid Entry
+            for j in range(0, len(TeamStatsList)):
+                if(TeamStatsList[j].year == year - 1): # Last year
+                    rank = TeamStatsList[j].TeamList.index(TeamName)
+                    c.Year3TeamPosition += rank * ratio
+                    c.Year3TeamGP += TeamStatsList[j].GPList[rank] * ratio
+                    c.Year3TeamWins += TeamStatsList[j].WinList[rank] * ratio
+                    c.Year3TeamLosses += TeamStatsList[j].LossList[rank] * ratio
+                    c.Year3TeamOTLosses += TeamStatsList[j].OTLossList[rank] * ratio
+                    c.Year3TeamGF += TeamStatsList[j].GFList[rank] * ratio
+                    c.Year3TeamGA += TeamStatsList[j].GAList[rank] * ratio
+
+            if(rank == -1):
+                print("\nERROR: Team stats could not be retrieved. This contract is invalid\n")
+
             # Playoff entries are handled the same way
             # This isn't technically necessary since it's impossible for a player 
             # to play on multiple teams in the playoffs. 
@@ -558,4 +627,23 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
 
             c.Year3PlayoffsEVTOI += numSec * ratio
 
+
+
+        # Lastly, add salary cap info for next 3 years
+        seasons = SalaryCapTable["Seasons"]
+        
+        for i in range(0, len(seasons)):
+            if(seasons[i] == year):
+                # Next season's cap starts at this current offseason year
+                c.Year1Cap = float(SalaryCapTable["Upper Cap"][i])
+                c.Year1MinSalary = float(SalaryCapTable["Min Salary"][i])
+
+            if(seasons[i] == year + 1):
+                c.Year2Cap = float(SalaryCapTable["Upper Cap"][i])
+                c.Year2MinSalary = float(SalaryCapTable["Min Salary"][i])
+
+            if(seasons[i] == year + 2):
+                c.Year3Cap = float(SalaryCapTable["Upper Cap"][i])
+                c.Year3MinSalary = float(SalaryCapTable["Min Salary"][i])
+            
     return c

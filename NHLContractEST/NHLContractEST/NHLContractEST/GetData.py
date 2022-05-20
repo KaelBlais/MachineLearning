@@ -76,7 +76,10 @@ class TeamSeasonStats:
     GFList = []
     GAList = []
 
+
 # Note: Might need to add old team e.g. Atlanta Trashers to this list
+# Not using this anymore
+'''
 TeamList = ["Anaheim Duck", "Arizona Coyotes", "Boston Bruins",
             "Buffalo Sabres", "Calgary Flame", "Carolina Hurricanes",
             "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets",
@@ -88,7 +91,7 @@ TeamList = ["Anaheim Duck", "Arizona Coyotes", "Boston Bruins",
             "St. Louis Blues", "San Jose Sharks", "Tampa Bay Lighting",
             "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights",
             "Washington Capitals", "Winnipeg Jets"]
-
+'''
 
 # This function will load all of the required player stats from CapFriendly
 def GetPlayerStatsFromCapFriendly():

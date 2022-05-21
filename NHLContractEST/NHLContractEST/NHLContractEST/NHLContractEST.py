@@ -6,6 +6,7 @@ from Util import *
 from UI import *
 from ContractStructure import *
 from FormatData import *
+from random import shuffle
 
 CurrentYear = 2021 
 
@@ -17,21 +18,30 @@ CurrentYear = 2021
 
 ActivePlayerList, SalaryCapTable, TeamStatsList = GetInputsUI(CurrentYear, LoadDefaults = True)
 
+ContractList = CreateContractList(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear)
+
+
+'''
+print("CONTRACTS BEFORE SHUFFLE: \n\n")
+for i in range(5):
+    PrintContractEntry(ContractList[i])
+for i in range(5):
+    PrintContractEntry(ContractList[len(ContractList) - i - 1])
+'''
+
+# Randomize list before converting to X, Y
+shuffle(ContractList)
+
+'''
+print("CONTRACTS AFTER SHUFFLE: \n\n")
+for i in range(5):
+    PrintContractEntry(ContractList[i])
+for i in range(5):
+    PrintContractEntry(ContractList[len(ContractList) - i - 1])
+'''
 
 # Print random player for debug
 # PrintPlayerInfo(ActivePlayerList[300])
-
-
-# testContract = CreateContractEntry(ActivePlayerList[46], 2020, SalaryCapTable, TeamStatsList, \
-#    CurrentYear, 5, 1000000)
-
-ContractList = CreateContractList(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear)
-
-for i in range(5):
-    PrintContractEntry(ContractList[i])
-
-for i in range(5):
-    PrintContractEntry(ContractList[len(ContractList) - i - 1])
 
 # Print salary cap value
 # print(SalaryCapTable["Seasons"])

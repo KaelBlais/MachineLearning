@@ -5,6 +5,7 @@ from GetData import *
 from Util import *
 from UI import *
 from ContractStructure import *
+from FormatData import *
 
 CurrentYear = 2021 
 
@@ -21,11 +22,16 @@ ActivePlayerList, SalaryCapTable, TeamStatsList = GetInputsUI(CurrentYear, LoadD
 # PrintPlayerInfo(ActivePlayerList[300])
 
 
-testContract = CreateContractEntry(ActivePlayerList[46], 2020, SalaryCapTable, TeamStatsList, \
-    CurrentYear, 5, 1000000)
+# testContract = CreateContractEntry(ActivePlayerList[46], 2020, SalaryCapTable, TeamStatsList, \
+#    CurrentYear, 5, 1000000)
 
+ContractList = CreateContractList(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear)
 
-PrintContractEntry(testContract)
+for i in range(5):
+    PrintContractEntry(ContractList[i])
+
+for i in range(5):
+    PrintContractEntry(ContractList[len(ContractList) - i - 1])
 
 # Print salary cap value
 # print(SalaryCapTable["Seasons"])

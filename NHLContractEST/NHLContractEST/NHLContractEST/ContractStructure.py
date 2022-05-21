@@ -3,6 +3,7 @@
 
 
 from GetData import *
+from Util import *
 import math
 
 class ContractEntry:
@@ -170,6 +171,13 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
         try: 
             seasonYear = int(StatHistory[i].Year[0:4])
 
+            
+            if(seasonYear >= year and year0Index == len(StatHistory)):
+                # This is the start of the new contract, marking the end of the old one
+                # This is >= instead of > in case a player missed a full NHL year and the index gets skipped
+                # In this scenario, the year0 index will be set to the first index it finds that is greater than the current year
+                year0Index = i
+
             if(seasonYear == year - 1):
                 # This is the last season
                 year1Index = i
@@ -286,7 +294,7 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
             c.Year1RegSeasonEVTOI += numSec * ratio
 
             # Now use the same ratio for team stats
-            TeamName = StatHistory[i].Team
+            TeamName = RenameOldTeam(StatHistory[i].Team)
 
             # Need to find the right index for this year.
             # This does not necessarily correspond to the index in StatHistory since that one can have multiple
@@ -428,7 +436,7 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
             c.Year2RegSeasonEVTOI += numSec * ratio
 
             # Now use the same ratio for team stats
-            TeamName = StatHistory[i].Team
+            TeamName = RenameOldTeam(StatHistory[i].Team)
 
             # Need to find the right index for this year.
             # This does not necessarily correspond to the index in StatHistory since that one can have multiple
@@ -572,7 +580,7 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
 
 
             # Now use the same ratio for team stats
-            TeamName = StatHistory[i].Team
+            TeamName = RenameOldTeam(StatHistory[i].Team)
 
             # Need to find the right index for this year.
             # This does not necessarily correspond to the index in StatHistory since that one can have multiple

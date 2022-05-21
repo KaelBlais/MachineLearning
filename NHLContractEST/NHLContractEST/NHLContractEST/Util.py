@@ -107,6 +107,24 @@ def FormatURL(name):
 
     return name
 
+
+# In some sources e.g. CapFriendly, old team names are used
+# In other websites e.g. NHL, those old team names have been renamed
+# This creates a mismatch. To avoid this, all old team names will be renamed
+# using this function
+def RenameOldTeam(name):
+
+    if(name == "Phoenix Coyotes"):
+        name = "Arizona Coyotes"
+
+    if(name == "Atlanta Thrashers"):
+        name = "Winnipeg Jets"
+
+    if(name == "Mighty Ducks of Anaheim"):
+        name = "Anaheim Ducks"
+
+    return name
+
 # This function will print a player's information to the screen
 def PrintPlayerInfo(Player):
 
@@ -197,6 +215,9 @@ def PrintContractEntry(c):
     print("Salary Cap (Year+1 Season): " + str(c.Year1Cap) + "$     Min Salary: " + str(c.Year1MinSalary) + "$")
     print("Salary Cap (Year+2 Season): " + str(c.Year2Cap) + "$     Min Salary: " + str(c.Year2MinSalary) + "$")
     print("Salary Cap (Year+3 Season): " + str(c.Year3Cap) + "$     Min Salary: " + str(c.Year3MinSalary) + "$")
+    
+    print("\n\n")
+    
     return
 
 

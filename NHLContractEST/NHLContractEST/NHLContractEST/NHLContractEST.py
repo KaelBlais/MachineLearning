@@ -40,6 +40,17 @@ for i in range(5):
     PrintContractEntry(ContractList[len(ContractList) - i - 1])
 '''
 
+
+X, Y = CreateFeatureMatrix(ContractList)
+
+
+# Plot each feature 1 by 1. This is only useful if run through debugger.
+n = X.shape[0]
+
+for i in range(n):
+    PlotFeatureVector(X[i, :], Y, FeatureNames[i])
+
+
 # Print random player for debug
 # PrintPlayerInfo(ActivePlayerList[300])
 

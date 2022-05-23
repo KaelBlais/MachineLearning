@@ -1,6 +1,7 @@
 # This file will contain minor utility function to clean up rest of code
 
 import pickle
+import matplotlib.pyplot as plt
 
 # This function will take in a player name and create the proper URL for it
 def FormatURL(name):
@@ -220,6 +221,15 @@ def PrintContractEntry(c):
     
     return
 
+
+# Plot a feature vector x against its output y.
+# "name" refers to the feature name that will be used for the x-axis
+def PlotFeatureVector(x, y, name):
+    plt.clf()
+    plt.scatter(x, y)
+    plt.ylabel("Cost ($)")
+    plt.xlabel(name)
+    plt.show()
 
 
 # NOTE: Pickle IO is not ideal for safety reasons but since I am just creating my own data file

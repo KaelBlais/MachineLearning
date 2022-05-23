@@ -35,6 +35,27 @@ def CreateContractList(PlayerList, SalaryCapTable, TeamStatsList, CurrentYear):
     return ContractList
 
 
+# This function will take in a contract list and create the corresponding feature matrix X and 
+# output vector Y (salary). Note that the X values will not be normalized.
+# X will be an n x m column vector where n is the number of features and m is the number of contracts
+def CreateFeatureMatrix(ContractList):
+    m = len(ContractList)
+    n = len(FeatureNames)
+
+    X = np.zeros((n, m))
+    Y = np.zeros((1, m))
+
+    for i in range(m):
+        x, y = CreateFeatureVector(ContractList[i])
+        X[:, i] = np.squeeze(x) # column vector needs to be reshaped to (n, :) from (n, 1) before getting copied to matrix
+        Y[:, i] = y
+
+    assert(np.shape(X) == (n, m))
+    assert(np.shape(Y) == (1, m))
+
+    return X, Y
+
+
 # This will host the names of all features in the same order as the feature vectors.
 # This will be used to debug and plot individual features
 FeatureNames = [

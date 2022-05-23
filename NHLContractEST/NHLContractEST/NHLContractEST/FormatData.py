@@ -21,8 +21,14 @@ def CreateContractList(PlayerList, SalaryCapTable, TeamStatsList, CurrentYear):
 
     for player in PlayerList:
         if(player.Position != "G"): # Ignore goalies for now
-            for i in range(1, player.NumContracts): # Always skip first contract (ELC) 
-                if(player.ContractDates[i] >= CutoffYear):
+
+            # To check for valid conditions:
+            # This must be from a valid year (salary cap era)
+            # This must also exclude ELCs. This is always the contract
+            # With the earliest date in the list.
+            elcIdx = player.ContractDates.index(min(player.ContractDates))
+            for i in range(0, player.NumContracts):
+                if(player.ContractDates[i] >= CutoffYear and i != elcIdx):
                     # Found a valid contract, enter it in list
                     c = CreateContractEntry(player, player.ContractDates[i], SalaryCapTable, TeamStatsList, \
                         CurrentYear, player.ContractLength[i], player.ContractAAV[i])

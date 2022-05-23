@@ -155,6 +155,10 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
     c.NumYears = numYears
     c.Salary = Salary
 
+    # Since we are only looking at 2nd contracts and higher, no player should ever be younger than 20
+    # Technically this should be 21 but 20 is used in case of rounding errors with calculating age from current year
+    assert(c.PlayerAge >= 20)
+
     # Add season stats. Note that this is only done for skaters right now. Goalies will be handled later
 
     # First we need to find the right index in the stats table.

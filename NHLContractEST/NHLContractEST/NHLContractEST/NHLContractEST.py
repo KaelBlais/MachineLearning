@@ -16,20 +16,18 @@ CurrentYear = 2022
 # os.chdir("Path\\To\\File")
 
 
-ActivePlayerList, SalaryCapTable, TeamStatsList = GetInputsUI(CurrentYear, LoadDefaults = False)
-
-PrintPlayerInfo(ActivePlayerList[1])
+ActivePlayerList, SalaryCapTable, TeamStatsList = GetInputsUI(CurrentYear, LoadDefaults = True)
 
 ContractList = CreateContractList(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear)
 
 
-
+'''
 print("CONTRACTS BEFORE SHUFFLE: \n\n")
 for i in range(5):
     PrintContractEntry(ContractList[i])
 for i in range(5):
     PrintContractEntry(ContractList[len(ContractList) - i - 1])
-
+'''
 
 # Randomize list before converting to X, Y
 shuffle(ContractList)
@@ -54,7 +52,7 @@ for i in range(n):
 
 
 # Print random player for debug
-PrintPlayerInfo(ActivePlayerList[1])
+# PrintPlayerInfo(ActivePlayerList[1])
 
 # Print salary cap value
 # print(SalaryCapTable["Seasons"])

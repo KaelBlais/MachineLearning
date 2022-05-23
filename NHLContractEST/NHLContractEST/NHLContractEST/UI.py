@@ -124,12 +124,22 @@ def GetInputsUI(CurrentYear, LoadDefaults = False):
 
 
 
-    # Get year list from current year to first year of salary cap
+    # Get year list from current year-1 to first year of salary cap
+    # Current year doesn't get included in team list because contracts are signed in the offseason
+    # For example, if current year is 2022 (offseason), the last team stats available are from "2021-2022" or 2021
     yearList = SalaryCapTable["Seasons"]
-    idx = list(yearList).index(CurrentYear)
+    idx = list(yearList).index(CurrentYear-1)
+
+
     # Trim everything before current year (future salary cap values)
     yearList = yearList[idx:len(yearList)]
 
+    # Add 3 extra years to team list. This will grab previous 3 years' worth of data from team list
+    # which are then used as features for contracts signed in the first salary cap year
+    lastYear = yearList[len(yearList)-1]
+    yearList = np.append(yearList, (lastYear-1))
+    yearList = np.append(yearList, (lastYear-2))
+    yearList = np.append(yearList, (lastYear-3))
 
     c = input('Load team stats from file? (y/n)')
 

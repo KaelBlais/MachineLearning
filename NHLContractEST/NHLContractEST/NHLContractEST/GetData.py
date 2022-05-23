@@ -182,9 +182,9 @@ def GetPlayerStatsFromCapFriendly():
             ActivePlayerList[i].Position = "LD"
         if(s[idx:idx+13] == "right defense"):
             ActivePlayerList[i].Position = "RD"
-        if(s[idx:idx+11] == "left winger"):
+        if(s[idx:idx+9] == "left wing"):
             ActivePlayerList[i].Position = "LW"
-        if(s[idx:idx+12] == "right winger"):
+        if(s[idx:idx+10] == "right wing"):
             ActivePlayerList[i].Position = "RW"
         if(s[idx:idx+10] == "goaltender"):
             ActivePlayerList[i].Position = "G"

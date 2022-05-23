@@ -14,12 +14,11 @@ def CreateContractList(PlayerList, SalaryCapTable, TeamStatsList, CurrentYear):
     print("Creating Contract List...")
 
     # Note that the cutoff year represents the earliest year where new contracts can be used
-    # Since the team list only covers up to the start of the salary cap era, and we need 3 years of team history
-    # prior to the contract, only contracts signed at least 3 years after the start of salary cap era will be used. 
-    # In the future, the team list could be changed to cover 3 years before the salary cap era to add more data. 
-    # For now, this is left as is. It's not the worst thing to add a bit of a buffer after the introduction of the salary cap
-    # and focus on recent years instead. 
+    # This requires 3 years of previous data. Since the team list has 3 years prior to the salary cap year
+    # added, this should correspond to the first year of the salary cap era (2005)
     CutoffYear = TeamStatsList[len(TeamStatsList) - 4].year
+    assert(CutoffYear == 2005)
+
     for player in PlayerList:
         if(player.Position != "G"): # Ignore goalies for now
             for i in range(1, player.NumContracts): # Always skip first contract (ELC) 

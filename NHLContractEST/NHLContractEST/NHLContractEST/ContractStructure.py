@@ -641,21 +641,24 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
 
 
 
-        # Lastly, add salary cap info for next 3 years
-        seasons = SalaryCapTable["Seasons"]
+    # Lastly, add salary cap info for next 3 years
+    seasons = SalaryCapTable["Seasons"]
         
-        for i in range(0, len(seasons)):
-            if(seasons[i] == year):
-                # Next season's cap starts at this current offseason year
-                c.Year1Cap = float(SalaryCapTable["Upper Cap"][i])
-                c.Year1MinSalary = float(SalaryCapTable["Min Salary"][i])
+    for i in range(0, len(seasons)):
+        if(seasons[i] == year):
+            # Next season's cap starts at this current offseason year
+            c.Year1Cap = float(SalaryCapTable["Upper Cap"][i])
+            c.Year1MinSalary = float(SalaryCapTable["Min Salary"][i])
 
-            if(seasons[i] == year + 1):
-                c.Year2Cap = float(SalaryCapTable["Upper Cap"][i])
-                c.Year2MinSalary = float(SalaryCapTable["Min Salary"][i])
+        if(seasons[i] == year + 1):
+            c.Year2Cap = float(SalaryCapTable["Upper Cap"][i])
+            c.Year2MinSalary = float(SalaryCapTable["Min Salary"][i])
 
-            if(seasons[i] == year + 2):
-                c.Year3Cap = float(SalaryCapTable["Upper Cap"][i])
-                c.Year3MinSalary = float(SalaryCapTable["Min Salary"][i])
+        if(seasons[i] == year + 2):
+            c.Year3Cap = float(SalaryCapTable["Upper Cap"][i])
+            c.Year3MinSalary = float(SalaryCapTable["Min Salary"][i])
             
+
+    assert(c.Year1Cap != 0 and c.Year2Cap != 0 and c.Year3Cap != 0)
+
     return c

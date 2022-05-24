@@ -56,7 +56,7 @@ for i in range(n):
     PlotFeatureVector(XNorm[i, :], Y, FeatureNames[i])
 '''
 
-param, JHistory, trainE, devE = LinearRegressionModel_Custom(X, Y)
+param, JHistory, trainE, devE = LinearRegressionModel_Custom(XNorm, Y)
 
 # Plot cost function
 plt.clf()
@@ -64,7 +64,7 @@ plt.plot(JHistory)
 plt.show()
 
 # Print random player for debug
-# PrintPlayerInfo(ActivePlayerList[1])
+PrintPlayerInfo(ActivePlayerList[1])
 
 # Print salary cap value
 # print(SalaryCapTable["Seasons"])

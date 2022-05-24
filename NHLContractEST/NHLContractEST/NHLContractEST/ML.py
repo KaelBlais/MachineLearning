@@ -16,9 +16,9 @@ def relu(z):
 # A represents the prediction vector and Y represents the true output
 def reluCost(A, Y):
 
-    m = len(A) 
+    m = A.shape[1] 
 
-    assert(m == len(Y))
+    assert(m == Y.shape[1])
 
     J = np.sum((A - Y) ** 2)
 
@@ -49,10 +49,13 @@ def predict(X, param):
         b = param["b" + str(l)]
         act = param["act" + str(l)]
 
-        cache["Z" + str(l)] = np.dot(W.T,cache["A" + str(l-1)] + b)
+        cache["Z" + str(l)] = np.dot(W.T,cache["A" + str(l-1)]) + b
         
         if(act == "relu"):
             cache["A" + str(l)] = relu(cache["Z" + str(l)])
+
+        if(act == "linear"):
+            cache["A" + str(l)] = cache["Z" + str(l)]
 
     Y = cache["A" + str(L)]
 

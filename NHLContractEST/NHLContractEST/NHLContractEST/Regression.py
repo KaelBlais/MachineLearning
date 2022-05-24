@@ -8,7 +8,7 @@ from ML import *
 # The results will be a dictionary containing the parameters W and b 
 # as well as a history of the cost function J
 # Note that this assumes the inputs have already been normalized
-def LinearRegressionModel_Custom(X, Y, numIterations = 100, learningRate = 0.01):
+def LinearRegressionModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001):
 
     print("Running custom regression with ReLU activation...")
 
@@ -29,7 +29,8 @@ def LinearRegressionModel_Custom(X, Y, numIterations = 100, learningRate = 0.01)
 
     # Initialize parameters with random Ws and 0 bias
     np.random.seed(1)
-    W = np.random.randn(n, 1)
+    #  W = np.random.randn(n, 1)
+    W = np.zeros((n, 1))
     b = 0.0
 
     JHistory = np.zeros((numIterations, 1))
@@ -62,10 +63,13 @@ def LinearRegressionModel_Custom(X, Y, numIterations = 100, learningRate = 0.01)
 
         JHistory[i] = J
 
+        print("Training Progress = " + str(int((i+1)*100/numIterations)) + "% complete", end = '\r')
+
 
     param["W1"] = W
     param["b1"] = b
-    param["act1"] = "relu"
+    # param["act1"] = "relu"
+    param["act1"] = "linear"
     param["L"] = 1
 
     # run predictions for both sets

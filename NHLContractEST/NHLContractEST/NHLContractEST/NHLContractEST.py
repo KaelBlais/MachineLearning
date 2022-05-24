@@ -58,13 +58,18 @@ for i in range(n):
 
 param, JHistory, trainE, devE = LinearRegressionModel_Custom(XNorm, Y)
 
+'''
 # Plot cost function
 plt.clf()
 plt.plot(JHistory)
 plt.show()
+'''
+
+while(1):
+    PlayerPredictionsUI(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear, param, xMean, xVar)
 
 # Print random player for debug
-PrintPlayerInfo(ActivePlayerList[1])
+# PrintPlayerInfo(ActivePlayerList[1])
 
 # Print salary cap value
 # print(SalaryCapTable["Seasons"])

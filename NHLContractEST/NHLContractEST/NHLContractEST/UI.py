@@ -1,5 +1,6 @@
 from GetData import *
 import sys
+from ML import *
 
 
 playerStatsDefaultFilename = 'PlayerStats.txt'
@@ -192,3 +193,16 @@ def GetInputsUI(CurrentYear, LoadDefaults = False):
     
 
     return ActivePlayerList, SalaryCapTable, TeamStatsList
+
+
+# This will prompt the user to enter a player name and contract length and predict the corresponding salary 
+# predicted using modelParam
+def PlayerPredictionsUI(PlayerList, SalaryCapTable, TeamStatsList, CurrentYear, modelParam,  xMean, xVar):
+
+   name = input('Please enter a player name: ')
+   contractLength = input('Please enter number of years: ')
+
+   y = FindPlayerWorth(PlayerList, SalaryCapTable, TeamStatsList, \
+           name, contractLength, CurrentYear, modelParam, CurrentYear, xMean, xVar )
+
+   return y

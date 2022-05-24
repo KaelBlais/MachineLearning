@@ -2,6 +2,9 @@
 # used for the different approaches
 
 import numpy as np
+from Util import *
+from ContractStructure import *
+from FormatData import *
 
 # Relu function used for learning models.
 # Takes z and returns a
@@ -62,4 +65,40 @@ def predict(X, param):
     assert(Y.shape == (1, m))
 
     return Y, cache
+
+# This will create a new contract entry for a given player and use modelParam to
+# predict that player's value at the time of 'year'
+def FindPlayerWorth(PlayerList, SalaryCapTable, TeamStatsList, \
+    name, contractLength, year, modelParam, CurrentYear, xMean, xVar):
+
+    found = 0
+
+    print("Making salary prediction for " + str(name) + "...")
+
+    # First find player in list
+    for p in PlayerList:
+        if(FormatURL(p.Name) == FormatURL(name)):
+            found = 1
+            break
+    if(found == 0):
+        print("Error: Player not found")
+        return;
+
+    # Create entry with no salary (unecessary for this)
+    c = CreateContractEntry(p, year, SalaryCapTable, TeamStatsList, \
+        CurrentYear, contractLength)
+
+    # Create feature vectors. Note that y is unecessary. 
+    x, garbage = CreateFeatureVector(c)
+
+    xNorm = NormalizeFeatureVector(x, xMean, xVar)
+
+    y, cache = predict(xNorm, modelParam)
+
+    y = np.squeeze(y)
+
+    print("Predicted Salary = " + str(y) + "$")
+
+
+    return y
 

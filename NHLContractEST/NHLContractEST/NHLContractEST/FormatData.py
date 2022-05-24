@@ -259,3 +259,27 @@ def CreateFeatureVector(Contract):
 
 
     return x, y
+
+# This function will take in an input matrix X (dimensions n x m) and 
+# find the mean and variance of each feature. The results will be two 
+# n x 1 vectors, one for the mean and one for the variance.
+def FindFeatureStats(X):
+    n = X.shape[0]
+    xMean = np.mean(X, axis = 1, keepdims = True)
+    xVar = np.var(X, axis = 1, keepdims = True)
+
+    assert(xMean.shape == xVar.shape == (n, 1))
+
+    return xMean, xVar
+
+# This function will take in a feature vector x, a mean vector u and a 
+# variance vector var. The result will be the normalized version of x
+def NormalizeFeatureVector(X, xMean, xVar):
+    XNorm = X - xMean
+    XNorm = X / xVar
+
+    # Replace categorical features with original ones.
+    # These should remain 0/1
+    XNorm[2:7, :] = X[2:7, :]
+
+    return XNorm

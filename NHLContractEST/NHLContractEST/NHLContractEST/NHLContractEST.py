@@ -6,6 +6,7 @@ from Util import *
 from UI import *
 from ContractStructure import *
 from FormatData import *
+from Regression import *
 from random import shuffle
 
 CurrentYear = 2022 
@@ -43,13 +44,24 @@ for i in range(5):
 
 X, Y = CreateFeatureMatrix(ContractList)
 
+# Normalize X
+xMean, xVar = FindFeatureStats(X)
+XNorm = NormalizeFeatureVector(X, xMean, xVar)
 
+'''
 # Plot each feature 1 by 1. This is only useful if run through debugger.
 n = X.shape[0]
 
 for i in range(n):
-    PlotFeatureVector(X[i, :], Y, FeatureNames[i])
+    PlotFeatureVector(XNorm[i, :], Y, FeatureNames[i])
+'''
 
+param, JHistory, trainE, devE = LinearRegressionModel_Custom(X, Y)
+
+# Plot cost function
+plt.clf()
+plt.plot(JHistory)
+plt.show()
 
 # Print random player for debug
 # PrintPlayerInfo(ActivePlayerList[1])

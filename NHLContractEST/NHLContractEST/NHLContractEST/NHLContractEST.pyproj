@@ -24,6 +24,8 @@
     <Compile Include="ContractStructure.py" />
     <Compile Include="FormatData.py" />
     <Compile Include="GetData.py" />
+    <Compile Include="ML.py" />
+    <Compile Include="Regression.py" />
     <Compile Include="UI.py" />
     <Compile Include="Util.py" />
     <Compile Include="NHLContractEST.py" />

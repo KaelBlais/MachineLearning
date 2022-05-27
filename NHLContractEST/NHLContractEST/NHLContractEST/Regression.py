@@ -29,52 +29,48 @@ def LinearRegressionModel_Custom(X, Y, numIterations = 10000, learningRate = 0.0
 
     # Initialize parameters with random Ws and 0 bias
     np.random.seed(1)
-    #  W = np.random.randn(n, 1)
-    W = np.zeros((n, 1))
-    b = 0.0
+    # W = np.random.randn(1, n)
+    W = np.zeros((1, n))
+    b = np.array([0.0])
+    b = np.reshape(b, (1, 1)) # Make b a 1 x 1 array
+
+    # Assign constant parameters 
+    param["g1"] = "linear"
+    param["L"] = 1
 
     JHistory = np.zeros((numIterations, 1))
 
     for i in range(numIterations):
 
         # Propagate through
-        Z = np.dot(W.T, XTrain) + b
-        # A = relu(Z)
+        param["W1"] = W
+        param["b1"] = b
+        A, cache = ForwardPropagation(XTrain, param)
 
-        A = Z
+        J, dA = ReLUCost(A, YTrain)
 
-        J = reluCost(A, YTrain)
+        # Run backpropagation
+        grad = BackPropagation(dA, cache, param)
+        dW = grad["dW1"]
+        db = grad["db1"]
 
-        # For ReLU, gradient is 0 for entries where z was 0 (A is also 0)
-
-        # First calculate linear portion of gradient
-        temp = A-YTrain
-        # temp = temp * (A > 0) # zero out sections where A = 0
-
-        # Note that dW should have shape of (n, 1) and dB (1, 1)
-
-        dW = (1/mTrain) * np.dot(XTrain,temp.T)
-        dB = np.sum(temp)
-
-        assert(dW.shape == W.shape == (n, 1))
+        assert(dW.shape == W.shape == (1, n))
 
         W = W - learningRate*dW 
-        b = b - learningRate*dB 
+        b = b - learningRate*db 
 
         JHistory[i] = J
 
         print("Training Progress = " + str(int((i+1)*100/numIterations)) + "% complete", end = '\r')
 
 
+    # Grab last set of parameters
     param["W1"] = W
     param["b1"] = b
-    # param["act1"] = "relu"
-    param["act1"] = "linear"
-    param["L"] = 1
 
     # run predictions for both sets
-    trainPredictions, cache = predict(XTrain, param)
-    devPredictions, cache = predict(XDev, param)
+    trainPredictions, cache = ForwardPropagation(XTrain, param)
+    devPredictions, cache = ForwardPropagation(XDev, param)
 
     trainE = (1 / mTrain) * np.sum(abs(YTrain - trainPredictions))
     devE = (1 / mDev) * np.sum(abs(YDev - devPredictions))

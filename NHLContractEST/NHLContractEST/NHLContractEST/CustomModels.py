@@ -106,7 +106,7 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
     XDev = X[:, mTrain:mTrain+mDev]
     XTest = X[:, mTrain+mDev:mTotal]
 
-
+    Y = Y / 1000000
     YTrain = Y[: , 0:mTrain+1]
     YDev = Y[:, mTrain:mTrain+mDev]
     YTest = Y[:, mTrain+mDev:mTotal]
@@ -115,8 +115,8 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
     L = 3 # L is total number of layers
 
     # Ll is number of units in layer l
-    L1 = 50
-    L2 = 20
+    L1 = 100
+    L2 = 50
     L3 = 1
 
 
@@ -150,7 +150,6 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
 
     # XTrain = np.ones((XTrain.shape))
     # YTrain = np.zeros((YTrain.shape))
-    YTrain = YTrain / 1000000
 
     for i in range(numIterations):
 
@@ -183,9 +182,8 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
             W = W - learningRate*dW 
             b = b - learningRate*db 
 
-            if l <= 3: # for now, only use 1st layer for debug
-                param["W" + str(l)] = W
-                param["b" + str(l)] = b
+            param["W" + str(l)] = W
+            param["b" + str(l)] = b
 
         JHistory[i] = J
 

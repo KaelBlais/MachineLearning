@@ -112,7 +112,7 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
     YTest = Y[:, mTrain+mDev:mTotal]
 
     # Create model architecture
-    L = 1 # L is total number of layers
+    L = 2 # L is total number of layers
 
     # Ll is number of units in layer l
     L1 = 1
@@ -168,8 +168,8 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
 
 
         # Perform gradient checking
-        gradCopy = grad.copy()
-        gradDiff = GradientCheck(XTrain, YTrain, param.copy(), gradCopy)
+        # gradCopy = grad.copy()
+        # gradDiff = GradientCheck(XTrain, YTrain, param.copy(), gradCopy)
 
 
         # Update parameters

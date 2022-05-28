@@ -178,7 +178,7 @@ def FindPlayerWorth(PlayerList, SalaryCapTable, TeamStatsList, \
     y = np.squeeze(y)
 
     yearIndex = np.squeeze(np.where(SalaryCapTable["Seasons"] == year))
-    y = y + SalaryCapTable["Min Salary"][yearIndex]
+    y = y*1000000 + SalaryCapTable["Min Salary"][yearIndex]
 
     print("Predicted Salary = " + str(y) + "$")
 
@@ -374,7 +374,7 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
     denominator = np.linalg.norm(flatGrad) + np.linalg.norm(gradApprox)
     gradDiff =  numerator / denominator
 
-    if(gradDiff > 1e-5):
+    if(gradDiff > 2e-7):
         print("\n\n\nGradDiff:" + str(gradDiff) + "\n\n\n")
 
     return gradDiff

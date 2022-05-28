@@ -62,7 +62,7 @@ def LinearRegressionModel_Custom(X, Y, numIterations = 10000, learningRate = 0.0
 
         JHistory[i] = J
 
-        # print("Training Progress = " + str(int((i+1)*100/numIterations)) + "% complete", end = '\r')
+        print("Training Progress = " + str(int((i+1)*100/numIterations)) + "% complete", end = '\r')
 
 
     # Grab last set of parameters
@@ -145,24 +145,35 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
 
     JHistory = np.zeros((numIterations, 1))
 
+    # Overwrite with debug values for debug
+    # This one works
+    # XTrain = np.ones((param["W1"].T.shape))
+    # YTrain = np.zeros((1, 1))
+
+    # XTrain = np.ones((XTrain.shape))
+    # YTrain = np.zeros((YTrain.shape))
+    YTrain = YTrain / 1000000
+
     for i in range(numIterations):
 
         # Propagate through
-        A, cache = ForwardPropagation(XTrain, param)
+        A, cache = ForwardPropagation(XTrain, param.copy())
 
         J, dA = ReLUCost(A, YTrain)
 
         # print("Cost: " + str(J))
 
         # Run backpropagation
-        grad = BackPropagation(dA, cache, param)
+        grad = BackPropagation(dA, cache.copy(), param.copy())
 
 
         # Perform gradient checking
-        gradDiff = GradientCheck(XTrain, YTrain, param, grad)
+        gradCopy = grad.copy()
+        gradDiff = GradientCheck(XTrain, YTrain, param.copy(), gradCopy)
 
 
         # Update parameters
+        
         for l in range(1, L+1):    
             dW = grad["dW" + str(l)]
             db = grad["db" + str(l)]
@@ -181,6 +192,7 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
         JHistory[i] = J
 
         print("Training Progress = " + str(int((i+1)*100/numIterations)) + "% complete", end = '\r')
+        
 
     # run predictions for all sets
     trainPredictions, cache = ForwardPropagation(XTrain, param)

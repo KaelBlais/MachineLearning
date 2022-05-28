@@ -63,14 +63,17 @@ def ForwardPropagation(X, param):
         W = param["W" + str(l)]
         b = param["b" + str(l)]
         g = param["g" + str(l)]
+        Zl = np.dot(W,cache["A" + str(l-1)]) + b
 
-        cache["Z" + str(l)] = np.dot(W,cache["A" + str(l-1)]) + b
+        cache["Z" + str(l)] = Zl
         
         if(g == "relu"):
-            cache["A" + str(l)] = ReLU(cache["Z" + str(l)])
+            Al = ReLU(Zl)
 
         if(g == "linear"):
-            cache["A" + str(l)] = cache["Z" + str(l)]
+            Al = Zl
+
+        cache["A" + str(l)] = Al
 
         # Copy W and b into cache as well (needed for backpropagation)
         cache["W" + str(l)] = W
@@ -107,18 +110,28 @@ def BackPropagation(dA, cache, param):
     for l in range(L, 0, -1):
 
         g = param["g" + str(l)]
+        Zl = cache["Z" + str(l)]
 
         if(g == "relu"):
-            gprime = ReLUPrime(cache["Z" + str(l)])
+            gprime = ReLUPrime(Zl)
 
         if(g == "linear"):
             # Linear gprime is just an array of ones
-            gprime = np.ones(cache["Z" + str(l)].shape)
+            gprime = np.ones(Zl.shape)
 
-        grad["dZ" + str(l)] = grad["dA" + str(l)] * gprime
-        grad["dW" + str(l)] = (1/m)* np.dot(grad["dZ" + str(l)], cache["A" + str(l-1)].T)
-        grad["db" + str(l)] = (1/m) * np.sum(grad["dZ" + str(l)], axis = 1, keepdims = True)
-        grad["dA" + str(l-1)] = np.dot(cache["W" + str(l)].T , grad["dZ" + str(l)])
+        dAl = grad["dA" + str(l)]
+        dZl = dAl * gprime
+        Alminus1 = cache["A" + str(l-1)]
+        dWl = (1/m)* np.dot(dZl, Alminus1.T)
+        dbl = (1/m) * np.sum(dZl, axis = 1, keepdims = True)
+        Wl = cache["W" + str(l)]
+        dAlminus1 = np.dot(Wl.T , dZl)
+
+
+        grad["dZ" + str(l)] = dZl
+        grad["dW" + str(l)] = dWl
+        grad["db" + str(l)] = dbl
+        grad["dA" + str(l-1)] = dAlminus1
 
         # Double check that shapes of all gradients match expected variables
         assert(grad["dZ" + str(l)].shape == cache["Z" + str(l)].shape)
@@ -262,13 +275,14 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
     grad["db1"] = np.ones((grad["db1"].shape))
     '''
 
-
+    
     # Now assume cost function of the sum squared
     # This is equivalent to setting all X values to 1 and Y to 0 for linear regression
     # A = np.sum(paramVector, axis = 0, keepdims = True)
     # J = (A ** 2)/2
-    Xones = np.ones((param["W1"].T.shape))
-    Yzeros = np.zeros((1, 1))
+    
+    Xones = X # np.ones((param["W1"].T.shape))
+    Yzeros = Y # np.zeros((1, 1))
     A, cache = ForwardPropagation(Xones, param)
     J, dA = ReLUCost(A, Yzeros)
 
@@ -276,10 +290,18 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
     # Derivatives are equal to inputs
     # dA = 2/2A = A = W1 + W2 + ... b
     # dW1 = dJ/dA * dA/dW1 = A * 1 = A
-    grad["dW1"] = np.ones((grad["dW1"].shape))*A
-    grad["db1"] = np.ones((grad["db1"].shape))*A
+
+    # grad["dW1"] = np.ones((grad["dW1"].shape))*A
+    # grad["db1"] = np.ones((grad["db1"].shape))*A
+    
 
 
+    grad = BackPropagation(dA, cache, param)
+
+
+    # print(flatGrad.T)
+    
+    flatGrad = FlattenGrad(grad, L)
     for i in range(numParam):
 
 
@@ -313,6 +335,8 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
         # Now try same as above but using ForwardPropagation to measure A
         # This will require all X to be ones
         # This works, which validates ForwardPropagation and ReLUCost
+        
+        '''
         paramPlus = np.copy(paramVector) 
         paramPlus[i] = paramPlus[i] + epsilon
         A, cache = ForwardPropagation(Xones, UnflattenParam(paramPlus, param))
@@ -322,31 +346,35 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
         A, cache = ForwardPropagation(Xones, UnflattenParam(paramMinus, param))
         Jminus[i], dA = ReLUCost(A, Yzeros)
         gradApprox[i] = (Jplus[i] - Jminus[i]) / (2*epsilon)
-
-
         '''
+
+        
         # Nudge one param up by epsilon
+        
         paramPlus = np.copy(paramVector) 
         paramPlus[i] = paramPlus[i] + epsilon
         A, cache = ForwardPropagation(X, UnflattenParam(paramPlus, param))
-        if(g == "linear" or J == "relu"):
+        if(g == "linear" or g == "relu"):
             Jplus[i], dA = ReLUCost(A, Y)
 
         # Nudge one param down by epsilon
         paramMinus = np.copy(paramVector) 
         paramMinus[i] = paramMinus[i] - epsilon
         A, cache = ForwardPropagation(X, UnflattenParam(paramMinus, param))
-        if(g == "linear" or J == "relu"):
+        if(g == "linear" or g == "relu"):
             Jminus[i], dA = ReLUCost(A, Y)
 
         # Calculate approximate gradient from slope
         gradApprox[i] = (Jplus[i] - Jminus[i]) / (2*epsilon)
-        '''
+        
+        
     # Compare performance
-    flatGrad = FlattenGrad(grad, L)
     numDiff = abs(flatGrad - gradApprox)
     numerator =  np.linalg.norm(flatGrad - gradApprox)
     denominator = np.linalg.norm(flatGrad) + np.linalg.norm(gradApprox)
     gradDiff =  numerator / denominator
+
+    if(gradDiff > 1e-5):
+        print("\n\n\nGradDiff:" + str(gradDiff) + "\n\n\n")
 
     return gradDiff

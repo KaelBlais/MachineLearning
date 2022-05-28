@@ -112,11 +112,11 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
     YTest = Y[:, mTrain+mDev:mTotal]
 
     # Create model architecture
-    L = 2 # L is total number of layers
+    L = 3 # L is total number of layers
 
     # Ll is number of units in layer l
-    L1 = 1
-    L2 = 1
+    L1 = 50
+    L2 = 20
     L3 = 1
 
 
@@ -125,9 +125,7 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
     param["W1"] = np.random.randn(L1, n)*0.01
     param["b1"] = np.zeros((L1, 1))
 
-    # param["W2"] = np.random.randn(L2, L1)*0.01
-    # Overwrite second layer with ones and zero for debug
-    param["W2"] = np.ones((1, 1))
+    param["W2"] = np.random.randn(L2, L1)*0.01
     param["b2"] = np.zeros((L2, 1))
 
     param["W3"] = np.random.randn(L3, L2)
@@ -135,9 +133,9 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
 
 
     # Assign constant parameters 
-    param["g1"] = "linear"
-    param["g2"] = "linear"
-    param["g3"] = "linear"
+    param["g1"] = "relu"
+    param["g2"] = "relu"
+    param["g3"] = "relu"
     param["L"] = L
     param["L1"] = L1
     param["L2"] = L2

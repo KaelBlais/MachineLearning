@@ -99,18 +99,23 @@ def BackPropagation(dA, cache, param):
     # First entry is passed in
     grad["dA" + str(L)] = dA
 
+
+    # dA2 and dZ2 should be reducing every iteration. Print to make sure
+    # print("Sum of dA2: " + str(np.sum(abs(dA))))
+
+
     for l in range(L, 0, -1):
 
         g = param["g" + str(l)]
 
         if(g == "relu"):
-            gprime = ReLUPrime(cache["Z" + str(L)])
+            gprime = ReLUPrime(cache["Z" + str(l)])
 
         if(g == "linear"):
             # Linear gprime is just an array of ones
             gprime = np.ones(cache["Z" + str(l)].shape)
 
-        grad["dZ" + str(l)] = grad["dA" + str(L)] * gprime
+        grad["dZ" + str(l)] = grad["dA" + str(l)] * gprime
         grad["dW" + str(l)] = (1/m)* np.dot(grad["dZ" + str(l)], cache["A" + str(l-1)].T)
         grad["db" + str(l)] = (1/m) * np.sum(grad["dZ" + str(l)], axis = 1, keepdims = True)
         grad["dA" + str(l-1)] = np.dot(cache["W" + str(l)].T , grad["dZ" + str(l)])
@@ -121,6 +126,10 @@ def BackPropagation(dA, cache, param):
         assert(grad["db" + str(l)].shape == cache["b" + str(l)].shape)
         assert(grad["dA" + str(l-1)].shape == cache["A" + str(l-1)].shape)
 
+
+    # dA2 and dZ2 should be reducing every iteration. Print to make sure
+    # print("Sum of dZ2: " + str(np.sum(abs( grad["dZ2"]))))
+    # print("Sum of A1: " + str(np.sum(abs( cache["A1"]))))
     return grad
 
 
@@ -155,8 +164,116 @@ def FindPlayerWorth(PlayerList, SalaryCapTable, TeamStatsList, \
 
     y = np.squeeze(y)
 
+    yearIndex = np.squeeze(np.where(SalaryCapTable["Seasons"] == year))
+    y = y + SalaryCapTable["Min Salary"][yearIndex]
+
     print("Predicted Salary = " + str(y) + "$")
 
 
     return y
 
+
+# This function will flatten relevent parameters from param into a big array.
+# This is necessary for gradient checking. 
+def FlattenParam(param): 
+    L = param["L"]
+    first = 1
+
+    for l in range(1, L+1):
+        v = np.reshape(param["W" + str(l)], (-1, 1))
+        if(first):
+            vector = v
+            first = 0
+        else:
+            vector = np.concatenate((vector, v), axis=0)
+
+        v = np.reshape(param["b" + str(l)], (-1, 1))
+        vector = np.concatenate((vector, v), axis=0)
+
+    return vector
+
+# This function will unflatten relevent parameters from vector into the proper dictionary
+# This is necessary for gradient checking. 
+def UnflattenParam(array, param): 
+    L = param["L"]
+    newParam = param.copy()
+    idx = 0
+
+
+    for l in range(1, L+1):
+        s0 = param["W" + str(l)].shape[0]
+        s1 = param["W" + str(l)].shape[1]
+        idxEnd = idx + s0*s1
+        newParam["W" + str(l)] = array[idx:idxEnd].reshape((s0, s1))
+        idx = idxEnd
+        s0 = param["b" + str(l)].shape[0]
+        s1 = param["b" + str(l)].shape[1]
+        idxEnd = idx + s0*s1
+        newParam["b" + str(l)] = array[idx:idxEnd].reshape((s0, s1))
+        idx = idxEnd
+
+    return newParam
+
+
+# This function will flatten relevent gradients from grad into a big array.
+# This is necessary for gradient checking. 
+def FlattenGrad(grad, L):
+    first = 1
+
+    for l in range(1, L+1):
+        v = np.reshape(grad["dW" + str(l)], (-1, 1))
+        if(first):
+            vector = v
+            first = 0
+        else:
+            vector = np.concatenate((vector, v), axis=0)
+
+        v = np.reshape(grad["db" + str(l)], (-1, 1))
+        vector = np.concatenate((vector, v), axis=0)
+
+    return vector
+
+# This function will run gradient checking on all parameters in param
+def GradientCheck(X, Y, param, grad, epsilon = 1e-5):
+    L = param["L"]
+    
+    # Only need last activation function to determine cost
+    g = param["g" + str(L)]
+
+    # First reshape all necessary parameters into a giant vector
+    paramVector = FlattenParam(param)
+
+
+    numParam = paramVector.shape[0]
+    Jplus = np.zeros((numParam, 1))
+    Jminus = np.zeros((numParam, 1))
+    gradApprox = np.zeros((numParam, 1))
+
+
+    for i in range(numParam):
+
+        # Nudge one param up by epsilon
+        paramPlus = np.copy(paramVector) 
+        paramPlus[i] = paramPlus[i] + epsilon
+        A, cache = ForwardPropagation(X, UnflattenParam(paramPlus, param))
+        if(g == "linear" or J == "relu"):
+            Jplus[i], dA = ReLUCost(A, Y)
+
+        # Nudge one param down by epsilon
+        paramMinus = np.copy(paramVector) 
+        paramMinus[i] = paramMinus[i] - epsilon
+        A, cache = ForwardPropagation(X, UnflattenParam(paramMinus, param))
+        if(g == "linear" or J == "relu"):
+            Jminus[i], dA = ReLUCost(A, Y)
+
+        # Calculate approximate gradient from slope
+        gradApprox[i] = (Jplus[i] - Jminus[i]) / (2*epsilon)
+
+    # Compare performance
+    flatGrad = FlattenGrad(grad, L)
+    numDiff = abs(flatGrad - gradApprox)
+    numerator =  np.linalg.norm(flatGrad - gradApprox)
+    denominator = np.linalg.norm(flatGrad) + np.linalg.norm(gradApprox)
+    gradDiff =  numerator / denominator
+
+    return gradDiff

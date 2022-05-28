@@ -6,7 +6,7 @@ from Util import *
 from UI import *
 from ContractStructure import *
 from FormatData import *
-from Regression import *
+from CustomModels import *
 from random import shuffle
 
 CurrentYear = 2022 
@@ -56,14 +56,15 @@ for i in range(n):
     PlotFeatureVector(XNorm[i, :], Y, FeatureNames[i])
 '''
 
-param, JHistory, trainE, devE = LinearRegressionModel_Custom(XNorm, Y)
+# param, JHistory, trainE, devE = LinearRegressionModel_Custom(XNorm, Y)
+param, JHistory, trainE, devE = NeuralNetworkModel_Custom(XNorm, Y)
 
-'''
+
 # Plot cost function
 plt.clf()
 plt.plot(JHistory)
 plt.show()
-'''
+
 
 while(1):
     PlayerPredictionsUI(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear, param, xMean, xVar)

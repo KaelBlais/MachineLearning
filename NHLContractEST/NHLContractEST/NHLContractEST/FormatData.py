@@ -255,8 +255,8 @@ def CreateFeatureVector(Contract):
     x[104] = Contract.Year3TeamGF
     x[105] = Contract.Year3TeamGA
 
-    y = Contract.Salary
-
+    # Salary is everything above minimum salary. This will be a better fit for the ReLU model
+    y = Contract.Salary - Contract.Year1MinSalary;
 
     return x, y
 

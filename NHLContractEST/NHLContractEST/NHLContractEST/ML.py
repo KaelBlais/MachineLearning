@@ -269,7 +269,7 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
     # J = (A ** 2)/2
     Xones = np.ones((param["W1"].T.shape))
     Yzeros = np.zeros((1, 1))
-    A, cache = ForwardPropagation(Xones, UnflattenParam(paramVector, param))
+    A, cache = ForwardPropagation(Xones, param)
     J, dA = ReLUCost(A, Yzeros)
 
 

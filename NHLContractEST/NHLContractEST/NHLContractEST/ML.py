@@ -265,8 +265,13 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
 
     # Now assume cost function of the sum squared
     # This is equivalent to setting all X values to 1 and Y to 0 for linear regression
-    A = np.sum(paramVector, axis = 0, keepdims = True)
-    J = (A ** 2)/2
+    # A = np.sum(paramVector, axis = 0, keepdims = True)
+    # J = (A ** 2)/2
+    Xones = np.ones((param["W1"].T.shape))
+    Yzeros = np.zeros((1, 1))
+    A, cache = ForwardPropagation(Xones, UnflattenParam(paramVector, param))
+    J, dA = ReLUCost(A, Yzeros)
+
 
     # Derivatives are equal to inputs
     # dA = 2/2A = A = W1 + W2 + ... b
@@ -308,8 +313,6 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
         # Now try same as above but using ForwardPropagation to measure A
         # This will require all X to be ones
         # This works, which validates ForwardPropagation and ReLUCost
-        Xones = np.ones((param["W1"].T.shape))
-        Yzeros = np.zeros((1, 1))
         paramPlus = np.copy(paramVector) 
         paramPlus[i] = paramPlus[i] + epsilon
         A, cache = ForwardPropagation(Xones, UnflattenParam(paramPlus, param))
@@ -319,6 +322,7 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
         A, cache = ForwardPropagation(Xones, UnflattenParam(paramMinus, param))
         Jminus[i], dA = ReLUCost(A, Yzeros)
         gradApprox[i] = (Jplus[i] - Jminus[i]) / (2*epsilon)
+
 
         '''
         # Nudge one param up by epsilon

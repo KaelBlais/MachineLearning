@@ -234,7 +234,7 @@ def FlattenGrad(grad, L):
     return vector
 
 # This function will run gradient checking on all parameters in param
-def GradientCheck(X, Y, param, grad, epsilon = 1e-5):
+def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
     L = param["L"]
     
     # Only need last activation function to determine cost
@@ -249,9 +249,59 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-5):
     Jminus = np.zeros((numParam, 1))
     gradApprox = np.zeros((numParam, 1))
 
+    # Something here is broken. Try changing cost functions to figure out what.
+    # This will assume single-layer
+
+    # First cost function is set to sum of all params
+    # This one works
+    '''
+    J = np.sum(paramVector, axis = 0, keepdims = True)
+
+    # Derivatives of this is just a set of ones
+    grad["dW1"] = np.ones((grad["dW1"].shape))
+    grad["db1"] = np.ones((grad["db1"].shape))
+    '''
+
+
+    # Now assume cost function of the sum squared
+    # This is equivalent to setting all X values to 1 and Y to 0 for linear regression
+    A = np.sum(paramVector, axis = 0, keepdims = True)
+    J = (A ** 2)/2
+
+    # Derivatives are equal to inputs
+    # dA = 2/2A = A = W1 + W2 + ... b
+    # dW1 = dJ/dA * dA/dW1 = A * 1 = A
+    grad["dW1"] = np.ones((grad["dW1"].shape))*A
+    grad["db1"] = np.ones((grad["db1"].shape))*A
+
 
     for i in range(numParam):
 
+
+        # Assuming cost function of sum
+        # This one works
+        '''
+        paramPlus = np.copy(paramVector) 
+        paramPlus[i] = paramPlus[i] + epsilon
+        Jplus[i] = np.sum(paramPlus, axis = 0, keepdims = True)
+        paramMinus = np.copy(paramVector) 
+        paramMinus[i] = paramMinus[i] - epsilon
+        Jminus[i] = np.sum(paramMinus, axis = 0, keepdims = True)
+        gradApprox[i] = (Jplus[i] - Jminus[i]) / (2*epsilon)
+        '''
+
+        # Now assume slightly more complicated cost function of the sum squared
+        paramPlus = np.copy(paramVector) 
+        paramPlus[i] = paramPlus[i] + epsilon
+        A = np.sum(paramPlus, axis = 0, keepdims = True)
+        Jplus[i] = (A ** 2)/2
+        paramMinus = np.copy(paramVector) 
+        paramMinus[i] = paramMinus[i] - epsilon
+        A = np.sum(paramMinus, axis = 0, keepdims = True)
+        Jminus[i] = (A ** 2)/2
+        gradApprox[i] = (Jplus[i] - Jminus[i]) / (2*epsilon)
+
+        '''
         # Nudge one param up by epsilon
         paramPlus = np.copy(paramVector) 
         paramPlus[i] = paramPlus[i] + epsilon
@@ -268,7 +318,7 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-5):
 
         # Calculate approximate gradient from slope
         gradApprox[i] = (Jplus[i] - Jminus[i]) / (2*epsilon)
-
+        '''
     # Compare performance
     flatGrad = FlattenGrad(grad, L)
     numDiff = abs(flatGrad - gradApprox)

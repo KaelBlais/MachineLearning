@@ -203,6 +203,6 @@ def PlayerPredictionsUI(PlayerList, SalaryCapTable, TeamStatsList, CurrentYear, 
    contractLength = input('Please enter number of years: ')
 
    y = FindPlayerWorth(PlayerList, SalaryCapTable, TeamStatsList, \
-           name, contractLength, CurrentYear, modelParam, CurrentYear, xMean, xVar )
+           name, float(contractLength), CurrentYear, modelParam, CurrentYear, xMean, xVar )
 
    return y

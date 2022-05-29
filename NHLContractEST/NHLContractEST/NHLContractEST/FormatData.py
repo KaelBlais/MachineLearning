@@ -113,7 +113,9 @@ FeatureNames = [
                 "2nd Last Year Team Overtime Losses", "2nd Last Year Team Goals For", "2nd Last Year Team Goals Against", 
 
                 "3rd Last Year Team Position", "3rd Last Year Team Games Played", "3rd Last Year Team Wins", "3rd Last Year Team Losses",
-                "3rd Last Year Team Overtime Losses", "3rd Last Year Team Goals For", "3rd Last Year Team Goals Against"
+                "3rd Last Year Team Overtime Losses", "3rd Last Year Team Goals For", "3rd Last Year Team Goals Against",
+
+                "Age at end of contract"
                 ]
 
 
@@ -254,6 +256,13 @@ def CreateFeatureVector(Contract):
     x[103] = Contract.Year3TeamOTLosses
     x[104] = Contract.Year3TeamGF
     x[105] = Contract.Year3TeamGA
+
+
+    # Add age at end of contract. This is just a combination of two features.
+    # Ideally, this would be discovered by the neural network itself. 
+    # However, with the current architecture, this doesn't seem to work. 
+    # Therefore, add this as a feature to see if it can help 
+    x[106] = Contract.PlayerAge + Contract.NumYears
 
     # Salary is everything above minimum salary. This will be a better fit for the ReLU model
     # Note that this is stored in millions of dollars. 

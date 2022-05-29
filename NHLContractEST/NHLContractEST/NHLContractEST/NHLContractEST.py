@@ -49,12 +49,13 @@ X, Y = CreateFeatureMatrix(ContractList)
 xMean, xVar = FindFeatureStats(X)
 XNorm = NormalizeFeatureVector(X, xMean, xVar)
 
-'''
+
 # Plot each feature 1 by 1. This is only useful if run through debugger.
 n = X.shape[0]
 
+'''
 for i in range(n):
-    PlotFeatureVector(XNorm[i, :], Y, FeatureNames[i])
+    PlotFeatureVector(X[i, :], Y, FeatureNames[i])
 '''
 
 # param, JHistory, trainE, devE = LinearRegressionModel_Custom(XNorm, Y)

@@ -228,8 +228,9 @@ def PrintContractEntry(c):
 def PlotFeatureVector(x, y, name):
     plt.clf()
     plt.scatter(x, y)
-    plt.ylabel("Cost ($)")
+    plt.ylabel("Contract Value (1,000,000 $)")
     plt.xlabel(name)
+    plt.title("Feature Plot")
     plt.show()
 
 

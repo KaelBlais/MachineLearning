@@ -51,7 +51,7 @@ def LinearRegressionModel_Custom(X, Y, numIterations = 10000, learningRate = 0.0
 
 
         # Run backpropagation
-        grad = BackPropagation(dA, cache, param)
+        grad = BackPropagation(dA, cache)
         dW = grad["dW1"]
         db = grad["db1"]
 

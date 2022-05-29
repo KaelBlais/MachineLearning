@@ -62,9 +62,7 @@ param, JHistory, trainE, devE = NeuralNetworkModel_Custom(XNorm, Y)
 
 
 # Plot cost function
-plt.clf()
-plt.plot(JHistory)
-plt.show()
+PlotCostFunction(JHistory)
 
 
 while(1):

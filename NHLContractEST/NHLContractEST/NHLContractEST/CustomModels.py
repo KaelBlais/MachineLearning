@@ -73,11 +73,12 @@ def LinearRegressionModel_Custom(X, Y, numIterations = 10000, learningRate = 0.0
     trainPredictions, cache = ForwardPropagation(XTrain, param)
     devPredictions, cache = ForwardPropagation(XDev, param)
 
-    trainE = (1 / mTrain) * np.sum(abs(YTrain - trainPredictions))
-    devE = (1 / mDev) * np.sum(abs(YDev - devPredictions))
+    # Find errors and convert back to dollar values
+    trainE = (1 / mTrain) * np.sum(abs(YTrain - trainPredictions)) * 1000000
+    devE = (1 / mDev) * np.sum(abs(YDev - devPredictions)) * 1000000
 
 
-    print("Done with regression. Training Error = " + str(trainE) + ", Dev Error = " + str(devE))
+    print("Done with regression. Training Error = " + str(int(trainE)) + "$, Dev Error = " + str(int(devE)) + "$")
     return param, JHistory, trainE, devE
 
 
@@ -102,7 +103,6 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
     XDev = X[:, mTrain:mTrain+mDev]
     XTest = X[:, mTrain+mDev:mTotal]
 
-    Y = Y / 1000000
     YTrain = Y[: , 0:mTrain+1]
     YDev = Y[:, mTrain:mTrain+mDev]
     YTest = Y[:, mTrain+mDev:mTotal]
@@ -185,10 +185,13 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
     devPredictions, cache = ForwardPropagation(XDev, param)
     testPredictions, cache = ForwardPropagation(XTest, param)
 
-    trainE = (1 / mTrain) * np.sum(abs(YTrain - trainPredictions))
-    devE = (1 / mDev) * np.sum(abs(YDev - devPredictions))
-    testE = (1 / mTest) * np.sum(abs(YTest - testPredictions))
+    # Find errors and convert back to dollar values
+    trainE = (1 / mTrain) * np.sum(abs(YTrain - trainPredictions)) * 1000000
+    devE = (1 / mDev) * np.sum(abs(YDev - devPredictions)) * 1000000
+    testE = (1 / mTest) * np.sum(abs(YTest - testPredictions)) * 1000000
 
 
-    print("Done with regression. Training Error = " + str(trainE) + ". Dev Error = " + str(devE) + ", Test Error = " + str(testE))
+    print("Done with regression. Training Error = " + str(int(trainE)) + "$, Dev Error = " + str(int(devE))\
+       + "$, Test Error = " + str(int(testE)) + "$") 
+
     return param, JHistory, trainE, devE

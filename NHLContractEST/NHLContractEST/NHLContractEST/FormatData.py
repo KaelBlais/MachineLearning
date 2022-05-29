@@ -256,7 +256,10 @@ def CreateFeatureVector(Contract):
     x[105] = Contract.Year3TeamGA
 
     # Salary is everything above minimum salary. This will be a better fit for the ReLU model
-    y = Contract.Salary - Contract.Year1MinSalary;
+    # Note that this is stored in millions of dollars. 
+    # Keeping it as dollars caused the weights to become too large and the networks became unstable
+    # Changing this to millions of dollars (range from 0 to 12) fixed that
+    y = (Contract.Salary - Contract.Year1MinSalary) / 1000000;
 
     return x, y
 

@@ -2,6 +2,7 @@
 
 import pickle
 import matplotlib.pyplot as plt
+import numpy as np
 
 # This function will take in a player name and create the proper URL for it
 def FormatURL(name):
@@ -229,6 +230,19 @@ def PlotFeatureVector(x, y, name):
     plt.scatter(x, y)
     plt.ylabel("Cost ($)")
     plt.xlabel(name)
+    plt.show()
+
+
+def PlotCostFunction(Jhistory):
+    # First convert to dollars
+    Jdollars = Jhistory.copy()
+    Jdollars = np.sqrt(Jdollars) * 1000000
+
+    plt.clf()
+    plt.plot(Jdollars)
+    plt.ylabel("Average Error ($)")
+    plt.xlabel("Iteration")
+    plt.title("Cost Function")
     plt.show()
 
 

@@ -1,5 +1,5 @@
-# This file will attempt to create a salary predictor using simple regression. 
-# The activation function used for this will be a ReLU function
+# This file will attempt to create a salary predictor using custom models
+# This includes a single-layer regression model and a neural network
 
 import numpy as np
 from ML import *
@@ -91,10 +91,6 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
 
     param = {}
 
-    # Param +/- are used for gradient checking
-    paramPlus = {}
-    paramMinus = {}
-
     # First split X and Y into training, dev and test sets (60/20/20 % split)
     n = X.shape[0]
     mTotal = X.shape[1]
@@ -142,35 +138,26 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
     param["L3"] = L3
 
     JHistory = np.zeros((numIterations, 1))
-
-    # Overwrite with debug values for debug
-    # This one works
-    # XTrain = np.ones((param["W1"].T.shape))
-    # YTrain = np.zeros((1, 1))
-
-    # XTrain = np.ones((XTrain.shape))
-    # YTrain = np.zeros((YTrain.shape))
+    lastProgress = -1
 
     for i in range(numIterations):
 
         # Propagate through
-        A, cache = ForwardPropagation(XTrain, param.copy())
+        A, cache = ForwardPropagation(XTrain, param)
 
         J, dA = ReLUCost(A, YTrain)
 
         # print("Cost: " + str(J))
 
         # Run backpropagation
-        grad = BackPropagation(dA, cache.copy(), param.copy())
+        grad = BackPropagation(dA, cache)
 
 
-        # Perform gradient checking
-        # gradCopy = grad.copy()
-        # gradDiff = GradientCheck(XTrain, YTrain, param.copy(), gradCopy)
+        # Perform gradient checking if desired
+        # gradDiff = GradientCheck(XTrain, YTrain, param, grad)
 
 
         # Update parameters
-        
         for l in range(1, L+1):    
             dW = grad["dW" + str(l)]
             db = grad["db" + str(l)]
@@ -187,7 +174,10 @@ def NeuralNetworkModel_Custom(X, Y, numIterations = 10000, learningRate = 0.001)
 
         JHistory[i] = J
 
-        print("Training Progress = " + str(int((i+1)*100/numIterations)) + "% complete", end = '\r')
+        progress = str(int((i+1)*100/numIterations))
+        if(progress != lastProgress): # Only print if progress has changed
+            print("Training Progress = " + str(progress) + "% complete", end = '\r')
+            lastProgress = progress
         
 
     # run predictions for all sets

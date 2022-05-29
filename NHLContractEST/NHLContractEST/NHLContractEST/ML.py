@@ -59,6 +59,9 @@ def ForwardPropagation(X, param):
     # Input is A0
     cache["A0"] = X
 
+    # Also store L in cache
+    cache["L"] = L
+
     for l in range (1, L+1):
         W = param["W" + str(l)]
         b = param["b" + str(l)]
@@ -75,9 +78,10 @@ def ForwardPropagation(X, param):
 
         cache["A" + str(l)] = Al
 
-        # Copy W and b into cache as well (needed for backpropagation)
+        # Copy W,g and b into cache as well (needed for backpropagation)
         cache["W" + str(l)] = W
         cache["b" + str(l)] = b
+        cache["g" + str(l)] = g
 
     Y = cache["A" + str(L)]
 
@@ -89,7 +93,7 @@ def ForwardPropagation(X, param):
 # the gradients dWl and dBl for each layer
 # Note that this also requires dA, the derivative of the cost function with respect 
 # to the predicted output.
-def BackPropagation(dA, cache, param):
+def BackPropagation(dA, cache):
 
     grad = {}
 
@@ -97,19 +101,15 @@ def BackPropagation(dA, cache, param):
     n = cache["A0"].shape[0]
     m = cache["A0"].shape[1]
 
-    L = param["L"]
+    L = cache["L"]
 
     # First entry is passed in
     grad["dA" + str(L)] = dA
 
 
-    # dA2 and dZ2 should be reducing every iteration. Print to make sure
-    # print("Sum of dA2: " + str(np.sum(abs(dA))))
-
-
     for l in range(L, 0, -1):
 
-        g = param["g" + str(l)]
+        g = cache["g" + str(l)]
         Zl = cache["Z" + str(l)]
 
         if(g == "relu"):
@@ -139,10 +139,6 @@ def BackPropagation(dA, cache, param):
         assert(grad["db" + str(l)].shape == cache["b" + str(l)].shape)
         assert(grad["dA" + str(l-1)].shape == cache["A" + str(l-1)].shape)
 
-
-    # dA2 and dZ2 should be reducing every iteration. Print to make sure
-    # print("Sum of dZ2: " + str(np.sum(abs( grad["dZ2"]))))
-    # print("Sum of A1: " + str(np.sum(abs( cache["A1"]))))
     return grad
 
 
@@ -262,95 +258,10 @@ def GradientCheck(X, Y, param, grad, epsilon = 1e-7):
     Jminus = np.zeros((numParam, 1))
     gradApprox = np.zeros((numParam, 1))
 
-    # Something here is broken. Try changing cost functions to figure out what.
-    # This will assume single-layer
-
-    # First cost function is set to sum of all params
-    # This one works
-    '''
-    J = np.sum(paramVector, axis = 0, keepdims = True)
-
-    # Derivatives of this is just a set of ones
-    grad["dW1"] = np.ones((grad["dW1"].shape))
-    grad["db1"] = np.ones((grad["db1"].shape))
-    '''
-
-    
-    # Now assume cost function of the sum squared
-    # This is equivalent to setting all X values to 1 and Y to 0 for linear regression
-    # A = np.sum(paramVector, axis = 0, keepdims = True)
-    # J = (A ** 2)/2
-    
-    Xones = X # np.ones((param["W1"].T.shape))
-    Yzeros = Y # np.zeros((1, 1))
-    A, cache = ForwardPropagation(Xones, param)
-    J, dA = ReLUCost(A, Yzeros)
-
-
-    # Derivatives are equal to inputs
-    # dA = 2/2A = A = W1 + W2 + ... b
-    # dW1 = dJ/dA * dA/dW1 = A * 1 = A
-
-    # grad["dW1"] = np.ones((grad["dW1"].shape))*A
-    # grad["db1"] = np.ones((grad["db1"].shape))*A
-    
-
-
-    grad = BackPropagation(dA, cache, param)
-
-
-    # print(flatGrad.T)
-    
     flatGrad = FlattenGrad(grad, L)
     for i in range(numParam):
 
-
-        # Assuming cost function of sum
-        # This one works
-        '''
-        paramPlus = np.copy(paramVector) 
-        paramPlus[i] = paramPlus[i] + epsilon
-        Jplus[i] = np.sum(paramPlus, axis = 0, keepdims = True)
-        paramMinus = np.copy(paramVector) 
-        paramMinus[i] = paramMinus[i] - epsilon
-        Jminus[i] = np.sum(paramMinus, axis = 0, keepdims = True)
-        gradApprox[i] = (Jplus[i] - Jminus[i]) / (2*epsilon)
-        '''
-
-        # Now assume slightly more complicated cost function of the sum squared
-        # This one works
-        '''
-        paramPlus = np.copy(paramVector) 
-        paramPlus[i] = paramPlus[i] + epsilon
-        A = np.sum(paramPlus, axis = 0, keepdims = True)
-        Jplus[i] = (A ** 2)/2
-        paramMinus = np.copy(paramVector) 
-        paramMinus[i] = paramMinus[i] - epsilon
-        A = np.sum(paramMinus, axis = 0, keepdims = True)
-        Jminus[i] = (A ** 2)/2
-        gradApprox[i] = (Jplus[i] - Jminus[i]) / (2*epsilon)
-        '''
-
-
-        # Now try same as above but using ForwardPropagation to measure A
-        # This will require all X to be ones
-        # This works, which validates ForwardPropagation and ReLUCost
-        
-        '''
-        paramPlus = np.copy(paramVector) 
-        paramPlus[i] = paramPlus[i] + epsilon
-        A, cache = ForwardPropagation(Xones, UnflattenParam(paramPlus, param))
-        Jplus[i], dA = ReLUCost(A, Yzeros)
-        paramMinus = np.copy(paramVector) 
-        paramMinus[i] = paramMinus[i] - epsilon
-        A, cache = ForwardPropagation(Xones, UnflattenParam(paramMinus, param))
-        Jminus[i], dA = ReLUCost(A, Yzeros)
-        gradApprox[i] = (Jplus[i] - Jminus[i]) / (2*epsilon)
-        '''
-
-        
         # Nudge one param up by epsilon
-        
         paramPlus = np.copy(paramVector) 
         paramPlus[i] = paramPlus[i] + epsilon
         A, cache = ForwardPropagation(X, UnflattenParam(paramPlus, param))

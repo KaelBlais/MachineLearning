@@ -1,13 +1,13 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import random
 from GetData import *
 from Util import *
 from UI import *
 from ContractStructure import *
 from FormatData import *
 from CustomModels import *
-from random import shuffle
 
 CurrentYear = 2022 
 
@@ -31,7 +31,8 @@ for i in range(5):
 '''
 
 # Randomize list before converting to X, Y
-shuffle(ContractList)
+random.seed(1)
+random.shuffle(ContractList)
 
 '''
 print("CONTRACTS AFTER SHUFFLE: \n\n")

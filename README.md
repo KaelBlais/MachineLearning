@@ -20,3 +20,7 @@ This houses the necessary functions to present the console UI and give the user 
 * FormatData: This will take the contract entries created in ContractStructure and convert them into "n" x 1 feature vectors where "n" is the number of features to be used by the training model. The contract list will be formatted into an "n" x "m" matrix X that will correspond to the training and cross-validation sets used by the model. The contract salaries will be converted to a 1 x "m" vector Y. 
 
 * Util: This houses various small utility functions such as file IO, feature plotting,  etc. 
+
+* ML: This contains various useful ML functions such as cost functions, forward/backward propagation, gradient checking, etc. 
+
+* CustomModels: This contains custom regression models built using the functions created in ML.py.

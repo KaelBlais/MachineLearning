@@ -88,9 +88,6 @@ def TensorFlow_SimpleNeuralNet(X, Y, numIterations = 10000, learningRate = 0.000
 
     JHistory = history.history["loss"]
 
-    # Retrieve param from network 
-    layer1 = model.get_layer(index = 1)
-    layer2 = model.get_layer(index = 2)
-    layer3 = model.get_layer(index = 3)
+    return model, JHistory, trainE, devE
 
 

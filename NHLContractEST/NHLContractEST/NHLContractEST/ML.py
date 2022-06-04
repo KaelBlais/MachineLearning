@@ -169,7 +169,15 @@ def FindPlayerWorth(PlayerList, SalaryCapTable, TeamStatsList, \
 
     xNorm = NormalizeFeatureVector(x, xMean, xVar)
 
-    y, cache = ForwardPropagation(xNorm, modelParam)
+    # Check whether param represents a custom model dictionary or a tensorflow model
+    if(type(modelParam) == dict):
+        # This is a dictionary, use custom function
+        y, cache = ForwardPropagation(xNorm, modelParam)
+    else:
+        # This is a tensorflow object, use tf model prediction
+        n = xNorm.shape[0]
+        XNorm_Reshaped = np.reshape(xNorm, (1, 1, n))
+        y = modelParam.predict(XNorm_Reshaped, verbose = '0')
 
     y = np.squeeze(y)
 

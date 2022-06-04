@@ -1,10 +1,13 @@
 # This file will attempt to create a salary predictor using models
 # built from tensorflow packages
 
+# Turn off annoying tensorflow W and I messages before importing
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 import tensorflow as tf
 import tensorflow.keras.layers as tfl
 import numpy as np
-
 
 # This model should have the same performance as the NeuralNetworkModel_Custom function
 # NOTE: For some reason, a learning rate of 0.001 did not converge here, even though this converged 

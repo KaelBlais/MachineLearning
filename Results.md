@@ -71,7 +71,10 @@ As a young player, Nick Suzuki's 8 year deal at that figure makes sense.
 This is very close to the actual contract he just signed (7,975,000\$). 
 However, once again, the short-term values are much too low.  
 
-As seen, the linear regression model can estimate some contracts correctly but is much too prone too error to be of any real use. 
+One interesting aspect to note here is the linear nature of the weights. In this case, no matter what age the player is, the salary difference based on contract length is always the same (5,065,198\$) 
+between a 1-year deal and an 8-year deal. This is obviously unrealistic and highlights the limitations of single-layer linear regression for this particular problem.  
+
+As seen, the linear regression model can estimate some contracts correctly but is much too prone to error to be of any real use. 
 Likewise, the training and dev set errors of around 750,000$ seem ok but in reality are not very good. 
 Being 750,000$ off on a large contract, for example a 10 million dollar contract, might seem quite good. 
 However, most contracts in the training set are quite low, usually around 1 or 2 million. 
@@ -108,5 +111,33 @@ As before, the 4-year and 8-year contracts for Pavelski are completely wrong.
 This could be due to the model or also possibly to the lack of data itself. 
 For obvious reasons, no player of that age has signed long-term contracts before so it's possible that the model isn't able to project this kind of data. 
 With the dev and test sets being much higher than the training set, it's also possible this model is suffering from overfitting. 
-That would make it worse at generalizing to new examples, such as the contracts attempted above. 
+That would make it worse at generalizing to new examples, such as the contracts attempted above.  
 
+Here, the non-linear nature of the model can also be seen. Previously, salary difference between a 1-year deal and an 8-year deal were always the same. In this case however, the behavior is much different. For 25-year old Connor McDavid, the difference is very small (2,001,683\$)
+while for 22-year old Nick Suzuki, the difference is much larger (3,463,670\$).
+This shows that the non-linear approach is adding benefit as expected.  
+
+## Simple TensorFlow Model
+
+This model was built using a similar architecture to the custom-built neural network. As before, this network used 2 hidden layers of 100 and 50 units respectively. 
+Once again, this used batch gradient descent with 10000 iterations. In this case, the Adam optimization was added to speed up convergence. The cost function and metric used to evaluate the model were both set to use mean-squared error since the output layer contained a ReLU activation function. For this model, the learning rate was set to 0.0001. The results of this were a training error of 31,027\$, 
+a dev error of 532,813\$, 
+and a test error of 594,692\$.
+Note that this model had a much better training error than the custom-built one but a slightly larger dev and test error. This is likely due to this model overfitting the training set. No regularization was used for this model either so this is no major surprise. It is however quite interesting to see how much the Adam optimization helped improve convergence speed. 
+Here is a view of the resulting cost function:  
+![image](https://user-images.githubusercontent.com/33467901/172021968-2d0f382e-ee27-44af-9e25-c873b30a57e4.png)  
+As before, the same player predictions were made. Here are the results: 
+- Connor McDavid (25 years old): 
+	- 8 years: 16,132,630\$	 
+	- 4 years: 14,948,495\$	 
+	- 1 year: 14,018,498\$
+- Joe Pavelski (37 years old): 
+	- 8 years: 9,203,255\$	
+	- 4 years: 6,999,432\$	
+	- 1 year: 5,507,911\$
+- Nick Suzuki (22 years old): 
+	- 8 years: 7,879,461\$	
+	- 4 years: 5,399,962\$	
+	- 1 year: 3,448,613\$  
+
+These are fairly comparable to the custom network results. The values for Connor McDavid are quite a bit higher than before which seems a little less realistic. On the other hand, Nick Suzuki's numbers are closer to the actual contract he signed. In general, this seems like similar performance, which is to be expected since the dev set accuracy is similar to the custom model. 

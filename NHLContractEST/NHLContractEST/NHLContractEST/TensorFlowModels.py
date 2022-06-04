@@ -12,7 +12,6 @@ import numpy as np
 # This model should have the same performance as the NeuralNetworkModel_Custom function
 # NOTE: For some reason, a learning rate of 0.001 did not converge here, even though this converged 
 # on the custom model. Reducing this to 0.0001 seems to converge
-# To account for this, the number of iterations has been increased by a factor of 10
 # This might be tied to the use of the Adams optimization and/or other inherent regularization
 # in the model
 def TensorFlow_SimpleNeuralNet(X, Y, numIterations = 10000, learningRate = 0.0001):

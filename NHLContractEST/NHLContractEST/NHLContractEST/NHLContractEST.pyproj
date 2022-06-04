@@ -26,6 +26,7 @@
     <Compile Include="GetData.py" />
     <Compile Include="ML.py" />
     <Compile Include="CustomModels.py" />
+    <Compile Include="TensorFlowModels.py" />
     <Compile Include="UI.py" />
     <Compile Include="Util.py" />
     <Compile Include="NHLContractEST.py" />

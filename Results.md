@@ -90,7 +90,9 @@ This resulted in a training error of 302,642\$,
 a dev error of 468,238\$ 
 and a test error of 512,997\$. 
 Here is the cost function of this:  
+
 ![image](https://user-images.githubusercontent.com/33467901/170897274-cc53fa24-07ec-4fb5-8029-c144c2f8f16a.png)  
+
 The same values as before were used to make a few predictions. Here are the results: 
 - Connor McDavid (25 years old): 
 	- 8 years: 13,691,061\$	 
@@ -125,7 +127,11 @@ a dev error of 532,813\$,
 and a test error of 594,692\$.
 Note that this model had a much better training error than the custom-built one but a slightly larger dev and test error. This is likely due to this model overfitting the training set. No regularization was used for this model either so this is no major surprise. It is however quite interesting to see how much the Adam optimization helped improve convergence speed. 
 Here is a view of the resulting cost function:  
+
 ![image](https://user-images.githubusercontent.com/33467901/172021968-2d0f382e-ee27-44af-9e25-c873b30a57e4.png)  
+
+Note that the cost function is now based on the pre-built tensorflow *MeanSquaredError* metric instead of the custom-built cost function used in the previous networks. Therefore, the values plotted for the cost function no longer correspond to the final training error. However, the trend of the data is still valid. 
+
 As before, the same player predictions were made. Here are the results: 
 - Connor McDavid (25 years old): 
 	- 8 years: 16,132,630\$	 

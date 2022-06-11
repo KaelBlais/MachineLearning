@@ -61,7 +61,8 @@ for i in range(n):
 
 # param, JHistory, trainE, devE = LinearRegressionModel_Custom(XNorm, Y)
 # param, JHistory, trainE, devE = NeuralNetworkModel_Custom(XNorm, Y)
-param, JHistory, trainE, devE = TensorFlow_SimpleNeuralNet(XNorm, Y)
+# param, JHistory, trainE, devE = TensorFlow_SimpleNeuralNet(XNorm, Y)
+param, JHistory, trainE, devE = TensorFlow_ComplexNeuralNet(XNorm, Y)
 
 # Plot cost function
 PlotCostFunction(JHistory)

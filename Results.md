@@ -141,3 +141,27 @@ As before, the same player predictions were made. Here are the results:
 	- 1 year: 3,448,613\$  
 
 These are fairly comparable to the custom network results. The values for Connor McDavid are quite a bit higher than before which seems a little less realistic. On the other hand, Nick Suzuki's numbers are closer to the actual contract he signed. In general, this seems like similar performance, which is to be expected since the dev set accuracy is similar to the custom model. 
+
+
+## Regularizing TensorFlow Model
+
+The same model from the previous section was trained with regularization. In this case, L2 regularization with a regularization constant of 0.07 was used. All other parameters were kept the same. This yielded a training error of 407,477\$,
+a dev error of 465,301\$ 
+and a test error of 513,246\$.
+Here, the training error was quite a bit worse than the previous model but the dev error was reduced by around 67,000\$ 
+which means the model is generalizing better to new examples than before. 
+Here are the results from the same player predictions: 
+- Connor McDavid (25 years old): 
+	- 8 years: 11,743,089\$	 
+	- 4 years: 10,433,278\$	 
+	- 1 year: 9,276,291\$
+- Joe Pavelski (37 years old): 
+	- 8 years: 7,718,580\$	
+	- 4 years: 5,768,960\$	
+	- 1 year: 4,292,509\$
+- Nick Suzuki (22 years old): 
+	- 8 years: 6,916,112\$	
+	- 4 years: 5,106,769\$	
+	- 1 year: 3,865,311\$  
+
+In general, these are considerably lower than the unregrularized model. While the unregularized model seemed to predict values that were slightly too high, this seems to predict values that are slightly too low. 

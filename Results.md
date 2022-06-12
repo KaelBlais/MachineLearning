@@ -41,7 +41,7 @@ assists and time-on-ice have a large impact on the salary of a player while more
 ## Linear Regression Model
 
 With the input and output data created, the next step was to build a model that could predict the outputs based on the inputs. 
-The first model evaluated was a simple linear regression model with a "relu" activation function. 
+The first model evaluated was a simple linear regression model with a *ReLU* activation function. 
 With 10000 iterations and a learning rate of 0.001, this converged to a model with an average training error of 748,066\$ 
 and a dev error of 760,177\$. 
 Here is the cost function for that model:  
@@ -83,7 +83,7 @@ Therefore, being 750,000$ off on those is actually quite a large error.
 ## Neural Network Model
 
 The next model evaluated was a custom-built neural network. 
-This was arbitrarily picked to have 2 hidden layers, all using the "ReLU" activation function. 
+This was arbitrarily picked to have 2 hidden layers, all using the *ReLU* activation function. 
 The first layer was assigned 100 hidden units and the second one was assigned 50 units. 
 As before, this was run with 10,000 iterations and a learning rate of 0.001. 
 This resulted in a training error of 302,642\$, 
@@ -122,7 +122,7 @@ This shows that the non-linear approach is adding benefit as expected.
 ## Simple TensorFlow Model
 
 This model was built using a similar architecture to the custom-built neural network. As before, this network used 2 hidden layers of 100 and 50 units respectively. 
-Once again, this used batch gradient descent with 10000 iterations. In this case, the Adam optimization was added to speed up convergence. The cost function and metric used to evaluate the model were both set to use mean-squared error since the output layer contained a ReLU activation function. For this model, the learning rate was set to 0.0001. The results of this were a training error of 31,027\$, 
+Once again, this used batch gradient descent with 10000 iterations. In this case, the Adam optimization was added to speed up convergence. The cost function and metric used to evaluate the model were both set to use mean-squared error since the output layer contained a *ReLU* activation function. For this model, the learning rate was set to 0.0001. The results of this were a training error of 31,027\$, 
 a dev error of 532,813\$, 
 and a test error of 594,692\$.
 Note that this model had a much better training error than the custom-built one but a slightly larger dev and test error. This is likely due to this model overfitting the training set. No regularization was used for this model either so this is no major surprise. It is however quite interesting to see how much the Adam optimization helped improve convergence speed. 
@@ -210,3 +210,51 @@ Different hyperparameters were tuned to attempt to improve performance. First, d
 	- Test Set: 485,026\$  
 
 Based on this, the regularization constants were set to L1 = 0.005 and L2 = 0.01 respectively since that combination gave the lowest dev set error. 
+
+Tuning the regularization fixed the overfitting problem but resulted in a model with a dev set error of around 440,000\$,
+which was still quite high. Next, the number of feature units in each layer were tuned to try to reduce the error further. Here are the results: 
+- Layer 1 = 50 units, Layer 2 = 25 units: 
+	- Train Set: 356,576\$	 
+	- Dev Set: 447,867\$	 
+	- Test Set: 489,767\$  
+- Layer 1 = 200 units, Layer 2 = 100 units: 
+	- Train Set: 376,400\$	 
+	- Dev Set: 443,548\$	 
+	- Test Set: 485,994\$  
+- Layer 1 = 400 units, Layer 2 = 200 units: 
+	- Train Set: 342,123\$	 
+	- Dev Set: 434,596\$	 
+	- Test Set: 491,848\$  
+- **Layer 1 = 500 units, Layer 2 = 250 units:** 
+	- **Train Set: 353,019\$**	 
+	- **Dev Set: 427,664\$**	 
+	- **Test Set: 471,498\$**  
+- Layer 1 = 700 units, Layer 2 = 350 units: 
+	- Train Set: 362,664\$	 
+	- Dev Set: 435,821\$	 
+	- Test Set: 483,617\$  
+- Layer 1 = 1000 units, Layer 2 = 500 units: 
+	- Train Set: 358,342\$	 
+	- Dev Set: 454,832\$	 
+	- Test Set: 484,152\$  
+
+It seems here like the best option was the model with 500 units in the first layer and 250 units in the second layer. Note that all of these models have used a decreasing structure where the second layer had half of the units of the first layer. This was arbitrarily decided. To test this assumption, the following models were used. 
+- Layer 1 = 250 units, Layer 2 = 500 units: 
+	- Train Set: 364,481\$	 
+	- Dev Set: 463,884\$	 
+	- Test Set: 498,928\$  
+- Layer 1 = 500 units, Layer 2 = 500 units: 
+	- Train Set: 350,332\$	 
+	- Dev Set: 437,408\$	 
+	- Test Set: 479,601\$  
+
+Both of these test cases were worst than the original case with 500 units in Layer 1 and 250 units in Layer 2. Therefore, the original structure of decreasing the units every layer was kept. The next step was to test with an extra *ReLU* layer and see if that improved performance.
+- Layer 1 = 500 units, Layer 2 = 250 units,  Layer 3 = 125 units: 
+	- Train Set: 277,371\$	 
+	- Dev Set: 483,578\$	 
+	- Test Set: 514,586\$  
+- Layer 1 = 500 units, Layer 2 = 400 units,  Layer 3 = 250 units: 
+	- Train Set: 261,671\$	 
+	- Dev Set: 444,010\$	 
+	- Test Set: 518,988\$  
+Neither model was an improvement on the original. 

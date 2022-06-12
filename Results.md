@@ -209,8 +209,7 @@ Different hyperparameters were tuned to attempt to improve performance. First, d
 	- Dev Set: 453,759\$	 
 	- Test Set: 485,026\$  
 
-Based on this, the regularization constants were set to L1 = 0.005 and L2 = 0.01 respectively since that combination gave the lowest dev set error. 
-
+Based on this, the regularization constants were set to L1 = 0.005 and L2 = 0.01 respectively since that combination gave the lowest dev set error.
 Tuning the regularization fixed the overfitting problem but resulted in a model with a dev set error of around 440,000\$,
 which was still quite high. Next, the number of feature units in each layer were tuned to try to reduce the error further. Here are the results: 
 - Layer 1 = 50 units, Layer 2 = 25 units: 
@@ -248,7 +247,7 @@ It seems here like the best option was the model with 500 units in the first lay
 	- Dev Set: 437,408\$	 
 	- Test Set: 479,601\$  
 
-Both of these test cases were worst than the original case with 500 units in Layer 1 and 250 units in Layer 2. Therefore, the original structure of decreasing the units every layer was kept. The next step was to test with an extra *ReLU* layer and see if that improved performance.
+Both of these test cases were worse than the original case with 500 units in Layer 1 and 250 units in Layer 2. Therefore, the original structure of decreasing the units every layer was kept. The next step was to test with an extra *ReLU* layer and see if that improved performance.
 - Layer 1 = 500 units, Layer 2 = 250 units,  Layer 3 = 125 units: 
 	- Train Set: 277,371\$	 
 	- Dev Set: 483,578\$	 
@@ -257,4 +256,19 @@ Both of these test cases were worst than the original case with 500 units in Lay
 	- Train Set: 261,671\$	 
 	- Dev Set: 444,010\$	 
 	- Test Set: 518,988\$  
-Neither model was an improvement on the original. 
+
+Neither model was an improvement on the original so the 2-layer *ReLU* structure was kept. Next, a *tanh* layer was inserted in a similar way to see if this would act any differently.  
+- Layer 1 (*tanh*) = 1000 units, Layer 2 (*ReLU*) = 500 units,  Layer 3 (*ReLU*) = 250 units: 
+	- Train Set: 305,061\$	 
+	- Dev Set: 486,866\$	 
+	- Test Set: 517,904\$  
+- Layer 1 (*ReLU*) = 500 units, Layer 2 (*tanh*) = 325 units,  Layer 3 (*ReLU*) = 250 units: 
+	- Train Set: 311,867\$	 
+	- Dev Set: 465,769\$	 
+	- Test Set: 521,623\$  
+- Layer 1 (*ReLU*) = 500 units, Layer 2 (*ReLU*) = 250 units,  Layer 3 (*tanh*) = 125 units: 
+	- Train Set: 269,197\$	 
+	- Dev Set: 465,675\$	 
+	- Test Set: 514,931\$  
+
+None of these models were an improvement so no *tanh* layer was added. 

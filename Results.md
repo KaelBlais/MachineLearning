@@ -171,3 +171,42 @@ Here are the results from the same player predictions:
 	- 1 year: 3,865,311\$  
 
 In general, these are considerably lower than the unregrularized model. While the unregularized model seemed to predict values that were slightly too high, this seems to predict values that are slightly too low. 
+
+
+## Hyperparameter Tuning
+
+Different hyperparameters were tuned to attempt to improve performance. First, different regularization constants were tuned. Here are the resulting errors for a few different values: 
+- L1 = 0, L2 = 0.01: 
+	- Train Set: 147,979\$	 
+	- Dev Set: 496,666\$	 
+	- Test Set: 567,323\$ 
+- L1 = 0, L2 = 0.03: 
+	- Train Set: 283,631\$	 
+	- Dev Set: 458,783\$	 
+	- Test Set: 504,995\$  
+- L1 = 0.0025, L2 = 0.01: 
+	- Train Set: 295,365\$	 
+	- Dev Set: 450,420\$	 
+	- Test Set: 502,607\$  
+- L1 = 0.0025, L2 = 0.015: 
+	- Train Set: 330,331\$	 
+	- Dev Set: 450,981\$	 
+	- Test Set: 498,568\$  
+- **L1 = 0.005, L2 = 0.01:** 
+	- **Train Set: 349,350\$**	 
+	- **Dev Set: 440,466\$**	 
+	- **Test Set: 482,269\$**  
+- L1 = 0.005, L2 = 0.03: 
+	- Train Set: 409,033\$	 
+	- Dev Set: 462,220\$	 
+	- Test Set: 497,111\$  
+- L1 = 0.0075, L2 = 0.01: 
+	- Train Set: 404,768\$	 
+	- Dev Set: 448,414\$	 
+	- Test Set: 491,605\$  
+- L1 = 0.01, L2 = 0.01: 
+	- Train Set: 420,997\$	 
+	- Dev Set: 453,759\$	 
+	- Test Set: 485,026\$  
+
+Based on this, the regularization constants were set to L1 = 0.005 and L2 = 0.01 respectively since that combination gave the lowest dev set error. 

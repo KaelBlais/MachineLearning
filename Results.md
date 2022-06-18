@@ -41,7 +41,7 @@ assists and time-on-ice have a large impact on the salary of a player while more
 ## Linear Regression Model
 
 With the input and output data created, the next step was to build a model that could predict the outputs based on the inputs. 
-The first model evaluated was a simple linear regression model with a "relu" activation function. 
+The first model evaluated was a simple linear regression model with a *ReLU* activation function. 
 With 10000 iterations and a learning rate of 0.001, this converged to a model with an average training error of 748,066\$ 
 and a dev error of 760,177\$. 
 Here is the cost function for that model:  
@@ -78,12 +78,14 @@ As seen, the linear regression model can estimate some contracts correctly but i
 Likewise, the training and dev set errors of around 750,000$ seem ok but in reality are not very good. 
 Being 750,000$ off on a large contract, for example a 10 million dollar contract, might seem quite good. 
 However, most contracts in the training set are quite low, usually around 1 or 2 million. 
-Therefore, being 750,000$ off on those is actually quite a large error.  
+Therefore, being 750,000\$
+off on those is actually quite a large error. In fact, the average player salary of the entire data set is only 1,502,214\$ 
+above minimum salary so the error values here are just around half of that. 
 
 ## Neural Network Model
 
 The next model evaluated was a custom-built neural network. 
-This was arbitrarily picked to have 2 hidden layers, all using the "ReLU" activation function. 
+This was arbitrarily picked to have 2 hidden layers, all using the *ReLU* activation function. 
 The first layer was assigned 100 hidden units and the second one was assigned 50 units. 
 As before, this was run with 10,000 iterations and a learning rate of 0.001. 
 This resulted in a training error of 302,642\$, 
@@ -122,7 +124,7 @@ This shows that the non-linear approach is adding benefit as expected.
 ## Simple TensorFlow Model
 
 This model was built using a similar architecture to the custom-built neural network. As before, this network used 2 hidden layers of 100 and 50 units respectively. 
-Once again, this used batch gradient descent with 10000 iterations. In this case, the Adam optimization was added to speed up convergence. The cost function and metric used to evaluate the model were both set to use mean-squared error since the output layer contained a ReLU activation function. For this model, the learning rate was set to 0.0001. The results of this were a training error of 31,027\$, 
+Once again, this used batch gradient descent with 10000 iterations. In this case, the Adam optimization was added to speed up convergence. The cost function and metric used to evaluate the model were both set to use mean-squared error since the output layer contained a *ReLU* activation function. For this model, the learning rate was set to 0.0001. The results of this were a training error of 31,027\$, 
 a dev error of 532,813\$, 
 and a test error of 594,692\$.
 Note that this model had a much better training error than the custom-built one but a slightly larger dev and test error. This is likely due to this model overfitting the training set. No regularization was used for this model either so this is no major surprise. It is however quite interesting to see how much the Adam optimization helped improve convergence speed. 
@@ -171,3 +173,215 @@ Here are the results from the same player predictions:
 	- 1 year: 3,865,311\$  
 
 In general, these are considerably lower than the unregrularized model. While the unregularized model seemed to predict values that were slightly too high, this seems to predict values that are slightly too low. 
+
+
+## Hyperparameter Tuning
+
+Different hyperparameters were tuned to attempt to improve performance. First, different regularization constants were tuned. Here are the resulting errors for a few different values: 
+- L1 = 0, L2 = 0.01: 
+	- Train Set: 147,979\$	 
+	- Dev Set: 496,666\$	 
+	- Test Set: 567,323\$ 
+- L1 = 0, L2 = 0.03: 
+	- Train Set: 283,631\$	 
+	- Dev Set: 458,783\$	 
+	- Test Set: 504,995\$  
+- L1 = 0.0025, L2 = 0.01: 
+	- Train Set: 295,365\$	 
+	- Dev Set: 450,420\$	 
+	- Test Set: 502,607\$  
+- L1 = 0.0025, L2 = 0.015: 
+	- Train Set: 330,331\$	 
+	- Dev Set: 450,981\$	 
+	- Test Set: 498,568\$  
+- **L1 = 0.005, L2 = 0.01:** 
+	- **Train Set: 349,350\$**	 
+	- **Dev Set: 440,466\$**	 
+	- **Test Set: 482,269\$**  
+- L1 = 0.005, L2 = 0.03: 
+	- Train Set: 409,033\$	 
+	- Dev Set: 462,220\$	 
+	- Test Set: 497,111\$  
+- L1 = 0.0075, L2 = 0.01: 
+	- Train Set: 404,768\$	 
+	- Dev Set: 448,414\$	 
+	- Test Set: 491,605\$  
+- L1 = 0.01, L2 = 0.01: 
+	- Train Set: 420,997\$	 
+	- Dev Set: 453,759\$	 
+	- Test Set: 485,026\$  
+
+Based on this, the regularization constants were set to L1 = 0.005 and L2 = 0.01 respectively since that combination gave the lowest dev set error.
+Tuning the regularization fixed the overfitting problem but resulted in a model with a dev set error of around 440,000\$,
+which was still quite high. Next, the number of feature units in each layer were tuned to try to reduce the error further. Here are the results: 
+- Layer 1 = 50 units, Layer 2 = 25 units: 
+	- Train Set: 356,576\$	 
+	- Dev Set: 447,867\$	 
+	- Test Set: 489,767\$  
+- Layer 1 = 200 units, Layer 2 = 100 units: 
+	- Train Set: 376,400\$	 
+	- Dev Set: 443,548\$	 
+	- Test Set: 485,994\$  
+- Layer 1 = 400 units, Layer 2 = 200 units: 
+	- Train Set: 342,123\$	 
+	- Dev Set: 434,596\$	 
+	- Test Set: 491,848\$  
+- **Layer 1 = 500 units, Layer 2 = 250 units:** 
+	- **Train Set: 353,019\$**	 
+	- **Dev Set: 427,664\$**	 
+	- **Test Set: 471,498\$**  
+- Layer 1 = 700 units, Layer 2 = 350 units: 
+	- Train Set: 362,664\$	 
+	- Dev Set: 435,821\$	 
+	- Test Set: 483,617\$  
+- Layer 1 = 1000 units, Layer 2 = 500 units: 
+	- Train Set: 358,342\$	 
+	- Dev Set: 454,832\$	 
+	- Test Set: 484,152\$  
+
+It seems here like the best option was the model with 500 units in the first layer and 250 units in the second layer. Note that all of these models have used a decreasing structure where the second layer had half of the units of the first layer. This was arbitrarily decided. To test this assumption, the following models were used. 
+- Layer 1 = 250 units, Layer 2 = 500 units: 
+	- Train Set: 364,481\$	 
+	- Dev Set: 463,884\$	 
+	- Test Set: 498,928\$  
+- Layer 1 = 500 units, Layer 2 = 500 units: 
+	- Train Set: 350,332\$	 
+	- Dev Set: 437,408\$	 
+	- Test Set: 479,601\$  
+
+Both of these test cases were worse than the original case with 500 units in Layer 1 and 250 units in Layer 2. Therefore, the original structure of decreasing the units every layer was kept. The next step was to test with an extra *ReLU* layer and see if that improved performance.
+- Layer 1 = 500 units, Layer 2 = 250 units,  Layer 3 = 125 units: 
+	- Train Set: 277,371\$	 
+	- Dev Set: 483,578\$	 
+	- Test Set: 514,586\$  
+- Layer 1 = 500 units, Layer 2 = 400 units,  Layer 3 = 250 units: 
+	- Train Set: 261,671\$	 
+	- Dev Set: 444,010\$	 
+	- Test Set: 518,988\$  
+
+Neither model was an improvement on the original so the 2-layer *ReLU* structure was kept. Next, a *tanh* layer was inserted in a similar way to see if this would act any differently.  
+- Layer 1 (*tanh*) = 1000 units, Layer 2 (*ReLU*) = 500 units,  Layer 3 (*ReLU*) = 250 units: 
+	- Train Set: 305,061\$	 
+	- Dev Set: 486,866\$	 
+	- Test Set: 517,904\$  
+- Layer 1 (*ReLU*) = 500 units, Layer 2 (*tanh*) = 325 units,  Layer 3 (*ReLU*) = 250 units: 
+	- Train Set: 311,867\$	 
+	- Dev Set: 465,769\$	 
+	- Test Set: 521,623\$  
+- Layer 1 (*ReLU*) = 500 units, Layer 2 (*ReLU*) = 250 units,  Layer 3 (*tanh*) = 125 units: 
+	- Train Set: 269,197\$	 
+	- Dev Set: 465,675\$	 
+	- Test Set: 514,931\$  
+
+None of these models were an improvement so no *tanh* layer was added.  
+
+Next, a variable learning rate was introduced. In this case, exponential decay was used to generate the learning rate. Here are the results for various configurations: 
+
+- Inital learning rate = 0.0001, Decay steps = 1000, Decay rate = 0.95:
+	- Train Set: 355,342\$	 
+	- Dev Set: 428,278\$	 
+	- Test Set: 472,366\$
+- Inital learning rate = 0.0001, Decay steps = 10000, Decay rate = 0.9:
+	- Train Set: 352,229\$	 
+	- Dev Set: 426,886\$	 
+	- Test Set: 470,533\$
+- **Inital learning rate = 0.0001, Decay steps = 10000, Decay rate = 0.75**:
+	- **Train Set: 354,049\$**	 
+	- **Dev Set: 425,121\$**	 
+	- **Test Set: 472,232\$**
+- Inital learning rate = 0.0001, Decay steps = 10000, Decay rate = 0.5:
+	- Train Set: 357,035\$	 
+	- Dev Set: 428,832\$	 
+	- Test Set: 473,486\$
+- Inital learning rate = 0.0002, Decay steps = 1000, Decay rate = 0.95:
+	- Train Set: 345,761\$	 
+	- Dev Set: 438,599\$	 
+	- Test Set: 475,074\$    
+- Inital learning rate = 0.0002, Decay steps = 1000, Decay rate = 0.75:
+	- Train Set: 367,040\$	 
+	- Dev Set: 434,584\$	 
+	- Test Set: 475,297\$    
+- Inital learning rate = 0.0002, Decay steps = 1000, Decay rate = 0.5:
+	- Train Set: 403,909\$	 
+	- Dev Set: 446,395\$	 
+	- Test Set: 497,046\$    
+- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.95:
+	- Train Set: 362,105\$	 
+	- Dev Set: 463,917\$	 
+	- Test Set: 499,570\$  
+- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.75:
+	- Train Set: 356,124\$	 
+	- Dev Set: 465,338\$	 
+	- Test Set: 497,143\$  
+- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.5:
+	- Train Set: 394,083\$	 
+	- Dev Set: 462,229\$	 
+	- Test Set: 498,247\$  
+- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.3:
+	- Train Set: 405,644\$	 
+	- Dev Set: 455,352\$	 
+	- Test Set: 498,801\$  
+- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.1:
+	- Train Set: 436,330\$	 
+	- Dev Set: 458,058\$	 
+	- Test Set: 498,455\$  
+- Inital learning rate = 0.001, Decay steps = 1000, Decay rate = 0.95:
+	- Train Set: 372,525\$	 
+	- Dev Set: 474,271\$	 
+	- Test Set: 493,834\$  
+- Inital learning rate = 0.001, Decay steps = 1000, Decay rate = 0.75:
+	- Train Set: 364,623\$	 
+	- Dev Set: 448,092\$	 
+	- Test Set: 485,484\$  
+- Inital learning rate = 0.001, Decay steps = 1000, Decay rate = 0.5:
+	- Train Set: 382,125\$	 
+	- Dev Set: 458,376\$	 
+	- Test Set: 491,301\$  
+- Inital learning rate = 0.001, Decay steps = 10000, Decay rate = 0.1:
+	- Train Set: 351,941\$	 
+	- Dev Set: 463,638\$	 
+	- Test Set: 509,688\$  
+- Inital learning rate = 0.001, Decay steps = 10000, Decay rate = 0.03:
+	- Train Set: 366,959\$	 
+	- Dev Set: 457,626\$	 
+	- Test Set: 498,690\$  
+- Inital learning rate = 0.001, Decay steps = 10000, Decay rate = 0.01:
+	- Train Set: 379,849\$	 
+	- Dev Set: 452,895\$	 
+	- Test Set: 494,326\$  
+- Inital learning rate = 0.001, Decay steps = 10000, Decay rate = 0.003:
+	- Train Set: 382,460\$	 
+	- Dev Set: 453,000\$	 
+	- Test Set: 488,972\$  
+- Inital learning rate = 0.003, Decay steps = 10000, Decay rate = 0.003:
+	- Train Set: 391,493\$	 
+	- Dev Set: 445,450\$	 
+	- Test Set: 498,492\$  
+- Inital learning rate = 0.003, Decay steps = 10000, Decay rate = 0.001:
+	- Train Set: 391,728\$	 
+	- Dev Set: 445,197\$	 
+	- Test Set: 499,952\$  
+- Inital learning rate = 0.003, Decay steps = 10000, Decay rate = 0.0003:
+	- Train Set: 391,816\$	 
+	- Dev Set: 445,650\$	 
+	- Test Set: 499,486\$  
+- Inital learning rate = 0.01, Decay steps = 1000, Decay rate = 0.5:
+	- Train Set: 349,823\$	 
+	- Dev Set: 463,792\$	 
+	- Test Set: 510,400\$  
+- Inital learning rate = 0.01, Decay steps = 10000, Decay rate = 0.1:
+	- Train Set: 359,636\$	 
+	- Dev Set: 459,602\$	 
+	- Test Set: 509,302\$ 
+- Inital learning rate = 0.01, Decay steps = 10000, Decay rate = 0.05:
+	- Train Set: 328,232\$	 
+	- Dev Set: 458,313\$	 
+	- Test Set: 505,140\$   
+- Inital learning rate = 0.01, Decay steps = 10000, Decay rate = 0.01:
+	- Train Set: 336,955\$	 
+	- Dev Set: 469,936\$	 
+	- Test Set: 502,201\$   
+
+None of these offered a major improvement over the static learning rate of 0.0001. The best outcome was with an initial learning rate of 0.0001 as used before and a decay rate of 0.75 over 10000 iterations  (dev error of 425,121\$ 
+instead of 427,664\$).
+This is the learning rate that was chosen. 

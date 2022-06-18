@@ -78,7 +78,9 @@ As seen, the linear regression model can estimate some contracts correctly but i
 Likewise, the training and dev set errors of around 750,000$ seem ok but in reality are not very good. 
 Being 750,000$ off on a large contract, for example a 10 million dollar contract, might seem quite good. 
 However, most contracts in the training set are quite low, usually around 1 or 2 million. 
-Therefore, being 750,000$ off on those is actually quite a large error.  
+Therefore, being 750,000\$
+off on those is actually quite a large error. In fact, the average player salary of the entire data set is only 1,502,214\$ 
+above minimum salary so the error values here are just around half of that. 
 
 ## Neural Network Model
 
@@ -271,4 +273,23 @@ Neither model was an improvement on the original so the 2-layer *ReLU* structure
 	- Dev Set: 465,675\$	 
 	- Test Set: 514,931\$  
 
-None of these models were an improvement so no *tanh* layer was added. 
+None of these models were an improvement so no *tanh* layer was added.  
+
+Next, a variable learning rate was introduced. In this case, exponential decay was used to generate the learning rate. Here are the results for various configurations: 
+
+- Inital learning rate = 0.0001, Decay steps = 1000, Decay rate = 0.95:
+	- Train Set: 355,342\$	 
+	- Dev Set: 428,278\$	 
+	- Test Set: 472,366\$
+- Inital learning rate = 0.0002, Decay steps = 1000, Decay rate = 0.95:
+	- Train Set: 345,761\$	 
+	- Dev Set: 438,599\$	 
+	- Test Set: 475,074\$    
+- Inital learning rate = 0.0002, Decay steps = 1000, Decay rate = 0.75:
+	- Train Set: 367,040\$	 
+	- Dev Set: 434,584\$	 
+	- Test Set: 475,297\$    
+- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.95:
+	- Train Set: 362,105\$	 
+	- Dev Set: 463,917\$	 
+	- Test Set: 499,570\$  

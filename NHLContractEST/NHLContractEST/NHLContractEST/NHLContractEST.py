@@ -50,6 +50,9 @@ X, Y = CreateFeatureMatrix(ContractList)
 xMean, xVar = FindFeatureStats(X)
 XNorm = NormalizeFeatureVector(X, xMean, xVar)
 
+avgSalary = np.mean(Y) * 1000000
+
+print("Average Player Salary: " + str(int(avgSalary)) + "$ (above minimum salary)")
 
 # Plot each feature 1 by 1. This is only useful if run through debugger.
 n = X.shape[0]

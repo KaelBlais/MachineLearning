@@ -136,13 +136,13 @@ def TensorFlow_ComplexNeuralNet(X, Y, numIterations = 10000, learningRate = 0.00
 
     initializer = tf.keras.initializers.RandomNormal(seed = 1)
 
-    regularizer = tf.keras.regularizers.L1L2(l1= 0.00, l2 = 0.07)
+    regularizer = tf.keras.regularizers.L1L2(l1= 0.005, l2 = 0.01)
 
     model = tf.keras.Sequential([
-        tfl.Dense(100, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer, input_shape = (1, n)),
+        tfl.Dense(500, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer, input_shape = (1, n)),
         # tfl.Dense(100, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer ),
-        tfl.Dense(50, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer),
-        # tfl.Dense(25, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer),
+        tfl.Dense(250, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer),
+        # tfl.Dense(125, activation = 'tanh', kernel_regularizer = regularizer, kernel_initializer = initializer),
         tfl.Dense(1, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer)
         ])
 
@@ -152,7 +152,15 @@ def TensorFlow_ComplexNeuralNet(X, Y, numIterations = 10000, learningRate = 0.00
 
     # Set up model with adam optimizer. Note that this is different from the custom neural
     # network model which just used standard gradient descent
-    model.compile(optimizer = tf.keras.optimizers.Adam(learning_rate = learningRate),
+
+    # Use learning rate decay
+    lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+        initial_learning_rate=0.0001,
+        decay_steps=10000,
+        decay_rate=0.75,
+        staircase = False)
+
+    model.compile(optimizer = tf.keras.optimizers.Adam(learning_rate = lr_schedule),
                   loss = 'MeanSquaredError',
                   metrics = ['MeanSquaredError']
                   )

@@ -214,7 +214,7 @@ Both of these test cases were worse than the original case with 500 units in Lay
 
 | Layer 1 Units | Layer 2 Units | Layer 2 Units | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
 | :------------ | :------------ | :------------ | -------------------: | -----------------: | ------------------: |
-|           250 |           250 |           125 |              277,371 |            483,578 |             514,586 |
+|           500 |           250 |           125 |              277,371 |            483,578 |             514,586 |
 |           500 |           400 |           250 |              261,671 |            444,010 |             518,988 |
 
 Neither model was an improvement on the original so the 2-layer *ReLU* structure was kept. Next, a *tanh* layer was inserted in a similar way to see if this would act any differently.  

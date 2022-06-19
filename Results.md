@@ -177,101 +177,53 @@ In general, these are considerably lower than the unregrularized model. While th
 
 ## Hyperparameter Tuning
 
-Different hyperparameters were tuned to attempt to improve performance. First, different regularization constants were tuned. Here are the resulting errors for a few different values: 
-- L1 = 0, L2 = 0.01: 
-	- Train Set: 147,979\$	 
-	- Dev Set: 496,666\$	 
-	- Test Set: 567,323\$ 
-- L1 = 0, L2 = 0.03: 
-	- Train Set: 283,631\$	 
-	- Dev Set: 458,783\$	 
-	- Test Set: 504,995\$  
-- L1 = 0.0025, L2 = 0.01: 
-	- Train Set: 295,365\$	 
-	- Dev Set: 450,420\$	 
-	- Test Set: 502,607\$  
-- L1 = 0.0025, L2 = 0.015: 
-	- Train Set: 330,331\$	 
-	- Dev Set: 450,981\$	 
-	- Test Set: 498,568\$  
-- **L1 = 0.005, L2 = 0.01:** 
-	- **Train Set: 349,350\$**	 
-	- **Dev Set: 440,466\$**	 
-	- **Test Set: 482,269\$**  
-- L1 = 0.005, L2 = 0.03: 
-	- Train Set: 409,033\$	 
-	- Dev Set: 462,220\$	 
-	- Test Set: 497,111\$  
-- L1 = 0.0075, L2 = 0.01: 
-	- Train Set: 404,768\$	 
-	- Dev Set: 448,414\$	 
-	- Test Set: 491,605\$  
-- L1 = 0.01, L2 = 0.01: 
-	- Train Set: 420,997\$	 
-	- Dev Set: 453,759\$	 
-	- Test Set: 485,026\$  
+Different hyperparameters were tuned to attempt to improve performance. First, different regularization constants were tuned. Here are the resulting errors for a few different values:  
+
+| L1 Regularization | L2 Regularization | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :---------------- | :---------------- | -------------------: | -----------------: | ------------------: |
+|                 0 |              0.01 |              147,979 |            496,666 |             567,323 |
+|                 0 |              0.03 |              283,631 |            458,783 |             504,995 |
+|            0.0025 |              0.01 |              295,365 |            450,420 |             502,607 |
+|            0.0025 |             0.015 |              330,331 |            450,981 |             498,568 |
+|             **0.005** |              **0.01** |              **349,350** |            **440,466** |             **482,269** |
+|             0.005 |              0.03 |              409,033 |            462,220 |             497,111 |
+|            0.0075 |              0.01 |              404,768 |            448,414 |             491,605 |
+|              0.01 |              0.01 |              420,997 |            453,759 |             485,026 |
 
 Based on this, the regularization constants were set to L1 = 0.005 and L2 = 0.01 respectively since that combination gave the lowest dev set error.
 Tuning the regularization fixed the overfitting problem but resulted in a model with a dev set error of around 440,000\$,
 which was still quite high. Next, the number of feature units in each layer were tuned to try to reduce the error further. Here are the results: 
-- Layer 1 = 50 units, Layer 2 = 25 units: 
-	- Train Set: 356,576\$	 
-	- Dev Set: 447,867\$	 
-	- Test Set: 489,767\$  
-- Layer 1 = 200 units, Layer 2 = 100 units: 
-	- Train Set: 376,400\$	 
-	- Dev Set: 443,548\$	 
-	- Test Set: 485,994\$  
-- Layer 1 = 400 units, Layer 2 = 200 units: 
-	- Train Set: 342,123\$	 
-	- Dev Set: 434,596\$	 
-	- Test Set: 491,848\$  
-- **Layer 1 = 500 units, Layer 2 = 250 units:** 
-	- **Train Set: 353,019\$**	 
-	- **Dev Set: 427,664\$**	 
-	- **Test Set: 471,498\$**  
-- Layer 1 = 700 units, Layer 2 = 350 units: 
-	- Train Set: 362,664\$	 
-	- Dev Set: 435,821\$	 
-	- Test Set: 483,617\$  
-- Layer 1 = 1000 units, Layer 2 = 500 units: 
-	- Train Set: 358,342\$	 
-	- Dev Set: 454,832\$	 
-	- Test Set: 484,152\$  
+
+| Layer 1 Units | Layer 2 Units | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :------------ | :------------ | -------------------: | -----------------: | ------------------: |
+|            50 |            25 |              356,576 |            447,867 |             489,767 |
+|           200 |           100 |              376,400 |            443,548 |             485,994 |
+|           400 |           100 |              342,123 |            434,596 |             491,848 |
+|           **500** |           **250** |              **353,019** |            **427,664** |             **471,498** |
+|           700 |           350 |              362,664 |            435,821 |             483,617 |
+|          1000 |           500 |              358,342 |            454,832 |             484,152 |
 
 It seems here like the best option was the model with 500 units in the first layer and 250 units in the second layer. Note that all of these models have used a decreasing structure where the second layer had half of the units of the first layer. This was arbitrarily decided. To test this assumption, the following models were used. 
-- Layer 1 = 250 units, Layer 2 = 500 units: 
-	- Train Set: 364,481\$	 
-	- Dev Set: 463,884\$	 
-	- Test Set: 498,928\$  
-- Layer 1 = 500 units, Layer 2 = 500 units: 
-	- Train Set: 350,332\$	 
-	- Dev Set: 437,408\$	 
-	- Test Set: 479,601\$  
+
+| Layer 1 Units | Layer 2 Units | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :------------ | :------------ | -------------------: | -----------------: | ------------------: |
+|           250 |           500 |              364,481 |            463,884 |             498,928 |
+|           500 |           500 |              350,332 |            437,408 |             479,601 |
 
 Both of these test cases were worse than the original case with 500 units in Layer 1 and 250 units in Layer 2. Therefore, the original structure of decreasing the units every layer was kept. The next step was to test with an extra *ReLU* layer and see if that improved performance.
-- Layer 1 = 500 units, Layer 2 = 250 units,  Layer 3 = 125 units: 
-	- Train Set: 277,371\$	 
-	- Dev Set: 483,578\$	 
-	- Test Set: 514,586\$  
-- Layer 1 = 500 units, Layer 2 = 400 units,  Layer 3 = 250 units: 
-	- Train Set: 261,671\$	 
-	- Dev Set: 444,010\$	 
-	- Test Set: 518,988\$  
+
+| Layer 1 Units | Layer 2 Units | Layer 2 Units | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :------------ | :------------ | :------------ | -------------------: | -----------------: | ------------------: |
+|           250 |           250 |           125 |              277,371 |            483,578 |             514,586 |
+|           500 |           400 |           250 |              261,671 |            444,010 |             518,988 |
 
 Neither model was an improvement on the original so the 2-layer *ReLU* structure was kept. Next, a *tanh* layer was inserted in a similar way to see if this would act any differently.  
-- Layer 1 (*tanh*) = 1000 units, Layer 2 (*ReLU*) = 500 units,  Layer 3 (*ReLU*) = 250 units: 
-	- Train Set: 305,061\$	 
-	- Dev Set: 486,866\$	 
-	- Test Set: 517,904\$  
-- Layer 1 (*ReLU*) = 500 units, Layer 2 (*tanh*) = 325 units,  Layer 3 (*ReLU*) = 250 units: 
-	- Train Set: 311,867\$	 
-	- Dev Set: 465,769\$	 
-	- Test Set: 521,623\$  
-- Layer 1 (*ReLU*) = 500 units, Layer 2 (*ReLU*) = 250 units,  Layer 3 (*tanh*) = 125 units: 
-	- Train Set: 269,197\$	 
-	- Dev Set: 465,675\$	 
-	- Test Set: 514,931\$  
+
+| Layer 1 Units | Layer 2 Units | Layer 2 Units | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :------------ | :------------ | :------------ | -------------------: | -----------------: | ------------------: |
+| *tanh*   1000 | *ReLU*    500 | *ReLU*    250 |              305,061 |            486,866 |             517,904 |
+| *ReLU*    500 | *tanh*    325 | *ReLU*    250 |              311,867 |            465,769 |             521,623 |
+| *ReLU*    500 | *ReLU*    250 | *tanh*    125 |              269,197 |            465,675 |             514,931 |
 
 None of these models were an improvement so no *tanh* layer was added.  
 

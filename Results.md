@@ -277,110 +277,35 @@ None of these models were an improvement so no *tanh* layer was added.
 
 Next, a variable learning rate was introduced. In this case, exponential decay was used to generate the learning rate. Here are the results for various configurations: 
 
-- Inital learning rate = 0.0001, Decay steps = 1000, Decay rate = 0.95:
-	- Train Set: 355,342\$	 
-	- Dev Set: 428,278\$	 
-	- Test Set: 472,366\$
-- Inital learning rate = 0.0001, Decay steps = 10000, Decay rate = 0.9:
-	- Train Set: 352,229\$	 
-	- Dev Set: 426,886\$	 
-	- Test Set: 470,533\$
-- **Inital learning rate = 0.0001, Decay steps = 10000, Decay rate = 0.75**:
-	- **Train Set: 354,049\$**	 
-	- **Dev Set: 425,121\$**	 
-	- **Test Set: 472,232\$**
-- Inital learning rate = 0.0001, Decay steps = 10000, Decay rate = 0.5:
-	- Train Set: 357,035\$	 
-	- Dev Set: 428,832\$	 
-	- Test Set: 473,486\$
-- Inital learning rate = 0.0002, Decay steps = 1000, Decay rate = 0.95:
-	- Train Set: 345,761\$	 
-	- Dev Set: 438,599\$	 
-	- Test Set: 475,074\$    
-- Inital learning rate = 0.0002, Decay steps = 1000, Decay rate = 0.75:
-	- Train Set: 367,040\$	 
-	- Dev Set: 434,584\$	 
-	- Test Set: 475,297\$    
-- Inital learning rate = 0.0002, Decay steps = 1000, Decay rate = 0.5:
-	- Train Set: 403,909\$	 
-	- Dev Set: 446,395\$	 
-	- Test Set: 497,046\$    
-- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.95:
-	- Train Set: 362,105\$	 
-	- Dev Set: 463,917\$	 
-	- Test Set: 499,570\$  
-- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.75:
-	- Train Set: 356,124\$	 
-	- Dev Set: 465,338\$	 
-	- Test Set: 497,143\$  
-- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.5:
-	- Train Set: 394,083\$	 
-	- Dev Set: 462,229\$	 
-	- Test Set: 498,247\$  
-- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.3:
-	- Train Set: 405,644\$	 
-	- Dev Set: 455,352\$	 
-	- Test Set: 498,801\$  
-- Inital learning rate = 0.0005, Decay steps = 1000, Decay rate = 0.1:
-	- Train Set: 436,330\$	 
-	- Dev Set: 458,058\$	 
-	- Test Set: 498,455\$  
-- Inital learning rate = 0.001, Decay steps = 1000, Decay rate = 0.95:
-	- Train Set: 372,525\$	 
-	- Dev Set: 474,271\$	 
-	- Test Set: 493,834\$  
-- Inital learning rate = 0.001, Decay steps = 1000, Decay rate = 0.75:
-	- Train Set: 364,623\$	 
-	- Dev Set: 448,092\$	 
-	- Test Set: 485,484\$  
-- Inital learning rate = 0.001, Decay steps = 1000, Decay rate = 0.5:
-	- Train Set: 382,125\$	 
-	- Dev Set: 458,376\$	 
-	- Test Set: 491,301\$  
-- Inital learning rate = 0.001, Decay steps = 10000, Decay rate = 0.1:
-	- Train Set: 351,941\$	 
-	- Dev Set: 463,638\$	 
-	- Test Set: 509,688\$  
-- Inital learning rate = 0.001, Decay steps = 10000, Decay rate = 0.03:
-	- Train Set: 366,959\$	 
-	- Dev Set: 457,626\$	 
-	- Test Set: 498,690\$  
-- Inital learning rate = 0.001, Decay steps = 10000, Decay rate = 0.01:
-	- Train Set: 379,849\$	 
-	- Dev Set: 452,895\$	 
-	- Test Set: 494,326\$  
-- Inital learning rate = 0.001, Decay steps = 10000, Decay rate = 0.003:
-	- Train Set: 382,460\$	 
-	- Dev Set: 453,000\$	 
-	- Test Set: 488,972\$  
-- Inital learning rate = 0.003, Decay steps = 10000, Decay rate = 0.003:
-	- Train Set: 391,493\$	 
-	- Dev Set: 445,450\$	 
-	- Test Set: 498,492\$  
-- Inital learning rate = 0.003, Decay steps = 10000, Decay rate = 0.001:
-	- Train Set: 391,728\$	 
-	- Dev Set: 445,197\$	 
-	- Test Set: 499,952\$  
-- Inital learning rate = 0.003, Decay steps = 10000, Decay rate = 0.0003:
-	- Train Set: 391,816\$	 
-	- Dev Set: 445,650\$	 
-	- Test Set: 499,486\$  
-- Inital learning rate = 0.01, Decay steps = 1000, Decay rate = 0.5:
-	- Train Set: 349,823\$	 
-	- Dev Set: 463,792\$	 
-	- Test Set: 510,400\$  
-- Inital learning rate = 0.01, Decay steps = 10000, Decay rate = 0.1:
-	- Train Set: 359,636\$	 
-	- Dev Set: 459,602\$	 
-	- Test Set: 509,302\$ 
-- Inital learning rate = 0.01, Decay steps = 10000, Decay rate = 0.05:
-	- Train Set: 328,232\$	 
-	- Dev Set: 458,313\$	 
-	- Test Set: 505,140\$   
-- Inital learning rate = 0.01, Decay steps = 10000, Decay rate = 0.01:
-	- Train Set: 336,955\$	 
-	- Dev Set: 469,936\$	 
-	- Test Set: 502,201\$   
+| Initial Learning Rate | Decay Steps | Decay Rate | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :-------------------- | :---------- | :--------- | -------------------: | -----------------: | ------------------: |
+|                0.0001 |        1000 |       0.95 |              355,342 |            428,278 |             472,366 |
+|                0.0001 |       10000 |        0.9 |              352,229 |            426,886 |             470,533 |
+|                **0.0001** |       **10000** |       **0.75** |              **354,049** |            **425,121** |             **472,232** |
+|                0.0001 |       10000 |        0.5 |              357,035 |            428,832 |             473,486 |
+|                0.0002 |        1000 |       0.95 |              345,761 |            438,599 |             475,074 |
+|                0.0002 |        1000 |       0.75 |              367,040 |            434,584 |             475,297 |
+|                0.0002 |        1000 |        0.5 |              403,909 |            446,395 |             497,046 |
+|                0.0005 |        1000 |       0.95 |              362,105 |            463,917 |             499,570 |
+|                0.0005 |        1000 |       0.75 |              356,124 |            465,338 |             497,143 |
+|                0.0005 |        1000 |        0.5 |              394,083 |            462,229 |             498,247 |
+|                0.0005 |        1000 |        0.3 |              405,644 |            455,352 |             498,801 |
+|                0.0005 |        1000 |        0.1 |              436,330 |            458,058 |             498,455 |
+|                0.001  |        1000 |       0.95 |              372,525 |            474,271 |             493,834 |
+|                0.001  |        1000 |       0.75 |              364,623 |            448,092 |             485,484 |
+|                0.001  |        1000 |        0.5 |              382,125 |            458,376 |             491,301 |
+|                0.001  |        1000 |        0.1 |              351,941 |            463,638 |             509,688 |
+|                0.001  |        1000 |       0.03 |              366,959 |            457,626 |             498,690 |
+|                0.001  |        1000 |       0.01 |              379,849 |            452,895 |             494,326 |
+|                0.001  |        1000 |      0.003 |              382,460 |            453,000 |             488,972 |
+|                0.003  |        1000 |      0.003 |              391,493 |            445,450 |             498,492 |
+|                0.003  |        1000 |      0.001 |              391,728 |            445,197 |             499,952 |
+|                0.003  |        1000 |     0.0003 |              391,816 |            445,650 |             499,486 |
+|                0.01   |        1000 |        0.5 |              349,823 |            463,792 |             510,400 |
+|                0.01   |        1000 |        0.1 |              359,636 |            459,602 |             509,302 |
+|                0.01   |        1000 |       0.05 |              328,232 |            458,313 |             505,140 |
+|                0.01   |        1000 |       0.01 |              336,955 |            469,936 |             502,201 |
+
 
 None of these offered a major improvement over the static learning rate of 0.0001. The best outcome was with an initial learning rate of 0.0001 as used before and a decay rate of 0.75 over 10000 iterations  (dev error of 425,121\$ 
 instead of 427,664\$).

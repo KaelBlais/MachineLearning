@@ -9,6 +9,7 @@ from ContractStructure import *
 from FormatData import *
 from CustomModels import *
 from TensorFlowModels import *
+from sklearn.decomposition import PCA
 
 CurrentYear = 2022 
 
@@ -44,6 +45,12 @@ X, Y = CreateFeatureMatrix(ContractList)
 # Normalize X
 xMean, xVar = FindFeatureStats(X)
 XNorm = NormalizeFeatureVector(X, xMean, xVar)
+
+# Run PCA. Note that this expects data in the opposite format of m x n so the transpose of XNorm is taken. 
+# pca = PCA() # Retain all variance
+pca = PCA(0.99) # Retain 99% variance
+pca.fit(np.transpose(XNorm))
+xPCA = np.transpose(pca.transform(np.transpose(XNorm)))
 
 avgSalary = np.mean(Y) * 1000000
 

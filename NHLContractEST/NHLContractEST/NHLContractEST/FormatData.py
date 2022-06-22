@@ -115,7 +115,12 @@ FeatureNames = [
                 "3rd Last Year Team Position", "3rd Last Year Team Games Played", "3rd Last Year Team Wins", "3rd Last Year Team Losses",
                 "3rd Last Year Team Overtime Losses", "3rd Last Year Team Goals For", "3rd Last Year Team Goals Against",
 
-                "Age at end of contract"
+                "Age at end of contract",
+
+                "Last Year Point Per Game", "2nd Last Year Point Per Game", "3rd Last Year Point Per Game", 
+                "Last Year Games Played Ratio", "2nd Last Year Games Played Ratio", "3rd Last Year Games Played Ratio", 
+                "Last Year Ratio of Team Offense", "2nd Last Year Ratio of Team Offense", "3rd Last Year Ratio of Team Offense", 
+                "Last Year +/- Compared to Team +/-", "2nd Last Year +/- Compared to Team +/-", "3rd Last Year +/- Compared to Team +/-" 
                 ]
 
 
@@ -263,6 +268,61 @@ def CreateFeatureVector(Contract):
     # However, with the current architecture, this doesn't seem to work. 
     # Therefore, add this as a feature to see if it can help 
     x[106] = Contract.PlayerAge + Contract.NumYears
+
+    # Add other hand-engineered features
+
+    # Points per game. If player didn't play, set ratio to 0
+    if(Contract.Year1RegSeasonGP == 0):
+        x[107] = 0
+    else:
+        x[107] = (Contract.Year1RegSeasonG + Contract.Year1RegSeasonA) / Contract.Year1RegSeasonGP 
+
+    if(Contract.Year2RegSeasonGP == 0):
+        x[108] = 0
+    else:
+        x[108] = (Contract.Year2RegSeasonG + Contract.Year2RegSeasonA) / Contract.Year2RegSeasonGP 
+
+    if(Contract.Year3RegSeasonGP == 0):
+        x[109] = 0
+    else:
+        x[109] = (Contract.Year3RegSeasonG + Contract.Year3RegSeasonA) / Contract.Year3RegSeasonGP 
+
+    # Ratio of games played. If the team didn't play games, set ratio to 1
+    if(Contract.Year1TeamGP == 0):
+        x[110] = 1
+    else:
+        x[110] = Contract.Year1RegSeasonGP / Contract.Year1TeamGP 
+
+    if(Contract.Year2TeamGP == 0):
+        x[111] = 1
+    else:
+        x[111] = Contract.Year2RegSeasonGP / Contract.Year2TeamGP 
+
+    if(Contract.Year3TeamGP == 0):
+        x[112] = 1
+    else:
+        x[112] = Contract.Year3RegSeasonGP / Contract.Year3TeamGP 
+
+    # Ratio of team offense generated. If team didn't score any goals, set ratio to 0
+    if(Contract.Year1TeamGF == 0):
+        x[113] = 0
+    else:
+        x[113] = (Contract.Year1RegSeasonG + Contract.Year1RegSeasonA) / Contract.Year1TeamGF 
+
+    if(Contract.Year2TeamGF == 0):
+        x[114] = 0
+    else:
+        x[114] = (Contract.Year2RegSeasonG + Contract.Year2RegSeasonA) / Contract.Year2TeamGF 
+
+    if(Contract.Year3TeamGF == 0):
+        x[115] = 0
+    else:
+        x[115] = (Contract.Year3RegSeasonG + Contract.Year3RegSeasonA) / Contract.Year3TeamGF 
+
+    # Difference between player +/- and Team +/-
+    x[116] = Contract.Year1RegSeasonPlusMinus - (Contract.Year1TeamGF -  Contract.Year1TeamGA)
+    x[117] = Contract.Year2RegSeasonPlusMinus - (Contract.Year2TeamGF -  Contract.Year2TeamGA)
+    x[118] = Contract.Year3RegSeasonPlusMinus - (Contract.Year3TeamGF -  Contract.Year3TeamGA)
 
     # Salary is everything above minimum salary. This will be a better fit for the ReLU model
     # Note that this is stored in millions of dollars. 

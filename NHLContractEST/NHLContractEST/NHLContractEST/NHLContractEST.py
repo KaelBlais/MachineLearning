@@ -12,11 +12,6 @@ from TensorFlowModels import *
 
 CurrentYear = 2022 
 
-# NOTE: Use this command to change VS interactive window directory to desired path
-# import os
-# os.getcwd() to view current directory
-# os.chdir("Path\\To\\File")
-
 
 ActivePlayerList, SalaryCapTable, TeamStatsList = GetInputsUI(CurrentYear, LoadDefaults = True)
 

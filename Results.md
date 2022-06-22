@@ -214,7 +214,7 @@ Both of these test cases were worse than the original case with 500 units in Lay
 
 | Layer 1 Units | Layer 2 Units | Layer 2 Units | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
 | :------------ | :------------ | :------------ | -------------------: | -----------------: | ------------------: |
-|           250 |           250 |           125 |              277,371 |            483,578 |             514,586 |
+|           500 |           250 |           125 |              277,371 |            483,578 |             514,586 |
 |           500 |           400 |           250 |              261,671 |            444,010 |             518,988 |
 
 Neither model was an improvement on the original so the 2-layer *ReLU* structure was kept. Next, a *tanh* layer was inserted in a similar way to see if this would act any differently.  
@@ -262,3 +262,15 @@ Next, a variable learning rate was introduced. In this case, exponential decay w
 None of these offered a major improvement over the static learning rate of 0.0001. The best outcome was with an initial learning rate of 0.0001 as used before and a decay rate of 0.75 over 10000 iterations  (dev error of 425,121\$ 
 instead of 427,664\$).
 This is the learning rate that was chosen. 
+
+## Hand-Engineering Features
+
+The next step was to hand-engineer some features from the available data. Ideally, these are features that the network would have learned. However, with the limited number of examples available, this hand-engineering was tried to obtain better results. First, the following features were added: 
+- Points-per-game
+- Ratio of games played (player GP / team GP)
+- Ratio of team offense generated (player points / team goals)
+- Difference between player +/- and team +/-
+
+Adding these features resulted in a training error of 333,920\$
+and a dev error of 398,131\$
+which was a noticeable improvement. 

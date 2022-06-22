@@ -274,3 +274,14 @@ The next step was to hand-engineer some features from the available data. Ideall
 Adding these features resulted in a training error of 333,920\$
 and a dev error of 398,131\$
 which was a noticeable improvement. 
+
+## Testing PCA
+
+With the new features added, there were now a lot of features with very strong correlation (i.e. points and points-per-game). PCA was attempted with different thresholds of variance retained to see if this would offer any improvement on performance. Here are the results: 
+
+| PCA threshold (\%) | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :----------------- | -------------------: | -----------------: | ------------------: |
+|  100               |              350,528 |            445,090 |             485,030 |
+|  99                |              582,674 |            646,264 |             684,800 |
+
+These results were considerably worse than the non-PCA version so PCA was dropped for now. 

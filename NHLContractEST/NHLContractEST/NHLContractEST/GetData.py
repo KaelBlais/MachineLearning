@@ -58,6 +58,9 @@ class Player:
         self.Name = Name
     Age = 0
     Position  = ""
+    Height = 0 
+    Weight = 0
+    DraftPosition = 0
     NumContracts = 0
     ContractDates = []
     ContractAAV = []
@@ -189,8 +192,31 @@ def GetPlayerStatsFromCapFriendly():
         if(s[idx:idx+10] == "goaltender"):
             ActivePlayerList[i].Position = "G"
 
+        # Now look for player height and weight
+
+        # Height will always be 3 digits (cm)
+        idx = s.find("cm<")
+        sHeight = s[idx-3:idx]
+        ActivePlayerList[i].Height = int(sHeight)
 
 
+        # Weight will always be 3 digits (lbs)
+        idx = s.find(" lbs<")
+        sWeight = s[idx-3:idx]
+        ActivePlayerList[i].Weight = int(sWeight)
+
+        # Draft Position will be in summary block if drafted. If not, player was undrafted
+        idx = s.find("was drafted ")
+        if(idx == -1):
+            DraftPosition = 0 # Set as 0 (invalid) if player was undrafted
+        else:
+            idx = idx + len("was drafted ")
+            # Look for draft position. Grab all digits following idx. 
+            endIdx = idx
+            while(s[endIdx] >= '0' and s[endIdx] <= '9'):
+                endIdx = endIdx + 1
+            ActivePlayerList[i].DraftPosition = int(s[idx:endIdx])
+        
 
         L = pd.read_html(url)
 
@@ -213,24 +239,27 @@ def GetPlayerStatsFromCapFriendly():
                 # Contract length is number of rows - 2 
                 length = n-2
 
+
                 # AAV is total amount (last row) divided by contract length
                 s = DF[7].iloc[n-1] # total salary amount
 
-                # strip $ and , from salary
-                s = s.replace("$", "")
-                s = s.replace(",", "")
-                AAV = int(int(s) / (length))
+                # On some old contacts, there are some historical salaries with invalid formats. Simply ignore those. 
+                if(type(s) == type("string")):
+                    # strip $ and , from salary
+                    s = s.replace("$", "")
+                    s = s.replace(",", "")
+                    AAV = int(int(s) / (length))
 
-                # Find contract start date from second row
-                s = DF[0].iloc[1]
-                s = s[0:4] # First year is first 4 digits
-                startYear = int(s)
+                    # Find contract start date from second row
+                    s = DF[0].iloc[1]
+                    s = s[0:4] # First year is first 4 digits
+                    startYear = int(s)
             
-                # Append to temporary list
-                yearList.append(startYear)
-                aavList.append(AAV)
-                lengthList.append(length)
-                numContracts = numContracts + 1;
+                    # Append to temporary list
+                    yearList.append(startYear)
+                    aavList.append(AAV)
+                    lengthList.append(length)
+                    numContracts = numContracts + 1;
 
         # Now add current contract after (index 0)
         DF = L[0]

@@ -131,7 +131,8 @@ def RenameOldTeam(name):
 def PrintPlayerInfo(Player):
 
     print("Player Name: " + Player.Name)
-    print("    Age: " + str(Player.Age) + "   Position: " + Player.Position)
+    print("    Age: " + str(Player.Age) + "   Position: " + Player.Position + "   Height: " + str(Player.Height) + " cm" + \
+        "   Weight: " + str(Player.Weight) + " lbs" + "    Draft Position: " + str(Player.DraftPosition))
 
     for j in range(0, Player.NumContracts):
         print("\nContract Start: " + str(Player.ContractDates[j]) + "   Length: " + str(Player.ContractLength[j]) + " AAV:" + str(Player.ContractAAV[j]))

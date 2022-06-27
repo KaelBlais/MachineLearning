@@ -16,7 +16,26 @@ class ContractEntry:
     Salary = 0 # This entry will eventually become the output of the predictor
     PlayerAge = 0
     PlayerPosition = ""
+    Resigning = 0
+    PreviousTeam = ""
+    NewTeam = ""
+    PlayerHeight = 0
+    PlayerWeight = 0
+    PlayerDraftPosition = 0
+    EarningsToDate = 0
+    PreviousSalary = 0
 
+    # General Career Stats
+    CareerRegularGP = 0
+    CareerRegularGoals = 0
+    CareerRegularAssists = 0
+    CareerRegularPoints = 0
+    CareerRegularPPG = 0
+    CareerPlayoffsGP = 0
+    CareerPlayoffsGoals = 0
+    CareerPlayoffsAssists = 0
+    CareerPlayoffsPoints = 0
+    CareerPlayoffsPPG = 0
 
     # Stats from last regular season
     Year1RegSeasonGP = 0
@@ -154,10 +173,33 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
     c.PlayerPosition = Player.Position
     c.NumYears = numYears
     c.Salary = Salary
+    c.PlayerHeight = Player.Height
+    c.PlayerWeight = Player.Weight
+    c.PlayerDraftPosition = Player.DraftPosition
 
     # Since we are only looking at 2nd contracts and higher, no player should ever be younger than 20
     # Technically this should be 21 but 20 is used in case of rounding errors with calculating age from current year
     assert(c.PlayerAge >= 20)
+
+
+
+    # Find previous salary and career earnings
+    cDates = Player.ContractDates
+    cAAV = Player.ContractAAV
+    cLength = Player.ContractLength
+
+    earnings = 0
+    closestYearIdx = 0
+    for i in range(len(cDates)):
+        if(cDates[i] < year):
+            earnings = earnings + cAAV[i] * cLength[i]
+            if((year - cDates[i]) < (year - cDates[closestYearIdx])):
+                closestYearIdx = i
+
+
+    c.EarningsToDate = earnings
+    c.PreviousSalary = cAAV[closestYearIdx]
+
 
     # Add season stats. Note that this is only done for skaters right now. Goalies will be handled later
 
@@ -204,6 +246,48 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
         except: 
             # Invalid season
             seasonYear = 0
+
+
+    
+    # Compute career stats to date
+    totalRegGP = 0
+    totalRegG = 0
+    totalRegA = 0
+    totalPlayoffGP = 0
+    totalPlayoffG = 0
+    totalPlayoffA = 0
+    for i in range (0, year0Index):
+        if(math.isnan(StatHistory[i].RegularGP) == False):
+            totalRegGP = totalRegGP + StatHistory[i].RegularGP
+        if(math.isnan(StatHistory[i].RegularGoals) == False):
+            totalRegG = totalRegG + StatHistory[i].RegularGoals
+        if(math.isnan(StatHistory[i].RegularAssists) == False):
+            totalRegA = totalRegA + StatHistory[i].RegularAssists
+        if(math.isnan(StatHistory[i].PlayoffGP) == False):
+            totalPlayoffGP = totalPlayoffGP + StatHistory[i].PlayoffGP
+        if(math.isnan(StatHistory[i].PlayoffGoals) == False):
+            totalPlayoffG = totalPlayoffG + StatHistory[i].PlayoffGoals
+        if(math.isnan(StatHistory[i].PlayoffAssists) == False):
+            totalPlayoffA = totalPlayoffA + StatHistory[i].PlayoffAssists
+
+    c.CareerRegularGP = totalRegGP
+    c.CareerRegularGoals = totalRegG
+    c.CareerRegularAssists = totalRegA
+    c.CareerRegularPoints = totalRegG + totalRegA
+    if(totalRegGP == 0):
+        c.CareerRegularPPG = 0
+    else: 
+        c.CareerRegularPPG = (totalRegG + totalRegA) / totalRegGP
+      
+    c.CareerPlayoffsGP = totalPlayoffGP
+    c.CareerPlayoffsGoals = totalPlayoffG
+    c.CareerPlayoffsAssists = totalPlayoffA
+    c.CareerPlayoffsPoints = totalPlayoffG + totalPlayoffA
+    if(totalPlayoffGP == 0):
+        c.CareerPlayoffsPPG = 0
+    else: 
+        c.CareerPlayoffsPPG = (totalPlayoffG + totalPlayoffA) / totalPlayoffGP 
+
 
     # Process years with valid indeces. 
     # Note that an invalid index means a year with no NHL games played
@@ -638,6 +722,31 @@ def CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, CurrentYear
                 numSec = 0
 
             c.Year3PlayoffsEVTOI += numSec * ratio
+
+    # Now fill in previous and new team values
+    # Note that if index is end of list, the player has yet to play for his new contract
+    # In that case, assume new team is the same as current team
+    # If there is no year0 nor year 1 index, new team is N/A
+    if(year0Index < len(StatHistory) and len(StatHistory) > 0):
+        c.NewTeam = StatHistory[year0Index].Team
+    elif (year1Index >= 0):
+        c.NewTeam = StatHistory[year1Index].Team
+    else:
+        c.NewTeam = "N/A"
+
+
+    # If there is no previous year, player has yet to play in the NHL
+    # In that case, assume previous team is current team
+    if(year1Index >= 0):
+        c.PreviousTeam = StatHistory[year1Index].Team
+    else:
+        c.PreviousTeam = c.NewTeam
+
+
+    if(c.NewTeam == c.PreviousTeam):
+        c.Resigning = 1
+    else:
+        c.Resigning = 0
 
 
 

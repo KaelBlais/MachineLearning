@@ -131,8 +131,8 @@ def RenameOldTeam(name):
 def PrintPlayerInfo(Player):
 
     print("Player Name: " + Player.Name)
-    print("    Age: " + str(Player.Age) + "   Position: " + Player.Position + "   Height: " + str(Player.Height) + " cm" + \
-        "   Weight: " + str(Player.Weight) + " lbs" + "    Draft Position: " + str(Player.DraftPosition))
+    print("    Age: " + str(Player.Age) + "   Position: " + Player.Position + "   Height: " + str(Player.Height) + "cm" + \
+        "   Weight: " + str(Player.Weight) + "lbs" + "    Draft Position: " + str(Player.DraftPosition))
 
     for j in range(0, Player.NumContracts):
         print("\nContract Start: " + str(Player.ContractDates[j]) + "   Length: " + str(Player.ContractLength[j]) + " AAV:" + str(Player.ContractAAV[j]))
@@ -172,9 +172,17 @@ def PrintPlayerInfo(Player):
 
 # This function will print all info from a contract entry to the screen
 def PrintContractEntry(c):
-    print("CONTRACT ENTRY:             PLAYER: " + c.Name + "  AGE: " + str(c.PlayerAge) + "  POSITION: " + c.PlayerPosition)
+    print("CONTRACT ENTRY:             PLAYER: " + c.Name + "  AGE: " + str(c.PlayerAge) + "  POSITION: " + c.PlayerPosition + \
+        "  Height: " + str(c.PlayerHeight) + "cm    Weight: " + str(c.PlayerWeight) + "lbs   DraftPosition: " + str(c.PlayerDraftPosition))
     print("Contract Signed in " + str(c.year) + "     AAV: " + str(c.Salary) + "$  Length: " + str(c.NumYears) + " years")
+    print("Resigning: " + str(c.Resigning) + "  Previous Team: " + c.PreviousTeam + "  New Team: " + c.NewTeam + \
+        "   Previous Salary: " + str(c.PreviousSalary) + "$   Career Earnings to Date: " + str(c.EarningsToDate) + "$")
     
+    print("Career Stats to Date:    Regular Season - GP: " + str(c.CareerRegularGP) + "   G: " + str(c.CareerRegularGoals) + "   A: " + str(c.CareerRegularAssists) + \
+         "   P: " + str(c.CareerRegularPoints)  + "   PPG: " + str(round(c.CareerRegularPPG, 2)) + "      Playoffs - GP " + \
+         str(c.CareerPlayoffsGP) + "   G: " + str(c.CareerPlayoffsGoals) + "   A: " + str(c.CareerPlayoffsAssists) + \
+         "   P: " + str(c.CareerPlayoffsPoints)  + "   PPG: " + str(round(c.CareerPlayoffsPPG, 2)))
+
     print("Year-1 Stats (Regular Season):     GP: " + str(round(c.Year1RegSeasonGP, 2)) + "  G: " + str(round(c.Year1RegSeasonG, 2)) + "  A: " \
          + str(round(c.Year1RegSeasonA, 2)) + "  +/-: " + str(round(c.Year1RegSeasonPlusMinus, 2)) + "  PIM: " + str(round(c.Year1RegSeasonPIM, 2)))
     print("                                   EVTOI: " + str(round(c.Year1RegSeasonEVTOI, 2)) + "  ixG: " + str(round(c.Year1RegSeasonixG, 2)) + "  xG+/60: " \

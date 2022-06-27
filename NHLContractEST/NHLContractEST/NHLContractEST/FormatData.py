@@ -69,7 +69,7 @@ FeatureNames = [
                 "Contract Duration", "Player Age", "Position == LD", "Position == RD", 
                 "Position == LW", "Position == RW", "Position == C", "Resigning With Team",
                 "Player Height (cm)", "Player Weight (lbs)", "Draft Position", "Career Earnings to Date ($)",
-                "Previous Salary ($)", "Player Age at End of Contract",
+                "Previous Salary ($)", "Player Age at End of Contract", "Contract Year",
 
                 # General Career Stats
                 "Career Games Played (Regular Season)", "Career Goals (Regular Season)","Career Assists (Regular Season)", 
@@ -169,8 +169,9 @@ def CreateFeatureVector(Contract):
     x[idx+11] = Contract.EarningsToDate
     x[idx+12] = Contract.PreviousSalary
     x[idx+13] = Contract.PlayerAge + Contract.NumYears # Age at end of contract
+    x[idx+14] = Contract.year
 
-    idx = idx + 14
+    idx = idx + 15
 
     ##### General Career Statistics #####
     x[idx+0] = Contract.CareerRegularGP

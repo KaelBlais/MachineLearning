@@ -285,3 +285,18 @@ With the new features added, there were now a lot of features with very strong c
 |  99                |              582,674 |            646,264 |             684,800 |
 
 These results were considerably worse than the non-PCA version so PCA was dropped for now. 
+
+## Getting more data and fixing normalization
+
+I wanted to add more features and see if this would improve performance. In order to make that work, I had to re-fetch the data from CapFriendly and add these new features to the player info. This included features like player height, weight, draft position and various career stats such as total career points, earnings, etc. I also added the "team" feature but made this one optional. Ideally, the network would predict player value regardless of what team he signed for but I was curious to see how much the team would affect the model performance. In the process of doing this, I also fixed a bug in the normalization of the data where the mean of the data was not getting subtracted properly. Adding all of these changes yieled the following results: 
+
+| Team Info Included | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :----------------- | -------------------: | -----------------: | ------------------: |
+|  No                |              225,161 |            475,476 |             504,744 |
+|  Yes               |              219,056 |            508,023 |             509,862 |
+
+It seems as though the team variable did not significantly affect the results. It reduced the training error slightly and increased the dev error slightly. The UseTeamsInfo will be kept to True for now but can probably be reverted to False later without significantly affecting the results. It's also important to note that the overall dev set error went up from before (398,131\$)
+but the training error is noticeably lower than the previous value (333,920\$). 
+Another important thing to note is that fetching this new data also grabbed more contract examples from CapFriendly (every contract signed since the last fetch). This caused a change in the distribution of data. The average contract salary is now 2,014,599\$ 
+above minimum salary which is noticeably higher than before (1,502,214\$).
+Therefore, these new error values seem quite promising. However, with the large difference between the dev error and the training error, it seems like the model is starting to overfit the data again. More tuning is likely required. 

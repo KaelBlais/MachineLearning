@@ -43,7 +43,7 @@ def CreateContractList(PlayerList, SalaryCapTable, TeamStatsList, CurrentYear):
 # This function will take in a contract list and create the corresponding feature matrix X and 
 # output vector Y (salary). Note that the X values will not be normalized.
 # X will be an n x m column vector where n is the number of features and m is the number of contracts
-def CreateFeatureMatrix(ContractList):
+def CreateFeatureMatrix(ContractList, UseTeamsInfo):
     m = len(ContractList)
     n = len(FeatureNames)
 
@@ -51,7 +51,7 @@ def CreateFeatureMatrix(ContractList):
     Y = np.zeros((1, m))
 
     for i in range(m):
-        x, y = CreateFeatureVector(ContractList[i])
+        x, y = CreateFeatureVector(ContractList[i], UseTeamsInfo)
         X[:, i] = np.squeeze(x) # column vector needs to be reshaped to (n, :) from (n, 1) before getting copied to matrix
         Y[:, i] = y
 
@@ -68,8 +68,8 @@ FeatureNames = [
                 # Basic Contract Into
                 "Contract Duration", "Player Age", "Position == LD", "Position == RD", 
                 "Position == LW", "Position == RW", "Position == C", "Resigning With Team",
-                "Player Height (cm)", "Player Weight (lbs)", "Draft Position", "Career Earnings to Date ($)",
-                "Previous Salary ($)", "Player Age at End of Contract", "Contract Year",
+                "Player Height (cm)", "Player Weight (lbs)", "Draft Position", "Career Earnings to Date (1,000,000$)",
+                "Previous Salary (1,000,000$)", "Player Age at End of Contract", "Contract Year",
 
                 # General Career Stats
                 "Career Games Played (Regular Season)", "Career Goals (Regular Season)","Career Assists (Regular Season)", 
@@ -122,8 +122,8 @@ FeatureNames = [
                 "3rd Last Year Corsi Differential Relative to Teammates per 60 Minutes (Playoffs)",
 
                 # Salary Cap Info for Next 3 Years
-                "Next Year Salary Cap", "Salary Cap in 2 Years", "Salary Cap in 3 Years",
-                "Next Year Minimum Salary", "Minimum Salary in 2 Years", "Minimum Salary in 3 Years",
+                "Next Year Salary Cap (1,000,000$)", "Salary Cap in 2 Years (1,000,000$)", "Salary Cap in 3 Years (1,000,000$)",
+                "Next Year Minimum Salary (1,000,000$)", "Minimum Salary in 2 Years (1,000,000$)", "Minimum Salary in 3 Years (1,000,000$)",
 
 
                 # Last 3 years of team stats
@@ -134,7 +134,16 @@ FeatureNames = [
                 "2nd Last Year Team Overtime Losses", "2nd Last Year Team Goals For", "2nd Last Year Team Goals Against", 
 
                 "3rd Last Year Team Position", "3rd Last Year Team Games Played", "3rd Last Year Team Wins", "3rd Last Year Team Losses",
-                "3rd Last Year Team Overtime Losses", "3rd Last Year Team Goals For", "3rd Last Year Team Goals Against"
+                "3rd Last Year Team Overtime Losses", "3rd Last Year Team Goals For", "3rd Last Year Team Goals Against",
+
+                # Team Info. This is optional and must always be at the end.
+                "Team == Anaheim Ducks", "Team == Arizona Coyotes", "Team == Boston Bruins", "Team == Buffalo Sabres", "Team == Calgary Flames", 
+                "Team == Carolina Hurricanes", "Team == Chicago Blackhawks", "Team == Colorado Avalanche", "Team == Columbus Blue Jackets", "Team == Dallas Stars", 
+                "Team == Detroit Red Wings", "Team == Edmonton Oilers", "Team == Florida Panthers", "Team == Los Angeles Kings", "Team == Minnesota Wild", 
+                "Team == Montreal Canadiens", "Team == Nashville Predators", "Team == New Jersey Devils", "Team == New York Islanders", "Team == New York Rangers", 
+                "Team == Ottawa Senators", "Team == Philadelphia Flyers", "Team == Phoenix Coyotes", "Team == Pittsburgh Penguins", "Team == St. Louis Blues", 
+                "Team == San Jose Sharks", "Team == Tampa Bay Lightning", "Team == Toronto Maple Leafs", "Team == Vancouver Canucks", "Team == Vegas Golden Knights", 
+                "Team == Washington Capitals", "Team == Winnipeg Jets"
 
            ]
 
@@ -143,7 +152,8 @@ FeatureNames = [
 # This function will take in a contract entry and create the corresponding feature vector x and 
 # output value y (salary) for that entry. Note that the x values will not be normalized.
 # X will be an n x 1 column vector where n is the number of features
-def CreateFeatureVector(Contract):
+# UseTeamsInfo will control whether or not team info is added as a parameter
+def CreateFeatureVector(Contract, UseTeamsInfo):
 
     n = len(FeatureNames)
     x = np.zeros((n, 1))
@@ -166,8 +176,8 @@ def CreateFeatureVector(Contract):
         x[idx+10] = 7*32 # If undrafted, set to last position of draft (end of 7th round)
     else:
         x[idx+10] = Contract.PlayerDraftPosition
-    x[idx+11] = Contract.EarningsToDate
-    x[idx+12] = Contract.PreviousSalary
+    x[idx+11] = Contract.EarningsToDate / 1000000
+    x[idx+12] = Contract.PreviousSalary / 1000000
     x[idx+13] = Contract.PlayerAge + Contract.NumYears # Age at end of contract
     x[idx+14] = Contract.year
 
@@ -351,12 +361,12 @@ def CreateFeatureVector(Contract):
 
     ##### Salary cap info from next 3 years #####
     # In this case, year 1 refers to next year instead of last
-    x[idx+0] = Contract.Year1Cap
-    x[idx+1] = Contract.Year2Cap
-    x[idx+2] = Contract.Year3Cap
-    x[idx+3] = Contract.Year1MinSalary
-    x[idx+4] = Contract.Year2MinSalary
-    x[idx+5] = Contract.Year3MinSalary
+    x[idx+0] = Contract.Year1Cap / 1000000
+    x[idx+1] = Contract.Year2Cap / 1000000
+    x[idx+2] = Contract.Year3Cap / 1000000
+    x[idx+3] = Contract.Year1MinSalary  / 1000000
+    x[idx+4] = Contract.Year2MinSalary / 1000000
+    x[idx+5] = Contract.Year3MinSalary / 1000000
 
     idx = idx + 6
 
@@ -392,6 +402,20 @@ def CreateFeatureVector(Contract):
     x[idx+6] = Contract.Year1TeamGA
 
     idx = idx + 7
+
+
+    if(UseTeamsInfo == True):
+        for team in range(0, len(TeamList)):
+            if(RenameOldTeam(Contract.NewTeam) == RenameOldTeam(TeamList[team])):
+                x[idx+team] = 1
+            else:
+                x[idx+team] = 0
+
+        idx = idx + len(TeamList)
+    else:
+        n = n - len(TeamList)
+
+        
     
     # idx should have reached end of features now
     assert(idx == n)
@@ -418,12 +442,17 @@ def FindFeatureStats(X):
 
 # This function will take in a feature vector x, a mean vector u and a 
 # variance vector var. The result will be the normalized version of x
-def NormalizeFeatureVector(X, xMean, xVar):
+def NormalizeFeatureVector(X, xMean, xVar, UseTeamsInfo):
     XNorm = X - xMean
     XNorm = X / xVar
 
     # Replace categorical features with original ones.
     # These should remain 0/1
     XNorm[2:8, :] = X[2:8, :]
+
+    if(UseTeamsInfo == True):
+        # Last 32 features will represent teams
+        n = X.shape[0]
+        XNorm[n-32:n, :] = X[n-32:n, :]
 
     return XNorm

@@ -82,19 +82,19 @@ class TeamSeasonStats:
 
 # Note: Might need to add old team e.g. Atlanta Trashers to this list
 # Not using this anymore
-'''
-TeamList = ["Anaheim Duck", "Arizona Coyotes", "Boston Bruins",
-            "Buffalo Sabres", "Calgary Flame", "Carolina Hurricanes",
+
+TeamList = ["Anaheim Ducks", "Arizona Coyotes", "Boston Bruins",
+            "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes",
             "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets",
             "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers",
             "Florida Panthers", "Los Angeles Kings", "Minnesota Wild",
             "Montreal Canadiens", "Nashville Predators", "New Jersey Devils",
             "New York Islanders", "New York Rangers", "Ottawa Senators", 
             "Philadelphia Flyers", "Phoenix Coyotes", "Pittsburgh Penguins",
-            "St. Louis Blues", "San Jose Sharks", "Tampa Bay Lighting",
+            "St. Louis Blues", "San Jose Sharks", "Tampa Bay Lightning",
             "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights",
             "Washington Capitals", "Winnipeg Jets"]
-'''
+
 
 # This function will load all of the required player stats from CapFriendly
 def GetPlayerStatsFromCapFriendly():

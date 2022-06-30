@@ -47,6 +47,9 @@ def CreateFeatureMatrix(ContractList, UseTeamsInfo):
     m = len(ContractList)
     n = len(FeatureNames)
 
+    if(UseTeamsInfo == False):
+        n = n - len(TeamList)
+
     X = np.zeros((n, m))
     Y = np.zeros((1, m))
 
@@ -141,9 +144,9 @@ FeatureNames = [
                 "Team == Carolina Hurricanes", "Team == Chicago Blackhawks", "Team == Colorado Avalanche", "Team == Columbus Blue Jackets", "Team == Dallas Stars", 
                 "Team == Detroit Red Wings", "Team == Edmonton Oilers", "Team == Florida Panthers", "Team == Los Angeles Kings", "Team == Minnesota Wild", 
                 "Team == Montreal Canadiens", "Team == Nashville Predators", "Team == New Jersey Devils", "Team == New York Islanders", "Team == New York Rangers", 
-                "Team == Ottawa Senators", "Team == Philadelphia Flyers", "Team == Phoenix Coyotes", "Team == Pittsburgh Penguins", "Team == St. Louis Blues", 
-                "Team == San Jose Sharks", "Team == Tampa Bay Lightning", "Team == Toronto Maple Leafs", "Team == Vancouver Canucks", "Team == Vegas Golden Knights", 
-                "Team == Washington Capitals", "Team == Winnipeg Jets"
+                "Team == Ottawa Senators", "Team == Philadelphia Flyers", "Team == Pittsburgh Penguins", "Team == St. Louis Blues", "Team == San Jose Sharks", 
+                "Team == Seattle Kraken", "Team == Tampa Bay Lightning", "Team == Toronto Maple Leafs", "Team == Vancouver Canucks", "Team == Vegas Golden Knights", 
+                "Team == Washington Capitals", "Team == Winnipeg Jets", "Team == N/A"
 
            ]
 
@@ -156,6 +159,10 @@ FeatureNames = [
 def CreateFeatureVector(Contract, UseTeamsInfo):
 
     n = len(FeatureNames)
+
+    if(UseTeamsInfo == False):
+        n = n - len(TeamList)
+
     x = np.zeros((n, 1))
 
     idx = 0; # Use idk to keep track of section indexes
@@ -403,18 +410,19 @@ def CreateFeatureVector(Contract, UseTeamsInfo):
 
     idx = idx + 7
 
-
+    sum = 0
     if(UseTeamsInfo == True):
         for team in range(0, len(TeamList)):
             if(RenameOldTeam(Contract.NewTeam) == RenameOldTeam(TeamList[team])):
                 x[idx+team] = 1
+                sum = sum + 1
             else:
                 x[idx+team] = 0
 
         idx = idx + len(TeamList)
-    else:
-        n = n - len(TeamList)
+        assert (sum == 1) # Player should always have exactly one team
 
+     
         
     
     # idx should have reached end of features now
@@ -453,6 +461,6 @@ def NormalizeFeatureVector(X, xMean, xVar, UseTeamsInfo):
     if(UseTeamsInfo == True):
         # Last 32 features will represent teams
         n = X.shape[0]
-        XNorm[n-32:n, :] = X[n-32:n, :]
+        XNorm[n-len(TeamList):n, :] = X[n-len(TeamList):n, :]
 
     return XNorm

@@ -80,9 +80,10 @@ class TeamSeasonStats:
     GAList = []
 
 
-# Note: Might need to add old team e.g. Atlanta Trashers to this list
-# Not using this anymore
-
+# Active Team List. This will be used when creating feature vectors. 
+# Note that sometimes, the player will not have a valid team (N/A).
+# This is because of the way the team info is retrieved from the player stats. 
+# A team of N/A means the player did not play in the NHL before or after his contract.
 TeamList = ["Anaheim Ducks", "Arizona Coyotes", "Boston Bruins",
             "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes",
             "Chicago Blackhawks", "Colorado Avalanche", "Columbus Blue Jackets",
@@ -90,10 +91,10 @@ TeamList = ["Anaheim Ducks", "Arizona Coyotes", "Boston Bruins",
             "Florida Panthers", "Los Angeles Kings", "Minnesota Wild",
             "Montreal Canadiens", "Nashville Predators", "New Jersey Devils",
             "New York Islanders", "New York Rangers", "Ottawa Senators", 
-            "Philadelphia Flyers", "Phoenix Coyotes", "Pittsburgh Penguins",
-            "St. Louis Blues", "San Jose Sharks", "Tampa Bay Lightning",
-            "Toronto Maple Leafs", "Vancouver Canucks", "Vegas Golden Knights",
-            "Washington Capitals", "Winnipeg Jets"]
+            "Philadelphia Flyers", "Pittsburgh Penguins", "St. Louis Blues", 
+            "San Jose Sharks", "Seattle Kraken", "Tampa Bay Lightning", "Toronto Maple Leafs", 
+            "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets",
+            "N/A"]
 
 
 # This function will load all of the required player stats from CapFriendly

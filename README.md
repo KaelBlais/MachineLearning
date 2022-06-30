@@ -6,7 +6,7 @@ to be for the duration of the contract. This problem can be represented by a sim
 This represents as much information about the player as possible (age, position, individual statistics from previous years, team statistics from previous years, etc.). 
 Additionally, the length of the contract is also passed in as a feature. This will also determine the salary of the player for the duration of his contract. 
 
-The project is set up with the following files: 
+The project is set up with the following source files: 
 * NHLContractEST: 
 This is the main high-level script that runs the project
 
@@ -25,4 +25,6 @@ This houses the necessary functions to present the console UI and give the user 
 
 * CustomModels: This contains custom regression models built using the functions created in ML.py.
 
-* TensorFlowModels: This contains different tensorflow models using keras functionality 
+* TensorFlowModels: This contains different tensorflow models using keras functionality  
+
+The Notes.md file contains various notes and intermediate results from the optimization process. 

@@ -444,7 +444,7 @@ def FindFeatureStats(X):
 # variance vector var. The result will be the normalized version of x
 def NormalizeFeatureVector(X, xMean, xVar, UseTeamsInfo):
     XNorm = X - xMean
-    XNorm = X / xVar
+    XNorm = XNorm / xVar
 
     # Replace categorical features with original ones.
     # These should remain 0/1

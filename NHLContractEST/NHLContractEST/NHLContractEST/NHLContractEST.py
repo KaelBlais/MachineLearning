@@ -59,11 +59,11 @@ print("Average Player Salary: " + str(int(avgSalary)) + "$ (above minimum salary
 # Plot each feature 1 by 1. This is only useful if run through debugger.
 n = X.shape[0]
 
-
+'''
 for i in range(n):
     PlotFeatureVector(X[i, :], Y, FeatureNames[i])
     PlotFeatureVector(XNorm[i, :], Y, FeatureNames[i])
-
+'''
 
 # param, JHistory, trainE, devE = LinearRegressionModel_Custom(XNorm, Y)
 # param, JHistory, trainE, devE = NeuralNetworkModel_Custom(XNorm, Y)

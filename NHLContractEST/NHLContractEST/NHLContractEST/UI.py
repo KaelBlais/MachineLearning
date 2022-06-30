@@ -37,7 +37,7 @@ def GetInputsUI(CurrentYear, LoadDefaults = False):
             while(c != 'y' and c != 'Y' and c != 'n' and c != 'N'):
                 c = input('Invalid Input. Fetch new player stats from CapFriendly? (y/n)')
             if(c == 'y' or c == 'Y'):
-                ActivePlayerList = GetPlayerStatsFromCapFriendly()
+                ActivePlayerList = GetPlayerStatsFromCapFriendly(CurrentYear)
                 s = 'Save results to "' + playerStatsDefaultFilename + '"? (y/n)'
                 c = input(s)
                 while(c != 'y' and c != 'Y' and c != 'n' and c != 'N'):
@@ -59,7 +59,7 @@ def GetInputsUI(CurrentYear, LoadDefaults = False):
         while(c != 'y' and c != 'Y' and c != 'n' and c != 'N'):
             c = input('Invalid Input. Fetch new player stats from CapFriendly? (y/n)')
         if(c == 'y' or c == 'Y'):
-            ActivePlayerList = GetPlayerStatsFromCapFriendly()
+            ActivePlayerList = GetPlayerStatsFromCapFriendly(CurrentYear)
             s = 'Save results to "' + playerStatsDefaultFilename + '"? (y/n)'
             c = input(s)
             while(c != 'y' and c != 'Y' and c != 'n' and c != 'N'):

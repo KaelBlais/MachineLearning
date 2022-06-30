@@ -98,19 +98,20 @@ TeamList = ["Anaheim Ducks", "Arizona Coyotes", "Boston Bruins",
 
 
 # This function will load all of the required player stats from CapFriendly
-def GetPlayerStatsFromCapFriendly():
+def GetPlayerStatsFromCapFriendly(CurrentYear):
 
 
     print("Getting stats from CapFriendly...")
 
     ActivePlayerList = []
     
-    # Import player data. There are 32 pages of active players in Capfriendly
+    # Import player data. There are 32 pages of active players in Capfriendly.
+    # Extra pages just return blank data so this number isn't super important 
     numPages = 32;
     print("     Getting active player names...")
     for i in range (0, numPages):
         print("     " + str(int((i+1)*100/numPages)) + "% complete", end = '\r')
-        url = "https://www.capfriendly.com/browse/active?pg=" + str(i+1)
+        url = "https://www.capfriendly.com/browse/active/2022?stats-season=" + str(CurrentYear) + "&pg=" + str(i+1)
         L = pd.read_html(url)
 
         # Convert list to data frame. This list only has one dataframe. 
@@ -131,7 +132,6 @@ def GetPlayerStatsFromCapFriendly():
             ActivePlayerList.append(Player(name))
 
     print("     " + str(int((i+1)*100/numPages)) + "% complete")
-
 
     
     # Now go through data list and fill out info for each player.
@@ -272,21 +272,25 @@ def GetPlayerStatsFromCapFriendly():
         # AAV is total amount (last row) divided by contract length
         s = DF[7].iloc[n-1] # total salary amount
 
-        # strip $ and , from salary
-        s = s.replace("$", "")
-        s = s.replace(",", "")
-        AAV = int(s) / (length)
 
-        # Find contract start date from second row
-        s = DF[0].iloc[1]
-        s = s[0:4] # First year is first 4 digits
-        startYear = int(s)
+        # On some old contacts, there are some historical salaries with invalid formats. Simply ignore those. 
+        if(type(s) == type("string")):
+            # strip $ and , from salary
+            s = s.replace("$", "")
+            s = s.replace(",", "")
+            AAV = int(int(s) / (length))
+
+            # Find contract start date from second row
+            s = DF[0].iloc[1]
+            s = s[0:4] # First year is first 4 digits
+            startYear = int(s)
             
-        # Append current contract to end of list
-        yearList.append(startYear)
-        aavList.append(AAV)
-        lengthList.append(length)
-        numContracts = numContracts + 1;
+            # Append to temporary list
+            yearList.append(startYear)
+            aavList.append(AAV)
+            lengthList.append(length)
+            numContracts = numContracts + 1;
+
 
         # Store back in player list
         ActivePlayerList[i].ContractDates = yearList

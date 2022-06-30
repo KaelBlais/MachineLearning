@@ -230,6 +230,9 @@ def PlayerPredictionsUI(PlayerList, SalaryCapTable, TeamStatsList, CurrentYear, 
                return -1
            newTeam = team
 
+   else:
+       newTeam = "N/A"  # Assign newTeam to arbitrary value
+
    contractLength = input('Please enter number of years: ')
 
    y = FindPlayerWorth(p, SalaryCapTable, TeamStatsList, \

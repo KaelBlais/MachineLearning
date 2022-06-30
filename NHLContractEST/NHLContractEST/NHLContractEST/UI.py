@@ -197,12 +197,46 @@ def GetInputsUI(CurrentYear, LoadDefaults = False):
 
 # This will prompt the user to enter a player name and contract length and predict the corresponding salary 
 # predicted using modelParam
-def PlayerPredictionsUI(PlayerList, SalaryCapTable, TeamStatsList, CurrentYear, modelParam,  xMean, xVar):
+def PlayerPredictionsUI(PlayerList, SalaryCapTable, TeamStatsList, CurrentYear, modelParam,  xMean, xVar, UseTeamsInfo):
 
    name = input('Please enter a player name: ')
+   found = 0
+
+   # Try to find player in list
+   for p in PlayerList:
+       if(FormatURL(p.Name) == FormatURL(name)):
+           found = 1
+           break
+   if(found == 0):
+       print("Error: Player not found")
+       return -1;
+
+
+   if(UseTeamsInfo == True):
+       # Try to find current team
+       team = p.StatHistory[-1].Team
+       inputStr = "Resign with " + team + " ? (y/n)"
+       c = input(inputStr)
+       inputStr = "Invalid Input. " + inputStr
+       while(c != 'y' and c != 'Y' and c != 'n' and c != 'N'):
+            c = input(inputStr)
+
+       if(c == 'y'):
+           newTeam = team
+       else:
+           team = input("Please enter a new team: ")
+           if((team in TeamList) == False):
+               print("Error: Invalid team name")
+               return -1
+           newTeam = team
+
    contractLength = input('Please enter number of years: ')
 
-   y = FindPlayerWorth(PlayerList, SalaryCapTable, TeamStatsList, \
-           name, float(contractLength), CurrentYear, modelParam, CurrentYear, xMean, xVar )
+   y = FindPlayerWorth(p, SalaryCapTable, TeamStatsList, \
+           float(contractLength), CurrentYear, modelParam, CurrentYear, xMean, xVar, \
+           UseTeamsInfo, newTeam)
 
+
+   
+   print("Predicted Salary = " + str(round(y, 0)) + "$")
    return y

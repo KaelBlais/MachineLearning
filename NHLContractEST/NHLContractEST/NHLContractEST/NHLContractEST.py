@@ -75,7 +75,7 @@ PlotCostFunction(JHistory)
 
 
 while(1):
-    PlayerPredictionsUI(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear, param, xMean, xVar)
+    PlayerPredictionsUI(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear, param, xMean, xVar, UseTeamsInfo)
 
 # Print random player for debug
 # PrintPlayerInfo(ActivePlayerList[1])

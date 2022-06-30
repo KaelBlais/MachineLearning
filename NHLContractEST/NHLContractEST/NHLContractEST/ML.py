@@ -144,30 +144,26 @@ def BackPropagation(dA, cache):
 
 # This will create a new contract entry for a given player and use modelParam to
 # predict that player's value at the time of 'year'
-def FindPlayerWorth(PlayerList, SalaryCapTable, TeamStatsList, \
-    name, contractLength, year, modelParam, CurrentYear, xMean, xVar):
+def FindPlayerWorth(Player, SalaryCapTable, TeamStatsList, \
+    contractLength, year, modelParam, CurrentYear, xMean, xVar, UseTeamsInfo, newTeam):
 
-    found = 0
-
-    print("Making salary prediction for " + str(name) + "...")
-
-    # First find player in list
-    for p in PlayerList:
-        if(FormatURL(p.Name) == FormatURL(name)):
-            found = 1
-            break
-    if(found == 0):
-        print("Error: Player not found")
-        return;
 
     # Create entry with no salary (unecessary for this)
-    c = CreateContractEntry(p, year, SalaryCapTable, TeamStatsList, \
+    c = CreateContractEntry(Player, year, SalaryCapTable, TeamStatsList, \
         CurrentYear, contractLength)
 
-    # Create feature vectors. Note that y is unecessary. 
-    x, garbage = CreateFeatureVector(c)
+    c.NewTeam = newTeam
 
-    xNorm = NormalizeFeatureVector(x, xMean, xVar)
+    if(c.NewTeam == c.PreviousTeam):
+        c.Resigning = 1
+    else:
+        c.Resigning = 0
+
+
+    # Create feature vectors. Note that y is unecessary. 
+    x, garbage = CreateFeatureVector(c, UseTeamsInfo)
+
+    xNorm = NormalizeFeatureVector(x, xMean, xVar, UseTeamsInfo)
 
     # Check whether param represents a custom model dictionary or a tensorflow model
     if(type(modelParam) == dict):
@@ -183,9 +179,6 @@ def FindPlayerWorth(PlayerList, SalaryCapTable, TeamStatsList, \
 
     yearIndex = np.squeeze(np.where(SalaryCapTable["Seasons"] == year))
     y = y*1000000 + SalaryCapTable["Min Salary"][yearIndex]
-
-    print("Predicted Salary = " + str(y) + "$")
-
 
     return y
 

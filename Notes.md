@@ -286,7 +286,7 @@ With the new features added, there were now a lot of features with very strong c
 
 These results were considerably worse than the non-PCA version so PCA was dropped for now. 
 
-## Getting more data and fixing normalization
+## Getting More Data and Fixing Normalization
 
 I wanted to add more features and see if this would improve performance. In order to make that work, I had to re-fetch the data from CapFriendly and add these new features to the player info. This included features like player height, weight, draft position and various career stats such as total career points, earnings, etc. I also added the "team" feature but made this one optional. Ideally, the network would predict player value regardless of what team he signed for but I was curious to see how much the team would affect the model performance. In the process of doing this, I also fixed a bug in the normalization of the data where the mean of the data was not getting subtracted properly. Adding all of these changes yieled the following results: 
 
@@ -299,4 +299,16 @@ It seems as though the team variable did not significantly affect the results. I
 but the training error is noticeably lower than the previous value (333,920\$). 
 Another important thing to note is that fetching this new data also changed the contract examples grabbed from CapFriendly. This includes adding the contracts signed since the last data fetch. Unfortunately, this also caused all currently pending unrestricted free agents to be removed from the active player list, meaning that those players and their previous contracts no longer show up in the dataset. This caused a significant change in the distribution of data. The average contract salary is now 2,014,599\$ 
 above minimum salary which is noticeably higher than before (1,502,214\$).
-Therefore, these new error values seem quite promising. However, with the large difference between the dev error and the training error, it seems like the model is starting to overfit the data again. More tuning is likely required. 
+With the large difference between the dev error and the training error, it seems like the model is starting to overfit the data again. More tuning is likely required. 
+
+## Re-fetching Data from CapFriendly
+
+The last tests were missing a significant amount of examples from CapFriendly because of all of the players who had become unrestricted free agents. This time, the data was re-fetched and changed to include those free agents as well. This gave an average contract salary of 1,480,275\$ 
+which is more in line with the previous value and the following error results: 
+
+| Team Info Included | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :----------------- | -------------------: | -----------------: | ------------------: |
+|  No                |              276,827 |            383,759 |             356,408 |
+|  Yes               |              271,550 |            376,723 |             353,583 |
+
+Now, the dev error is much lower while the training error has gone up a bit. This makes sense because this is including more examples. Therefore, overfitting is less likely. One interesting thing to note here is that including the teams information now has a noticeable change on the dev error. 

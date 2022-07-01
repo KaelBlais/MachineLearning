@@ -348,3 +348,9 @@ achieved with the previous architecture so the *tanh* layer was removed and the 
 
 This produced a slightly better dev error of 366,970\$
 with an L1 regularization factor of 0.0075 and a L2 regularization factor of 0.01 so this is the combination that was used going forward. 
+
+
+## Conclusion
+With a dev error of 366,970\$,
+this model was deemed acceptable. The test error is 362,060\$
+so this is a reasonable estimate of the typical error that the model might encounter. This model is the one that was used to generate the results in Analysis.md.  

@@ -136,11 +136,11 @@ def TensorFlow_ComplexNeuralNet(X, Y, numIterations = 10000, learningRate = 0.00
 
     initializer = tf.keras.initializers.RandomNormal(seed = 1)
 
-    regularizer = tf.keras.regularizers.L1L2(l1= 0.005, l2 = 0.01)
+    regularizer = tf.keras.regularizers.L1L2(l1= 0.0075, l2 = 0.03)
 
     model = tf.keras.Sequential([
         tfl.Dense(500, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer, input_shape = (1, n)),
-        # tfl.Dense(100, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer ),
+        # tfl.Dense(325, activation = 'tanh', kernel_regularizer = regularizer, kernel_initializer = initializer ),
         tfl.Dense(250, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer),
         # tfl.Dense(125, activation = 'tanh', kernel_regularizer = regularizer, kernel_initializer = initializer),
         tfl.Dense(1, activation = 'relu', kernel_regularizer = regularizer, kernel_initializer = initializer)

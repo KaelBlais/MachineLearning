@@ -243,3 +243,81 @@ def PlayerPredictionsUI(PlayerList, SalaryCapTable, TeamStatsList, CurrentYear, 
    
    print("Predicted Salary = " + str(round(y, 0)) + "$")
    return y
+
+
+# Sort players by contract values and print the outputs
+# This will essentially compare the player's remaining contract with the
+# predicted salary of that player for a new contract of the same duration
+def SortPlayersUI(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear, param, xMean, xVar, UseTeamsInfo):
+    
+    NameList = []
+    CurrentSalaryList = [] 
+    PredictedSalaryList = []
+
+    print("Sorting active players from best contracts to worst...")
+
+    for p in ActivePlayerList:
+
+        # For this list, only players that are not goaltenders and are not on ELCs are considered valid
+        if(p.Position != 'G' and len(p.ContractDates) > 1):
+            # Find the latest contract of this player
+            dates = p.ContractDates
+            idx = dates.index(max(dates))
+            nYears = p.ContractLength[idx]
+            yearsLeft = (dates[idx] + nYears) - CurrentYear
+
+            # Note that we only add players to list if they have a contract that goes beyond the current year
+            if(yearsLeft > 0):
+
+                # Add current salary
+                NameList.append(p.Name)
+                CurrentSalaryList.append(p.ContractAAV[idx])
+
+                if(len(p.StatHistory) == 0):
+                    team = "N/A"
+                else:
+                    team = p.StatHistory[-1].Team
+
+                prediction = FindPlayerWorth(p, SalaryCapTable, TeamStatsList, \
+                float(yearsLeft), CurrentYear, param, CurrentYear, xMean, xVar, \
+                UseTeamsInfo, team)
+
+                PredictedSalaryList.append(prediction)
+
+
+
+    # Now sort players
+    # First convert all lists to numpy arrays for sorting
+    NameList = np.array(NameList)
+    CurrentSalaryList = np.array(CurrentSalaryList)
+    PredictedSalaryList = np.array(PredictedSalaryList)
+
+    # Now generate contract offsets
+    SalaryDifferenceList = PredictedSalaryList - CurrentSalaryList
+
+    # Reorganize list from best contract to worst
+    idxList = sorted(range(len(SalaryDifferenceList)), key=lambda k: SalaryDifferenceList[k], reverse = True)
+    NameList = NameList[idxList]
+    CurrentSalaryList = CurrentSalaryList[idxList]
+    PredictedSalaryList = PredictedSalaryList[idxList]
+    SalaryDifferenceList = SalaryDifferenceList[idxList]
+
+
+    n = input("How many players do you want to display?")
+    n = int(n)
+
+    print("Contracts from best to worse: ")
+
+
+    for i in range(n):
+        print(str(i) + ": " + str(NameList[i]) + "  Current Salary: " + str(CurrentSalaryList[i]) + \
+            "$  Predicted Salary: " + str(PredictedSalaryList[i]) + "$  Difference: " + str(SalaryDifferenceList[i]) + "$")
+
+
+    print("...")
+    for i in range(len(NameList) - n, len(NameList)):
+        print(str(i) + ": " + str(NameList[i]) + "  Current Salary: " + str(CurrentSalaryList[i]) + \
+            "$  Predicted Salary: " + str(PredictedSalaryList[i]) + "$  Difference: " + str(SalaryDifferenceList[i]) + "$")
+
+
+

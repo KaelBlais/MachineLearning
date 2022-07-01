@@ -74,6 +74,8 @@ param, JHistory, trainE, devE = TensorFlow_ComplexNeuralNet(XNorm, Y)
 PlotCostFunction(JHistory)
 
 
+SortPlayersUI(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear, param, xMean, xVar, UseTeamsInfo)
+
 while(1):
     PlayerPredictionsUI(ActivePlayerList, SalaryCapTable, TeamStatsList, CurrentYear, param, xMean, xVar, UseTeamsInfo)
 

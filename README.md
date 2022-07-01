@@ -27,4 +27,4 @@ This houses the necessary functions to present the console UI and give the user 
 
 * TensorFlowModels: This contains different tensorflow models using keras functionality  
 
-The Notes.md file contains various notes and intermediate results from the optimization process. 
+The Notes.md file contains various notes and intermediate results from the optimization process. Analysis.md contains the predictions and analysis made using the final model derived as explained in Notes.md. 

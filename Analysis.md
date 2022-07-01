@@ -3,12 +3,48 @@
 ## Predicting Upcoming Free Agents
 With the model built from a data set acquired just before the NHL 2022 Free Agency window, I wanted to run some salary predictions on upcoming free agents.
 In order to make the predictions, I had to also select a team and a contract length for each free agent. To keep things simple, I selected each free agent's current
-team and an arbitrary number of years based on my own personal intuition. This could change the salary slightly but the predicted number should still be relatively close
-regardless of these two variables. Here are the results: 
+team and an arbitrary number of years based on my own personal intuition. This could change the salary slightly but the predicted number should still be relatively close as long as the number of years is within a reasonable range. Here are the results: 
 
 | Player Name        | Number of Years | Predicted Salary (\$)|
 | :----------------- | :-------------- | -------------------: |
-| Evgeni Malkin      |               3 |            0,000,000 |
+| Matthew Tkachuk    |               8 |           10,687,435 |
+| Johnny Gaudreau    |               8 |           10,665,861 |
+| Filip Forsberg     |               8 |            9,317,346 |
+| Patrik Laine       |               8 |            8,338,588 |
+| John Klingberg     |               8 |            8,243,446 |
+| Pierre-Luc Dubois  |               8 |            8,034,573 |
+| Jason Robertson    |               8 |            7,983,898 |
+| Jesper Bratt       |               8 |            7,677,048 |
+| Noah Dobson        |               8 |            6,829,473 |
+| Nazem Kadri        |               5 |            6,764,480 |
+| Brock Boeser       |               6 |            6,708,962 |
+| Vincent Trocheck   |               6 |            6,650,706 |
+| Ryan Strome        |               5 |            6,529,021 |
+| Anthony Deangelo   |               5 |            6,468,697 |
+| Andrew Copp        |               6 |            6,173,133 |
+| Evgeni Malkin      |               3 |            6,141,986 |
+| Claude Giroux      |               2 |            6,082,915 |
+| Evander Kane       |               5 |            6,035,253 |
+| Kris Letang        |               2 |            5,971,721 |
+| Patrice Bergeron   |               1 |            5,711,189 |
+| Valeri Nichushkin  |               6 |            5,697,164 |
+| Andrew Mangiapane  |               6 |            5,561,766 |
+| Adrian Kempe       |               4 |            5,160,096 |
+| Josh Norris        |               6 |            5,092,355 |
+| Ondrej Palat       |               3 |            5,045,128 |
+| David Perron       |               2 |            4,885,797 |
+| Dylan Strome       |               4 |            4,572,534 |
+| Phil Kessel        |               1 |            4,433,701 |
+| Artturi Lehkonen   |               4 |            4,251,189 |
+| Max Domi           |               3 |            4,077,223 |
+| Kailer Yamamoto    |               5 |            3,708,541 |
+| Oliver Kylington   |               5 |            3,513,194 |
+| Jesse Puljujarvi   |               5 |            3,479,555 |
+| P.K. Subban        |               1 |            3,415,392 |
+| Ben Chiarot        |               4 |            3,301,250 |
+| Nikita Zadorov     |               2 |            2,850,423 |
+| Mason Marchment    |               3 |            2,764,651 |
+| Alexander Romanov  |               2 |            1,813,480 |
 
 
 

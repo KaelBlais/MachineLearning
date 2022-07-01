@@ -301,7 +301,7 @@ Another important thing to note is that fetching this new data also changed the 
 above minimum salary which is noticeably higher than before (1,502,214\$).
 With the large difference between the dev error and the training error, it seems like the model is starting to overfit the data again. More tuning is likely required. 
 
-## Re-fetching Data from CapFriendly
+## Re-Fetching Data from CapFriendly
 
 The last tests were missing a significant amount of examples from CapFriendly because of all of the players who had become unrestricted free agents. This time, the data was re-fetched and changed to include those free agents as well. This gave an average contract salary of 1,480,275\$ 
 which is more in line with the previous value and the following error results: 
@@ -312,3 +312,39 @@ which is more in line with the previous value and the following error results:
 |  Yes               |              271,550 |            376,723 |             353,583 |
 
 Now, the dev error is much lower while the training error has gone up a bit. This makes sense because this is including more examples. Therefore, overfitting is less likely. One interesting thing to note here is that including the teams information now has a noticeable change on the dev error. 
+
+## Hyperparameter Tuning Round 2
+
+With the new features added, I wanted to retry some of the previous attempts to improve performance. First, I re-inserted the *tanh* layer to see if it would behave any differently now. Here are the results: 
+
+| Layer 1 Units | Layer 2 Units | Layer 2 Units | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :------------ | :------------ | :------------ | -------------------: | -----------------: | ------------------: |
+| *tanh*   1000 | *ReLU*    500 | *ReLU*    250 |              199,924 |            412,843 |             435,815 |
+| *ReLU*    500 | *tanh*    325 | *ReLU*    250 |              179,375 |            433,290 |             417,434 |
+| ***ReLU*    500** | ***ReLU*    250** | ***tanh*    125** |              **193,428** |            **401,829** |             **399,579** |
+
+The last test had a slightly higher dev set error than the previous architecture (25,000\$ 
+higher) but a much lower training set error (80,000\$
+lower). This seemed promising so this model was selected for another run through the regularization tuning. Here are the results from that: 
+
+| L1 Regularization | L2 Regularization | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :---------------- | :---------------- | -------------------: | -----------------: | ------------------: |
+|            0.0025 |             0.015 |              172,770 |            411,472 |             397,240 |
+|            0.0025 |              0.03 |              229,696 |            387,542 |             393,191 |
+|             0.005 |              0.03 |              265,318 |            386,270 |             366,272 |
+|            0.0075 |              0.01 |              253,727 |            401,669 |             364,153 |
+|              0.01 |              0.01 |              286,464 |            393,733 |             363,142 |  
+
+None of these dev errors were better than the 376,723\$
+achieved with the previous architecture so the *tanh* layer was removed and the original architecture was re-introduced. This was once again run through the regularization tuning to give the following results: 
+
+| L1 Regularization | L2 Regularization | Train Set Error (\$) | Dev Set Error (\$) | Test Set Error (\$) |
+| :---------------- | :---------------- | -------------------: | -----------------: | ------------------: |
+|            0.0025 |             0.015 |              233,543 |            380,069 |             374,406 |
+|            0.0025 |              0.03 |              276,281 |            380,407 |             355,103 |
+|             0.005 |              0.03 |              311,665 |            371,876 |             354,835 |
+|            **0.0075** |              **0.01** |              **293,919** |            **366,970** |             **362,060** |
+|            0.0075 |              0.03 |              323,342 |            376,740 |             362,604 |  
+
+This produced a slightly better dev error of 366,970\$
+with an L1 regularization factor of 0.0075 and a L2 regularization factor of 0.01 so this is the combination that was used going forward. 

@@ -48,7 +48,7 @@ team and an arbitrary number of years based on my own personal intuition. This c
 
 
 ## Updated Predictions and Comparisons
-Now that most of the notable free agents have signed a new deal, I re-ran the same model with the correct team and number of years that the players ended up actually signing for. Here are the results based on that: 
+Now that most of the notable free agents have signed a new deal, I reran the same model with the correct team and number of years that the players ended up actually signing for. Here are the results based on that: 
 
 | Player Name        | Team                   | Number of Years | Predicted Salary (\$)| Actual Salary (\$)| Difference (\$)|
 | :----------------- | :--------------------- | :-------------- | -------------------: |  ---------------: |  ------------: | 
@@ -86,7 +86,7 @@ Now that most of the notable free agents have signed a new deal, I re-ran the sa
 
 Looking at these numbers, the average error was 864,043\$.
 At first glance, this seems much worse than the expected test set error of 362,532\$
-calculated by the model. However, it's worth noting that these exampels represent the highest-valued contracts signed so it would be expected that these would have the most error as well. Looking at this table above, the average player salary is 4,500,031\$
+calculated by the model. However, it's worth noting that these examples represent the highest-valued contracts signed so it would be expected that these would have the most error as well. Looking at this table above, the average player salary is 4,500,031\$
 and the average error is 864,043\$.
 This gives an average error of 19.2\%.
 The data in the entire set has an average value of 1,480,275\$ 
